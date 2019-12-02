@@ -3,16 +3,26 @@
 
 DrawGraph::DrawGraph(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::DrawGraph)
+    ui(new Ui::drawGraph)
 {
     ui->setupUi(this);
+
+    int screen_height = QApplication::desktop()->height();
+    int screen_width = QApplication::desktop()->width();
+
+    m_canvas = QPixmap(screen_width, screen_height);
+
+    ui->canvas->setScaledContents(true);
+    ui->canvas->setPixmap(m_canvas.scaled(width(), height(), Qt::KeepAspectRatio));
 }
 
 void DrawGraph::paintEvent(QPaintEvent *event)
 {
     (void)event;
-    QPainter painter(this);
+
+    QPainter painter(&m_canvas);
     painter.setFont(QFont("Times", 12));
+    painter.setPen(Qt::white);
     painter.drawText(QPoint(20, 20), "Create graph nodes (click to create)");
 
     if (m_x == 0 && m_y == 0)
@@ -20,11 +30,14 @@ void DrawGraph::paintEvent(QPaintEvent *event)
 
     m_points.emplace_back(m_x, m_y);
 
-    painter.drawEllipse(m_x, m_y, 10, 10);
+    //TODO: Scale dots
+
+    painter.drawEllipse(m_x - 10, m_y - 10, 20, 20);
 
     m_x = 0;
     m_y = 0;
 
+    ui->canvas->setPixmap(m_canvas.scaled(width(), height(), Qt::KeepAspectRatio));
 }
 
 void DrawGraph::mousePressEvent(QMouseEvent *event)
@@ -38,3 +51,4 @@ DrawGraph::~DrawGraph()
 {
     delete ui;
 }
+

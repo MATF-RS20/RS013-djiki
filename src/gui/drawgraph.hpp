@@ -7,9 +7,12 @@
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QPixmap>
+#include <QApplication>
+#include <QDesktopWidget>
 
 namespace Ui {
-class DrawGraph;
+class drawGraph;
 }
 
 class DrawGraph : public QWidget
@@ -24,10 +27,12 @@ public:
 
     ~DrawGraph() override;
 private:
-    Ui::DrawGraph *ui;
+    Ui::drawGraph *ui;
+
     int m_x = 0;
     int m_y = 0;
     std::vector<std::pair<int, int>> m_points;
+    QPixmap m_canvas;
 };
 
 #endif // DRAWGRAPH_HPP
