@@ -7,10 +7,14 @@ DrawGraph::DrawGraph(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    scene = new QGraphicsScene(this);
+    scene = new QGraphicsScene(0, 0, width(), height(), this);
 
     ui->graphicsView->setScene(scene);
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
+
+    QGraphicsTextItem *text = scene->addText("Click to add nodes: ", QFont("Times", 16, QFont::Bold));
+    text->setPos(10, 5);
+    text->setDefaultTextColor(QColor("black"));
 }
 
 void DrawGraph::mousePressEvent(QMouseEvent *event)
@@ -18,11 +22,15 @@ void DrawGraph::mousePressEvent(QMouseEvent *event)
     double x = event->x();
     double y = event->y();
 
-    Node* newNode = new Node(x - Node::radius/2, y - Node::radius/2);
+    Node* newNode = new Node(x, y);
     nodes.push_back(newNode);
 
-    newNode->setPos(x, y);
     scene->addItem(newNode);
+}
+
+void DrawGraph::resizeEvent(QResizeEvent *)
+{
+    scene->setSceneRect(0, 0, width(), height());
 }
 
 DrawGraph::~DrawGraph()

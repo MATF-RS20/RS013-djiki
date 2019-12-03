@@ -11,6 +11,7 @@ Node::Node(double x, double y)
 
 {
     pressed = false;
+
     nodeNumber = numberOfNodes++;
     setFlag(ItemIsMovable);
 }
@@ -22,7 +23,7 @@ QRectF Node::boundingRect() const
 
 void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    QPen pen(QColor("#0e5a77"));
+    QPen pen("#0e5a77");
     pen.setWidth(3);
 
     painter->setPen(pen);
@@ -38,6 +39,10 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (event->button() == Qt::RightButton)
         delete this;
+    else if (QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
+    {
+        // TODO
+    }
     else
     {
         pressed = true;

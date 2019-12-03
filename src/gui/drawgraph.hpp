@@ -8,7 +8,6 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 
@@ -26,14 +25,18 @@ class DrawGraph : public QWidget
 public:
     explicit DrawGraph(QWidget *parent = nullptr);
 
-    virtual void mousePressEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
     ~DrawGraph() override;
+
 private:
     Ui::drawGraph *ui;
 
     QVector<Node*> nodes;
     QGraphicsScene* scene;
+
+    int numOfSelected = 0;
 };
 
 #endif // DRAWGRAPH_HPP
