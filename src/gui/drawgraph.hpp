@@ -7,9 +7,13 @@
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
-#include <QPixmap>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+
+#include "mainwindow.hpp"
+#include "../graph/node.hpp"
 
 namespace Ui {
 class drawGraph;
@@ -22,17 +26,14 @@ class DrawGraph : public QWidget
 public:
     explicit DrawGraph(QWidget *parent = nullptr);
 
-    virtual void paintEvent(QPaintEvent *event) override;
     virtual void mousePressEvent(QMouseEvent *event) override;
 
     ~DrawGraph() override;
 private:
     Ui::drawGraph *ui;
 
-    int m_x = 0;
-    int m_y = 0;
-    std::vector<std::pair<int, int>> m_points;
-    QPixmap m_canvas;
+    QVector<Node*> nodes;
+    QGraphicsScene* scene;
 };
 
 #endif // DRAWGRAPH_HPP
