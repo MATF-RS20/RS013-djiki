@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="images">
+    <file>orangeGraph.jpg</file>
+    <file>cube.png</file>
+  </qresource>
+</RCC>

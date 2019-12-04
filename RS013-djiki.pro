@@ -30,6 +30,9 @@ FORMS += \
     src/gui/drawgraph.ui \
     src/gui/mainwindow.ui
 
+RESOURCES += \
+    src/gui/images/icons.qrc
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
