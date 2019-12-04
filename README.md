@@ -15,6 +15,7 @@ u akademskoj 2019/2020. godini.
 
 ## Korišćene biblioteke
 
-+[Qt5](https://www.qt.io/)
++ [Qt5](https://www.qt.io/)
++ [Catch2](https://github.com/catchorg/Catch2)
 
 Ovaj spisak biće konstantno ažuriran dok traje razvoj projekta.
