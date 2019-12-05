@@ -10,6 +10,7 @@
 #include <QApplication>
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include <QDebug>
 
 #include "mainwindow.hpp"
 #include "../graph/node.hpp"
@@ -30,13 +31,16 @@ public:
 
     ~DrawGraph() override;
 
+public Q_SLOTS:
+    void drawEdge(Node* node);
+
 private:
     Ui::drawGraph *ui;
 
     QVector<Node*> nodes;
     QGraphicsScene* scene;
 
-    int numOfSelected = 0;
+    QVector<Node*> selected;
 };
 
 #endif // DRAWGRAPH_HPP

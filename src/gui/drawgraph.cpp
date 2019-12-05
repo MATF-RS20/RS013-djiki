@@ -25,6 +25,11 @@ void DrawGraph::mousePressEvent(QMouseEvent *event)
     Node* newNode = new Node(x, y);
     nodes.push_back(newNode);
 
+    QObject::connect(newNode,
+                     &Node::drawNeighbour,
+                     this,
+                     &DrawGraph::drawEdge);
+
     scene->addItem(newNode);
 }
 
@@ -41,5 +46,21 @@ DrawGraph::~DrawGraph()
     nodes.clear();
 
     delete scene;
-    delete ui;
+}
+
+void DrawGraph::drawEdge(Node *node)
+{
+    selected.push_back(node);
+
+    if (selected.size() < 2)
+        return;
+    else if (selected.size() > 2)
+    {
+        selected.clear();
+        return;
+    }
+
+    // TODO
+    qDebug() << "Two nodes selected";
+    selected.clear();
 }

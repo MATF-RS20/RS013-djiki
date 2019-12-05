@@ -1,15 +1,13 @@
 #include "../graph/node.hpp"
 #include <QApplication>
-#include <QDesktopWidget>
 
 unsigned Node::numberOfNodes = 0;
-unsigned Node::radius = 20;
 
-Node::Node(double x, double y)
+Node::Node(double x, double y, unsigned r)
     : posX(x)
     , posY(y)
-
-{
+    , radius(r)
+{ 
     pressed = false;
 
     nodeNumber = numberOfNodes++;
@@ -41,7 +39,7 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
         delete this;
     else if (QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
     {
-        // TODO
+        emit drawNeighbour(this);
     }
     else
     {
