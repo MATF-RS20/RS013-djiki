@@ -1,18 +1,12 @@
 #ifndef DRAWGRAPH_HPP
 #define DRAWGRAPH_HPP
 
-#include "mainwindow.hpp"
 #include "../graph/node.hpp"
 #include "../graph/edge.hpp"
 
 #include <QWidget>
-#include <QPainter>
-#include <QMouseEvent>
-#include <QApplication>
 #include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QDebug>
-#include <QInputDialog>
+#include <QMouseEvent>
 
 namespace Ui {
 class drawGraph;
@@ -32,14 +26,24 @@ public:
 
 public Q_SLOTS:
     void drawEdge(Node* node);
+    void onDoneCreatingNodes();
+    void onDoneAddingEdges();
+    void onClearGraph();
 
 private:
+    void initializeScene() const;
+
+    template <typename T>
+    T* createCheckBoxOrBtn(const QString& label, const QPointF& position) const;
+
     Ui::drawGraph *ui;
 
     QVector<Node*> nodes;
     QGraphicsScene* scene;
 
-    QVector<Node*> selected;
+    QVector<Node*> selectedNodes;
+
+    bool doneCreatingNodes = false;
 };
 
 #endif // DRAWGRAPH_HPP
