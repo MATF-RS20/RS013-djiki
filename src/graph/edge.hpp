@@ -3,12 +3,11 @@
 
 #include "node.hpp"
 
-#include <QGraphicsItem>
-#include <QInputDialog>
+#include <QPainter>
+#include <QGraphicsSceneMoveEvent>
 
 class Edge : public QObject, public QGraphicsItem {
     Q_OBJECT
-    Q_INTERFACES(QGraphicsItem)
 
 public:
     Edge(Node* s, Node* e, int w);
@@ -21,6 +20,9 @@ public:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
+    std::pair<QPointF, QPointF> getCurrentCoords() const;
+    void drawNodeWeight(QPainter *painter) const;
+
     Node* start;
     Node* end;
 

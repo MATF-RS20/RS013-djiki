@@ -1,5 +1,6 @@
 #include "../graph/node.hpp"
 #include <QApplication>
+#include <QDebug>
 
 unsigned Node::numberOfNodes = 0;
 unsigned Node::radius = 20;
@@ -7,7 +8,7 @@ unsigned Node::radius = 20;
 Node::Node(double x, double y)
     : posX(x)
     , posY(y)
-{ 
+{
     pressed = false;
 
     nodeNumber = numberOfNodes++;
@@ -39,7 +40,7 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (event->button() == Qt::RightButton)
-        delete this;
+        this->setVisible(false);
     else if (QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
     {
         emit drawNeighbour(this);
@@ -60,6 +61,18 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         update();
         QGraphicsItem::mousePressEvent(event);
     }
+}
+
+void Node::addNeighbour(Node *neighbour)
+{
+    neighbours.push_back(neighbour);
+}
+
+void Node::removeNeighbour(Node *neighbour)
+{
+    auto position = std::find(neighbours.begin(), neighbours.end(), neighbour);
+    if (position != neighbours.end())
+        neighbours.erase(position);
 }
 
 double Node::getX() const

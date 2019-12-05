@@ -20,22 +20,26 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
+    void addNeighbour(Node* neighbour);
+    void removeNeighbour(Node* neighbour);
+
     double getX() const;
     double getY() const;
     unsigned getNodeNumber() const;
 
     static unsigned radius;
+    static unsigned numberOfNodes;
 Q_SIGNALS:
     void drawNeighbour(Node* n);
 
 private:
-    static unsigned numberOfNodes;
-
     unsigned nodeNumber;
     bool pressed;
 
     double posX;
     double posY;
+
+    QVector<Node*> neighbours;
 };
 
 #endif // NODE_HPP
