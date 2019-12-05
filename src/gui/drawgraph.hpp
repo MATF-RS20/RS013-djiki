@@ -1,8 +1,9 @@
 #ifndef DRAWGRAPH_HPP
 #define DRAWGRAPH_HPP
 
-#include <iostream>
-#include <vector>
+#include "mainwindow.hpp"
+#include "../graph/node.hpp"
+#include "../graph/edge.hpp"
 
 #include <QWidget>
 #include <QPainter>
@@ -11,9 +12,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QDebug>
-
-#include "mainwindow.hpp"
-#include "../graph/node.hpp"
+#include <QInputDialog>
 
 namespace Ui {
 class drawGraph;

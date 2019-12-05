@@ -19,18 +19,21 @@ DrawGraph::DrawGraph(QWidget *parent) :
 
 void DrawGraph::mousePressEvent(QMouseEvent *event)
 {
-    double x = event->x();
-    double y = event->y();
+    if (event->button() == Qt::LeftButton)
+    {
+        double x = event->x();
+        double y = event->y();
 
-    Node* newNode = new Node(x, y);
-    nodes.push_back(newNode);
+        Node* newNode = new Node(x, y);
+        nodes.push_back(newNode);
 
-    QObject::connect(newNode,
-                     &Node::drawNeighbour,
-                     this,
-                     &DrawGraph::drawEdge);
+        QObject::connect(newNode,
+                         &Node::drawNeighbour,
+                         this,
+                         &DrawGraph::drawEdge);
 
-    scene->addItem(newNode);
+        scene->addItem(newNode);
+    }
 }
 
 void DrawGraph::resizeEvent(QResizeEvent *)
@@ -60,7 +63,23 @@ void DrawGraph::drawEdge(Node *node)
         return;
     }
 
-    // TODO
-    qDebug() << "Two nodes selected";
+    Node* start = std::move(selected[0]);
+    Node* end = std::move(selected[1]);
     selected.clear();
+
+    if (start == end)
+        return;
+
+    QString title = "Enter weight for {" + QString::number(start->getNodeNumber())
+                    + ", " + QString::number(end->getNodeNumber()) + "} edge.";
+
+    bool ok;
+    QString value = QInputDialog::getText(this, title, "Weight: ", QLineEdit::Normal,
+                                          "0", &ok);
+
+    if (ok && !value.isEmpty())
+    {
+        Edge* newEdge = new Edge(start, end, value.toInt());
+        scene->addItem(newEdge);
+    }
 }

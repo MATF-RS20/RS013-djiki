@@ -11,7 +11,7 @@ class Node : public QObject, public QGraphicsItem {
     Q_INTERFACES(QGraphicsItem)
 
 public:
-    Node(double x, double y, unsigned r = 20);
+    Node(double x, double y);
 
     QRectF boundingRect() const override;
 
@@ -20,6 +20,11 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
+    double getX() const;
+    double getY() const;
+    unsigned getNodeNumber() const;
+
+    static unsigned radius;
 Q_SIGNALS:
     void drawNeighbour(Node* n);
 
@@ -31,7 +36,6 @@ private:
 
     double posX;
     double posY;
-    unsigned radius;
 };
 
 #endif // NODE_HPP

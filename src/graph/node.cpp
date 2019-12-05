@@ -2,11 +2,11 @@
 #include <QApplication>
 
 unsigned Node::numberOfNodes = 0;
+unsigned Node::radius = 20;
 
-Node::Node(double x, double y, unsigned r)
+Node::Node(double x, double y)
     : posX(x)
     , posY(y)
-    , radius(r)
 { 
     pressed = false;
 
@@ -25,6 +25,9 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     pen.setWidth(3);
 
     painter->setPen(pen);
+
+    QBrush brush(Qt::white);
+    painter->setBrush(brush);
 
     QRectF rect = boundingRect();
     painter->drawEllipse(rect);
@@ -57,4 +60,19 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         update();
         QGraphicsItem::mousePressEvent(event);
     }
+}
+
+double Node::getX() const
+{
+    return posX;
+}
+
+double Node::getY() const
+{
+    return posY;
+}
+
+unsigned Node::getNodeNumber() const
+{
+    return nodeNumber;
 }
