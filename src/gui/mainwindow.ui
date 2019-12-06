@@ -40,7 +40,7 @@ color: rgb(239, 235, 231);</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(255, 255, 255);
-border-image: url(:/images/orangeGraph.jpg);</string>
+border-image: url(:/images/graph.svg);</string>
       </property>
       <property name="text">
        <string>Graph</string>
@@ -67,8 +67,8 @@ border-image: url(:/images/orangeGraph.jpg);</string>
        <bool>false</bool>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-image: url(:/images/cube.png);
-color: rgb(255, 255, 255);</string>
+       <string notr="true">color: rgb(255, 255, 255);
+border-image: url(:/images/collections.svg);</string>
       </property>
       <property name="text">
        <string>Collection</string>
@@ -90,7 +90,7 @@ color: rgb(255, 255, 255);</string>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources>
-  <include location="images/icons.qrc"/>
+  <include location="images/images.qrc"/>
  </resources>
  <connections/>
 </ui>

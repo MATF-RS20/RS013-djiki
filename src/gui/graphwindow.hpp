@@ -15,6 +15,9 @@ public:
     explicit GraphWindow(QWidget *parent = 0);
     ~GraphWindow();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::GraphWindow *ui;
 };

@@ -13,3 +13,16 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::on_pushButton_clicked()
+{
+    this->hide();
+    graphWindow = new GraphWindow(this);
+    graphWindow->show();
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    this->hide();
+    collectionWindow = new CollectionWindow(this);
+    collectionWindow->show();
+}

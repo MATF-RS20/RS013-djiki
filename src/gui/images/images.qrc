@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="images">
+    <file>graph.svg</file>
+    <file>collections.svg</file>
+  </qresource>
+</RCC>

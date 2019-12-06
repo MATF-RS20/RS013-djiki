@@ -39,7 +39,7 @@ FORMS += \
     src/gui/mainwindow.ui
 
 RESOURCES += \
-    src/gui/images/icons.qrc
+    src/gui/images/images.qrc
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
