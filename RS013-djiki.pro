@@ -22,7 +22,8 @@ SOURCES += \
     src/gui/drawgraph.cpp \
     src/gui/graphwindow.cpp \
     src/gui/main.cpp \
-    src/gui/mainwindow.cpp
+    src/gui/mainwindow.cpp \
+    src/gui/algograph.cpp
 
 HEADERS += \
     src/graph/edge.hpp \
@@ -30,13 +31,15 @@ HEADERS += \
     src/gui/collectionwindow.hpp \
     src/gui/drawgraph.hpp \
     src/gui/graphwindow.hpp \
-    src/gui/mainwindow.hpp
+    src/gui/mainwindow.hpp \
+    src/gui/algograph.hpp
 
 FORMS += \
     src/gui/collectionwindow.ui \
     src/gui/drawgraph.ui \
     src/gui/graphwindow.ui \
-    src/gui/mainwindow.ui
+    src/gui/mainwindow.ui \
+    src/gui/algograph.ui
 
 RESOURCES += \
     src/gui/images/images.qrc

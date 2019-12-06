@@ -2,6 +2,8 @@
 #define GRAPHWINDOW_HPP
 
 #include <QMainWindow>
+#include "drawgraph.hpp"
+#include "algograph.hpp"
 
 namespace Ui {
 class GraphWindow;
@@ -16,10 +18,16 @@ public:
     ~GraphWindow();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_pushButtonReturn_clicked();
 
 private:
+    void createDockWindows();
+
     Ui::GraphWindow *ui;
+    DrawGraph *drawGraph;
+    AlgoGraph *algoGraph;
+
+    QMenu *viewMenu;
 };
 
 #endif // GRAPHWINDOW_HPP
