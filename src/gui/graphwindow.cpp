@@ -8,11 +8,19 @@ GraphWindow::GraphWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     drawGraph = new DrawGraph;
+    //drawGraph->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setCentralWidget(drawGraph);
 
     createDockWindows();
 
     setWindowTitle(tr("Graph Window"));
+
+    this->installEventFilter(this);
+
+    animate = new QPropertyAnimation(algoGraph, "maximumWidth");
+    animate->setDuration(1000);
+    animate->setStartValue(300);
+    animate->setEndValue(0);
 }
 
 GraphWindow::~GraphWindow()
@@ -39,4 +47,29 @@ void GraphWindow::createDockWindows()
     dock->setWidget(algoGraph);
     addDockWidget(Qt::RightDockWidgetArea, dock, Qt::Vertical);
     //dock->toggleViewAction();
+}
+
+bool GraphWindow::eventFilter(QObject *watched, QEvent *event)
+{
+    if(this == watched && event->type() == QEvent::KeyPress)
+    {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+        if(keyEvent->key() == Qt::Key_Space)
+        {
+            if(algoGraph->maximumWidth() == 0)
+            {
+                animate->setDirection(QAbstractAnimation::Backward);
+                animate->start();
+            }
+            else if(algoGraph->maximumWidth() != 0)
+            {
+                animate->setDirection(QAbstractAnimation::Forward);
+                animate->start();
+            }
+            return true;
+        }
+        else
+            return false;
+    }
+    return false;
 }

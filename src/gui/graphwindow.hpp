@@ -2,6 +2,7 @@
 #define GRAPHWINDOW_HPP
 
 #include <QMainWindow>
+#include <QPropertyAnimation>
 #include "drawgraph.hpp"
 #include "algograph.hpp"
 
@@ -27,7 +28,10 @@ private:
     DrawGraph *drawGraph;
     AlgoGraph *algoGraph;
 
-    QMenu *viewMenu;
+    QPropertyAnimation *animate;
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event);
 };
 
 #endif // GRAPHWINDOW_HPP
