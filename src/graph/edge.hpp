@@ -10,7 +10,7 @@ class Edge : public QObject, public QGraphicsItem {
     Q_OBJECT
 
 public:
-    Edge(Node* s, Node* e, int w);
+    Edge(Node* s, Node* e, int w, QWidget* p);
 
     QRectF boundingRect() const override;
 
@@ -18,6 +18,9 @@ public:
 
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+
+public Q_SLOTS:
+    void nodeMoved();
 
 private:
     std::pair<QPointF, QPointF> getCurrentCoords() const;
@@ -27,6 +30,8 @@ private:
     Node* end;
 
     int nodeWeight;
+
+    QWidget* parent;
 };
 
 #endif // EDGE_HPP

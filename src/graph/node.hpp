@@ -22,6 +22,7 @@ public:
 
     void addNeighbour(Node* neighbour);
     void removeNeighbour(Node* neighbour);
+    void clearNeighbours();
 
     double getX() const;
     double getY() const;
@@ -29,8 +30,11 @@ public:
 
     static unsigned radius;
     static unsigned numberOfNodes;
+
 Q_SIGNALS:
     void drawNeighbour(Node* n);
+    void moving();
+    void nodeDeleted(Node* n);
 
 private:
     unsigned nodeNumber;

@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QPropertyAnimation>
-#include "drawgraph.hpp"
+#include "../graph/drawgraph.hpp"
 #include "algograph.hpp"
 
 namespace Ui {

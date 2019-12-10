@@ -16,27 +16,27 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/graph/drawgraph.cpp \
     src/graph/edge.cpp \
     src/graph/node.cpp \
     src/gui/collectionwindow.cpp \
-    src/gui/drawgraph.cpp \
     src/gui/graphwindow.cpp \
     src/gui/main.cpp \
     src/gui/mainwindow.cpp \
     src/gui/algograph.cpp
 
 HEADERS += \
+    src/graph/drawgraph.hpp \
     src/graph/edge.hpp \
     src/graph/node.hpp \
     src/gui/collectionwindow.hpp \
-    src/gui/drawgraph.hpp \
     src/gui/graphwindow.hpp \
     src/gui/mainwindow.hpp \
     src/gui/algograph.hpp
 
 FORMS += \
+    src/graph/drawgraph.ui \
     src/gui/collectionwindow.ui \
-    src/gui/drawgraph.ui \
     src/gui/graphwindow.ui \
     src/gui/mainwindow.ui \
     src/gui/algograph.ui

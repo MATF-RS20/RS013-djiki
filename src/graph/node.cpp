@@ -22,6 +22,11 @@ QRectF Node::boundingRect() const
 
 void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
+    if (this->scenePos() != QPointF(0, 0))
+    {
+        emit moving();
+    }
+
     QPen pen("#0e5a77");
     pen.setWidth(3);
 
@@ -40,7 +45,10 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (event->button() == Qt::RightButton)
+    {
         this->setVisible(false);
+        emit nodeDeleted(this);
+    }
     else if (QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
     {
         emit drawNeighbour(this);
@@ -73,6 +81,11 @@ void Node::removeNeighbour(Node *neighbour)
     auto position = std::find(neighbours.begin(), neighbours.end(), neighbour);
     if (position != neighbours.end())
         neighbours.erase(position);
+}
+
+void Node::clearNeighbours()
+{
+    neighbours.clear();
 }
 
 double Node::getX() const

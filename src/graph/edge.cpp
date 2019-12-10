@@ -5,10 +5,11 @@
 #include <QInputDialog>
 #include <QDebug>
 
-Edge::Edge(Node* s, Node* e, int w)
+Edge::Edge(Node* s, Node* e, int w, QWidget* p)
     : start(s)
     , end(e)
     , nodeWeight(w)
+    , parent(p)
 {
     setFlag(ItemIsSelectable);
 }
@@ -53,16 +54,24 @@ void Edge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *)
     QString label = "Change weight for {" + QString::number(start->getNodeNumber())
                     + ", " + QString::number(end->getNodeNumber()) + "} edge:";
 
-    bool ok;
-    QString enteredValue = QInputDialog::getText(nullptr, "Edit", label, QLineEdit::Normal,
-                                                 "0", &ok);
+    bool status;
+    QString enteredValue = QInputDialog::getText(parent, "Edit", label, QLineEdit::Normal,
+                                                 "0", &status);
 
-    if (ok && !enteredValue.isEmpty())
+    if (status && !enteredValue.isEmpty())
     {
-        nodeWeight = enteredValue.compare("Inf") == 0 ?
-                     enteredValue.toInt() :
-                     std::numeric_limits<int>::max();
+        nodeWeight = enteredValue == "Inf" ?
+                     std::numeric_limits<int>::max() :
+                     enteredValue.toInt();
     }
+
+    update();
+}
+
+void Edge::nodeMoved()
+{
+    boundingRect();
+    update();
 }
 
 std::pair<QPointF, QPointF> Edge::getCurrentCoords() const

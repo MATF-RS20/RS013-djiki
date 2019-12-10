@@ -26,24 +26,25 @@ public:
 
 public Q_SLOTS:
     void drawEdge(Node* node);
-    void onDoneCreatingNodes();
-    void onDoneAddingEdges();
     void onClearGraph();
+    void onDoneDrawing();
+    void deleteFromNeighbours(Node* n);
 
 private:
-    void initializeScene() const;
+    Ui::drawGraph *ui;
+    QGraphicsScene* scene;
+    void initializeScene();
 
     template <typename T>
     T* createCheckBoxOrBtn(const QString& label, const QPointF& position) const;
-
-    Ui::drawGraph *ui;
+    void drawDirections();
+    QGraphicsTextItem* directions;
 
     QVector<Node*> nodes;
-    QGraphicsScene* scene;
-
     QVector<Node*> selectedNodes;
 
-    bool doneCreatingNodes = false;
+    QVector<Edge*> edges;
+    int getWeightFromUser(const Node* start, const Node* end);
 };
 
 #endif // DRAWGRAPH_HPP
