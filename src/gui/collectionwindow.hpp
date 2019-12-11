@@ -2,6 +2,7 @@
 #define COLLECTIONWINDOW_HPP
 
 #include <QMainWindow>
+#include <QPushButton>
 
 namespace Ui {
 class CollectionWindow;
@@ -15,7 +16,13 @@ public:
     explicit CollectionWindow(QWidget *parent = 0);
     ~CollectionWindow();
 
+private slots:
+    void pushButtonReturn_clicked();
+
 private:
+    void createDockWindows();
+    QPushButton *pushButtonReturn;
+
     Ui::CollectionWindow *ui;
 };
 

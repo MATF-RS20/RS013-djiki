@@ -3,8 +3,11 @@
 
 #include <QMainWindow>
 #include <QPropertyAnimation>
+#include <QPushButton>
+#include <QtWidgets>
 #include "../graph/drawgraph.hpp"
 #include "algograph.hpp"
+#include "codegraph.hpp"
 
 namespace Ui {
 class GraphWindow;
@@ -19,16 +22,29 @@ public:
     ~GraphWindow();
 
 private slots:
-    void on_pushButtonReturn_clicked();
+    void pushButtonReturn_clicked();
 
 private:
     void createDockWindows();
+    void createTopDockWindow();
+    void createRightDockWindow();
+    void changeRightDockWindow();
+    void setAlgoGraphAtRightDockWindow();
+    void setCodeGraphAtRightDockWindow();
+    bool isChild(const QString &str);
+    void deleteChildren();
 
     Ui::GraphWindow *ui;
     DrawGraph *drawGraph;
     AlgoGraph *algoGraph;
+    CodeGraph *codeGraph;
 
-    QPropertyAnimation *animate;
+    QDockWidget *dockRight;
+    QDockWidget *dockTop;
+    QPushButton *pushButtonReturn;
+
+    QPropertyAnimation *animateRightDockWindow;
+    QPropertyAnimation *animationShowCode;
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);

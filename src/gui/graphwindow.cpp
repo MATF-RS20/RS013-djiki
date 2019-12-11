@@ -1,4 +1,3 @@
-#include <QtWidgets>
 #include "graphwindow.hpp"
 #include "ui_graphwindow.h"
 
@@ -8,7 +7,6 @@ GraphWindow::GraphWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     drawGraph = new DrawGraph;
-    //drawGraph->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setCentralWidget(drawGraph);
 
     createDockWindows();
@@ -17,10 +15,10 @@ GraphWindow::GraphWindow(QWidget *parent) :
 
     this->installEventFilter(this);
 
-    animate = new QPropertyAnimation(algoGraph, "maximumWidth");
-    animate->setDuration(1000);
-    animate->setStartValue(300);
-    animate->setEndValue(0);
+    animateRightDockWindow = new QPropertyAnimation(dockRight, "maximumWidth");
+    animateRightDockWindow->setDuration(1000);
+    animateRightDockWindow->setStartValue(algoGraph->width());
+    animateRightDockWindow->setEndValue(0);
 }
 
 GraphWindow::~GraphWindow()
@@ -28,7 +26,7 @@ GraphWindow::~GraphWindow()
     delete ui;
 }
 
-void GraphWindow::on_pushButtonReturn_clicked()
+void GraphWindow::pushButtonReturn_clicked()
 {
     this->close(); // or this->hide();
 
@@ -39,14 +37,77 @@ void GraphWindow::on_pushButtonReturn_clicked()
 
 void GraphWindow::createDockWindows()
 {
-    QDockWidget *dock = new QDockWidget(tr("Graph Algorithms"), this);
-    //dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    //dock->setFeatures(QDockWidget::NoDockWidgetFeatures);
-    dock->setTitleBarWidget(new QWidget()); // remove title bar
-    algoGraph = new AlgoGraph(dock);
-    dock->setWidget(algoGraph);
-    addDockWidget(Qt::RightDockWidgetArea, dock, Qt::Vertical);
-    //dock->toggleViewAction();
+    createTopDockWindow();
+    createRightDockWindow();
+}
+
+void GraphWindow::createTopDockWindow()
+{
+    dockTop = new QDockWidget(this);
+    dockTop->setTitleBarWidget(new QWidget());
+    pushButtonReturn = new QPushButton();
+    connect(pushButtonReturn, &QPushButton::clicked, this, &GraphWindow::pushButtonReturn_clicked);
+    dockTop->setWidget(pushButtonReturn);
+    addDockWidget(Qt::TopDockWidgetArea, dockTop);
+}
+
+void GraphWindow::createRightDockWindow()
+{
+    dockRight = new QDockWidget(this);
+    dockRight->setAttribute(Qt::WA_DeleteOnClose);
+    dockRight->setTitleBarWidget(new QWidget()); // remove title bar
+    setAlgoGraphAtRightDockWindow();
+}
+
+void GraphWindow::changeRightDockWindow()
+{
+    if(isChild("algoGraph"))
+    {
+        deleteChildren();
+        setCodeGraphAtRightDockWindow();
+    }
+    else
+    {
+        deleteChildren();
+        setAlgoGraphAtRightDockWindow();
+    }
+}
+
+void GraphWindow::setAlgoGraphAtRightDockWindow()
+{
+    algoGraph = new AlgoGraph(dockRight);
+    algoGraph->setObjectName("algoGraph");
+    dockRight->setWidget(algoGraph);
+    addDockWidget(Qt::RightDockWidgetArea, dockRight);
+}
+
+void GraphWindow::setCodeGraphAtRightDockWindow()
+{
+    codeGraph = new CodeGraph(dockRight);
+    codeGraph->setObjectName("codeGraph");
+    dockRight->setWidget(codeGraph);
+    addDockWidget(Qt::RightDockWidgetArea, dockRight);
+}
+
+bool GraphWindow::isChild(const QString &str)
+{
+    if(dockRight->findChild<QWidget *>(str))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+void GraphWindow::deleteChildren()
+{
+    auto children = dockRight->findChildren<QWidget *>(QString(), Qt::FindDirectChildrenOnly);
+    for (auto child : children)
+    {
+        delete child;
+    }
 }
 
 bool GraphWindow::eventFilter(QObject *watched, QEvent *event)
@@ -54,17 +115,18 @@ bool GraphWindow::eventFilter(QObject *watched, QEvent *event)
     if(this == watched && event->type() == QEvent::KeyPress)
     {
         QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
-        if(keyEvent->key() == Qt::Key_Space)
+        if(keyEvent->key() == Qt::Key_Shift)
         {
-            if(algoGraph->maximumWidth() == 0)
+            if(dockRight->maximumWidth() == 0)
             {
-                animate->setDirection(QAbstractAnimation::Backward);
-                animate->start();
+                changeRightDockWindow();
+                animateRightDockWindow->setDirection(QAbstractAnimation::Backward);
+                animateRightDockWindow->start();
             }
-            else if(algoGraph->maximumWidth() != 0)
+            else if(dockRight->maximumWidth() != 0)
             {
-                animate->setDirection(QAbstractAnimation::Forward);
-                animate->start();
+                animateRightDockWindow->setDirection(QAbstractAnimation::Forward);
+                animateRightDockWindow->start();
             }
             return true;
         }
