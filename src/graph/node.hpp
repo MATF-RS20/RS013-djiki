@@ -43,6 +43,8 @@ private:
     double posX;
     double posY;
 
+    QPointF lastPosition;
+
     QVector<Node*> neighbours;
 };
 

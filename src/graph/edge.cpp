@@ -19,8 +19,10 @@ QRectF Edge::boundingRect() const
     std::pair<QPointF, QPointF> currentCoords = getCurrentCoords();
 
     QGraphicsLineItem* item = new QGraphicsLineItem(QLineF(currentCoords.first, currentCoords.second));
+    QRectF rect = item->boundingRect();
 
-    return item->boundingRect();
+    return QRectF(rect.topLeft() + QPointF(-20, -20),
+                  rect.bottomRight() + QPointF(20, 20));
 }
 
 void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
@@ -37,6 +39,35 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     painter->drawLine(currentCoords.first, currentCoords.second);
 
     drawNodeWeight(painter);
+}
+
+std::pair<QPointF, QPointF> Edge::getCurrentCoords() const
+{
+    qreal startX = start->getX() + start->scenePos().x() + Node::radius/2;
+    qreal startY = start->getY() + start->scenePos().y() + Node::radius/2;
+
+    qreal endX = end->getX() + end->scenePos().x() + Node::radius/2;
+    qreal endY = end->getY() + end->scenePos().y() + Node::radius/2;
+
+    return std::make_pair(QPointF(startX, startY),
+                          QPointF(endX, endY));
+}
+
+void Edge::drawNodeWeight(QPainter* painter) const
+{
+    std::pair<QPointF, QPointF> currentCoords = getCurrentCoords();
+    qreal lineAngle = QLineF(currentCoords.first, currentCoords.second).angle();
+
+    painter->save();
+    painter->translate((currentCoords.first + currentCoords.second)/2);
+    painter->rotate(-lineAngle);
+
+    if (lineAngle > 100 && lineAngle < 270)
+        painter->rotate(180);
+
+    QString value = nodeWeight == std::numeric_limits<int>::max() ? "Inf" : QString::number(nodeWeight);
+    painter->drawText(0, -10, value);
+    painter->restore();
 }
 
 void Edge::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -70,34 +101,7 @@ void Edge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *)
 
 void Edge::nodeMoved()
 {
-    boundingRect();
     update();
-}
-
-std::pair<QPointF, QPointF> Edge::getCurrentCoords() const
-{
-    qreal startX = start->getX() + start->scenePos().x() + Node::radius/2;
-    qreal startY = start->getY() + start->scenePos().y() + Node::radius/2;
-
-    qreal endX = end->getX() + end->scenePos().x() + Node::radius/2;
-    qreal endY = end->getY() + end->scenePos().y() + Node::radius/2;
-
-    return std::make_pair(QPointF(startX, startY),
-                          QPointF(endX, endY));
-}
-
-void Edge::drawNodeWeight(QPainter* painter) const
-{
-    std::pair<QPointF, QPointF> currentCoords = getCurrentCoords();
-    qreal lineAngle = QLineF(currentCoords.first, currentCoords.second).angle();
-
-    painter->save();
-    painter->translate((currentCoords.first + currentCoords.second)/2);
-    painter->rotate(-lineAngle);
-
-    QString value = nodeWeight == std::numeric_limits<int>::max() ? "Inf" : QString::number(nodeWeight);
-    painter->drawText(0, -10, value);
-    painter->restore();
 }
 
 

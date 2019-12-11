@@ -29,7 +29,7 @@ void DrawGraph::initializeScene()
     ui->graphicsView->setScene(scene);
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
 
-    QPushButton* clearBtn = createCheckBoxOrBtn<QPushButton>("Clear", QPointF(width()-100, 40));
+    QPushButton* clearBtn = createCheckBoxOrBtn<QPushButton>("Clear", QPointF(width()-110, 40));
     QCheckBox* doneBox = createCheckBoxOrBtn<QCheckBox>("Done drawing graph", QPointF(20, 40));
 
     QObject::connect(clearBtn, &QPushButton::clicked,

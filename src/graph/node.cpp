@@ -22,8 +22,9 @@ QRectF Node::boundingRect() const
 
 void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    if (this->scenePos() != QPointF(0, 0))
+    if (this->scenePos() != lastPosition)
     {
+        lastPosition = this->scenePos();
         emit moving();
     }
 
