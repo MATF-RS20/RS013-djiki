@@ -3,6 +3,8 @@
 
 #include <limits>
 
+#include <QGraphicsScene>
+#include <QMouseEvent>
 #include <QPainter>
 #include <QGraphicsView>
 #include <QInputDialog>
@@ -84,6 +86,9 @@ void DrawGraph::mousePressEvent(QMouseEvent *event)
         QObject::connect(newNode, &Node::drawNeighbour,
                          this, &DrawGraph::drawEdge);
 
+        QObject::connect(newNode, &Node::nodeDeleted,
+                         this, &DrawGraph::deleteFromNeighbours);
+
         scene->addItem(newNode);
     }
 }
@@ -118,6 +123,9 @@ void DrawGraph::drawEdge(Node *node)
     selectedNodes.clear();
 
     if (start == end)
+        return;
+
+    if (start->isNeighbour(end) || end->isNeighbour(start))
         return;
 
     int value = getWeightFromUser(start, end);
@@ -177,12 +185,45 @@ void DrawGraph::onClearGraph()
 void DrawGraph::onDoneDrawing()
 {
     this->setEnabled(false);
+    for (auto& n: nodes)
+        for (auto& node: n->getNeighbours())
+        {
+            qDebug() << "NODE: " << n->getNodeNumber();
+            qDebug() << node->getNodeNumber();
+        }
 }
 
 void DrawGraph::deleteFromNeighbours(Node *n)
 {
-    for (auto& node : nodes)
+    qDebug() << "DELETED " << n->getNodeNumber();
+
+    int forRemoving = 0;
+    for (int i = 0; i < nodes.size(); i++)
     {
-        node->removeNeighbour(n);
+        nodes[i]->removeNeighbour(n);
+
+        if (nodes[i] == n)
+            forRemoving = i;
     }
+
+    nodes.remove(forRemoving);
+
+    QVector<int> toRemove;
+
+    for (int i = 0; i < edges.size(); i++)
+    {
+        if (edges[i]->getStart() == n || edges[i]->getEnd() == n)
+        {
+            edges[i]->setVisible(false);
+            toRemove.push_back(i);
+        }
+    }
+
+    auto it = std::crbegin(toRemove);
+    while (it != std::crend(toRemove))
+    {
+        edges.remove(*it);
+        it++;
+    }
+
 }

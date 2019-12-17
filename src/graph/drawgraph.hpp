@@ -5,8 +5,6 @@
 #include "../graph/edge.hpp"
 
 #include <QWidget>
-#include <QGraphicsScene>
-#include <QMouseEvent>
 
 namespace Ui {
 class drawGraph;
@@ -25,10 +23,16 @@ public:
     ~DrawGraph() override;
 
 public Q_SLOTS:
+    /* When user selects nodes for edge this slot receives signal */
     void drawEdge(Node* node);
-    void onClearGraph();
-    void onDoneDrawing();
+    /* When node is deleted this slot receives signal */
     void deleteFromNeighbours(Node* n);
+
+private Q_SLOTS:
+    /* When user clicks 'done drawing graph' checkbox this slot receives signal */
+    void onDoneDrawing();
+    /* When user clicks 'Clear' button this slot receives signal */
+    void onClearGraph();
 
 private:
     Ui::drawGraph *ui;

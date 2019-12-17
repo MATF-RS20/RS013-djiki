@@ -16,32 +16,39 @@ Edge::Edge(Node* s, Node* e, int w, QWidget* p)
 
 QRectF Edge::boundingRect() const
 {
-    std::pair<QPointF, QPointF> currentCoords = getCurrentCoords();
+    std::pair<QPointF, QPointF> currentCoords = getCurrentNodeCoords();
 
     QGraphicsLineItem* item = new QGraphicsLineItem(QLineF(currentCoords.first, currentCoords.second));
     QRectF rect = item->boundingRect();
 
     return QRectF(rect.topLeft() + QPointF(-20, -20),
-                  rect.bottomRight() + QPointF(20, 20));
+                  rect.bottomRight() + QPointF(30, 30)).normalized();
 }
 
 void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    QPen pen("orange");
+    /* Draw edge with different color if edge is active in algorithm visualization */
+    QPen pen(edgeColor);
     pen.setWidth(3);
     painter->setPen(pen);
 
-    start->setZValue(1);
-    end->setZValue(1);
+    start->setZValue(5);
+    end->setZValue(5);
 
-    std::pair<QPointF, QPointF> currentCoords = getCurrentCoords();
+    std::pair<QPointF, QPointF> currentCoords = getCurrentNodeCoords();
 
     painter->drawLine(currentCoords.first, currentCoords.second);
+
+    // Debug boundingRect
+//    pen.setWidth(1);
+//    pen.setColor(Qt::white);
+//    painter->setPen(pen);
+//    painter->drawRect(boundingRect());
 
     drawNodeWeight(painter);
 }
 
-std::pair<QPointF, QPointF> Edge::getCurrentCoords() const
+std::pair<QPointF, QPointF> Edge::getCurrentNodeCoords() const
 {
     qreal startX = start->getX() + start->scenePos().x() + Node::radius/2;
     qreal startY = start->getY() + start->scenePos().y() + Node::radius/2;
@@ -55,7 +62,7 @@ std::pair<QPointF, QPointF> Edge::getCurrentCoords() const
 
 void Edge::drawNodeWeight(QPainter* painter) const
 {
-    std::pair<QPointF, QPointF> currentCoords = getCurrentCoords();
+    std::pair<QPointF, QPointF> currentCoords = getCurrentNodeCoords();
     qreal lineAngle = QLineF(currentCoords.first, currentCoords.second).angle();
 
     painter->save();
@@ -99,8 +106,25 @@ void Edge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *)
     update();
 }
 
+void Edge::setNodeColor(QColor& color)
+{
+    edgeColor = color;
+    update();
+}
+
+Node *Edge::getStart() const
+{
+    return start;
+}
+
+Node *Edge::getEnd() const
+{
+    return end;
+}
+
 void Edge::nodeMoved()
 {
+    /* When start or end is moved draw line again */
     update();
 }
 

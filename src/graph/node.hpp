@@ -19,14 +19,18 @@ public:
 
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 
     void addNeighbour(Node* neighbour);
     void removeNeighbour(Node* neighbour);
+    bool isNeighbour(Node* n);
     void clearNeighbours();
+    void setNodeColor(QColor& color);
 
     double getX() const;
     double getY() const;
     unsigned getNodeNumber() const;
+    QVector<Node*> getNeighbours() const;
 
     static unsigned radius;
     static unsigned numberOfNodes;
@@ -42,8 +46,7 @@ private:
 
     double posX;
     double posY;
-
-    QPointF lastPosition;
+    QColor nodeColor = "#0e5a77";
 
     QVector<Node*> neighbours;
 };
