@@ -10,6 +10,10 @@ Node::Node(double x, double y)
     , posY(y)
 {
     nodeNumber = numberOfNodes++;
+    animate = 0;
+    step = 0;
+
+    setZValue(10);
     setFlag(ItemIsMovable);
 }
 
@@ -18,9 +22,19 @@ QRectF Node::boundingRect() const
     return QRectF(posX, posY, radius*1.5, radius*1.5);
 }
 
-void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+void Node::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
-    QPen pen(nodeColor);
+    QPen pen;
+
+    if (!animate)
+        pen.setColor("#0e5a77");
+    else
+    {
+        QColor color;
+        color.setRedF(step);
+        pen.setColor(color);
+    }
+
     pen.setWidth(3);
 
     painter->setPen(pen);
@@ -31,22 +45,15 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     QRectF rect = boundingRect();
     painter->drawEllipse(rect);
 
-    // Debug boundingRect
-//    pen.setWidth(1);
-//    pen.setColor(Qt::red);
-//    painter->setPen(pen);
-//    painter->setBrush(QBrush());
-//    painter->drawRect(rect);
-
     painter->setFont(QFont("Times", 16, QFont::Bold));
     painter->drawText(rect, Qt::AlignCenter, QString::number(nodeNumber));
 }
 
-void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void Node::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     if (event->button() == Qt::RightButton)
     {
-        this->setVisible(false);
+        scene()->removeItem(this);
         emit nodeDeleted(this);
     }
     else if (QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
@@ -57,41 +64,38 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
         update();
         QGraphicsItem::mousePressEvent(event);
-        emit moving();
+        emit nodeMoved();
     }
 }
 
-void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
     update();
     QGraphicsItem::mouseReleaseEvent(event);
-    emit moving();
+    emit nodeMoved();
 }
 
-void Node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void Node::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
     QGraphicsItem::mouseMoveEvent(event);
-    emit moving();
+    emit nodeMoved();
 }
 
-void Node::addNeighbour(Node *neighbour)
+void Node::addNeighbour(Node* neighbour)
 {
     neighbours.push_back(neighbour);
 }
 
-void Node::removeNeighbour(Node *neighbour)
+void Node::removeNeighbour(Node* neighbour)
 {
-    auto position = std::find(neighbours.begin(), neighbours.end(), neighbour);
+    auto position = std::find(std::begin(neighbours), std::end(neighbours), neighbour);
     if (position != neighbours.end())
-    {
         neighbours.erase(position);
-        qDebug() << "REMOVED " << neighbour->getNodeNumber() << "FROM " << nodeNumber;
-    }
 }
 
-bool Node::isNeighbour(Node *n)
+bool Node::isNeighbour(Node* n)
 {
-    if (std::find(neighbours.begin(), neighbours.end(), n) != neighbours.end())
+    if (std::find(std::cbegin(neighbours), std::cend(neighbours), n) != std::cend(neighbours))
         return true;
 
     return false;
@@ -102,9 +106,36 @@ void Node::clearNeighbours()
     neighbours.clear();
 }
 
-void Node::setNodeColor(QColor &color)
+void Node::stopAnimation()
 {
-    nodeColor = color;
+    animate = 0;
+}
+
+void Node::advance(int phase)
+{
+    if (!phase || !animate)
+        return;
+
+    step += animate*0.1;
+
+    if (step > 1)
+    {
+        animate = -1;
+        step += animate*0.1;
+    }
+
+    if (step < 0)
+    {
+        animate = 1;
+        step += animate*0.1;
+    }
+
+    update();
+}
+
+void Node::animateNode()
+{
+    animate = 1;
 }
 
 double Node::getX() const
@@ -122,7 +153,7 @@ unsigned Node::getNodeNumber() const
     return nodeNumber;
 }
 
-QVector<Node *> Node::getNeighbours() const
+QVector<Node*> Node::getNeighbours() const
 {
     return neighbours;
 }

@@ -12,14 +12,16 @@ public:
 
     QRectF boundingRect() const override;
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
 
-    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
 
-    void setNodeColor(QColor& color);
     Node* getStart() const;
     Node* getEnd() const;
+
+    void animateEdge();
+    void advance(int phase) override;
 
 public Q_SLOTS:
     /* If user moves node edge needs to be redrawn, so this slot receives signal */
@@ -27,13 +29,14 @@ public Q_SLOTS:
 
 private:
     std::pair<QPointF, QPointF> getCurrentNodeCoords() const;
-    void drawNodeWeight(QPainter *painter) const;
+    void drawNodeWeight(QPainter* painter) const;
 
     Node* start;
     Node* end;
 
     int nodeWeight;
-    QColor edgeColor = "orange";
+    bool animate;
+    double animationStep;
 
     QWidget* parent;
 };

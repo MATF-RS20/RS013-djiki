@@ -11,6 +11,9 @@ Edge::Edge(Node* s, Node* e, int w, QWidget* p)
     , nodeWeight(w)
     , parent(p)
 {
+    animate = false;
+    animationStep = 0;
+
     setFlag(ItemIsSelectable);
 }
 
@@ -18,32 +21,34 @@ QRectF Edge::boundingRect() const
 {
     std::pair<QPointF, QPointF> currentCoords = getCurrentNodeCoords();
 
-    QGraphicsLineItem* item = new QGraphicsLineItem(QLineF(currentCoords.first, currentCoords.second));
-    QRectF rect = item->boundingRect();
+    QRectF rect(currentCoords.first, currentCoords.second);
+    rect = rect.normalized();
+    rect.setTopLeft(rect.topLeft() + QPointF(-30, -30));
+    rect.setBottomRight(rect.bottomRight() + QPointF(35, 35));
 
-    return QRectF(rect.topLeft() + QPointF(-20, -20),
-                  rect.bottomRight() + QPointF(30, 30)).normalized();
+    return rect;
 }
 
-void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+void Edge::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
-    /* Draw edge with different color if edge is active in algorithm visualization */
-    QPen pen(edgeColor);
+    QPen pen;
     pen.setWidth(3);
-    painter->setPen(pen);
-
-    start->setZValue(5);
-    end->setZValue(5);
 
     std::pair<QPointF, QPointF> currentCoords = getCurrentNodeCoords();
 
-    painter->drawLine(currentCoords.first, currentCoords.second);
-
-    // Debug boundingRect
-//    pen.setWidth(1);
-//    pen.setColor(Qt::white);
-//    painter->setPen(pen);
-//    painter->drawRect(boundingRect());
+    if (!animate)
+    {
+        pen.setColor("orange");
+        painter->setPen(pen);
+        painter->drawLine(currentCoords.first, currentCoords.second);
+    }
+    else
+    {
+        pen.setColor(Qt::red);
+        painter->setPen(pen);
+        QPointF second = (1.0 - animationStep)*currentCoords.first + animationStep*currentCoords.second;
+        painter->drawLine(currentCoords.first, second);
+    }
 
     drawNodeWeight(painter);
 }
@@ -77,17 +82,18 @@ void Edge::drawNodeWeight(QPainter* painter) const
     painter->restore();
 }
 
-void Edge::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void Edge::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     if (event->button() == Qt::RightButton)
     {
-        this->setVisible(false);
+        scene()->removeItem(this);
+
         start->removeNeighbour(end);
         end->removeNeighbour(start);
     }
 }
 
-void Edge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *)
+void Edge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent*)
 {
     QString label = "Change weight for {" + QString::number(start->getNodeNumber())
                     + ", " + QString::number(end->getNodeNumber()) + "} edge:";
@@ -106,20 +112,35 @@ void Edge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *)
     update();
 }
 
-void Edge::setNodeColor(QColor& color)
-{
-    edgeColor = color;
-    update();
-}
-
-Node *Edge::getStart() const
+Node* Edge::getStart() const
 {
     return start;
 }
 
-Node *Edge::getEnd() const
+Node* Edge::getEnd() const
 {
     return end;
+}
+
+void Edge::animateEdge()
+{
+    animate = true;
+}
+
+void Edge::advance(int phase)
+{
+    if (!phase || !animate)
+        return;
+
+    animationStep += 0.1;
+
+    if (animationStep > 1)
+    {
+        animationStep = 0;
+        animate = false;
+    }
+
+    update();
 }
 
 void Edge::nodeMoved()

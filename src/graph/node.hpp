@@ -5,6 +5,7 @@
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsScene>
+#include <QPropertyAnimation>
 
 class Node : public QObject, public QGraphicsItem {
     Q_OBJECT
@@ -15,17 +16,20 @@ public:
 
     QRectF boundingRect() const override;
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
 
-    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
 
     void addNeighbour(Node* neighbour);
     void removeNeighbour(Node* neighbour);
     bool isNeighbour(Node* n);
     void clearNeighbours();
-    void setNodeColor(QColor& color);
+
+    void animateNode();
+    void stopAnimation();
+    void advance(int phase) override;
 
     double getX() const;
     double getY() const;
@@ -36,19 +40,23 @@ public:
     static unsigned numberOfNodes;
 
 Q_SIGNALS:
+    /* When user starts drawing edge this signal is emitted */
     void drawNeighbour(Node* n);
-    void moving();
+    /* When node is moving this signal is emitted */
+    void nodeMoved();
+    /* After user deletes node this signal is emitted */
     void nodeDeleted(Node* n);
 
 private:
     unsigned nodeNumber;
-    bool pressed;
 
     double posX;
     double posY;
-    QColor nodeColor = "#0e5a77";
 
     QVector<Node*> neighbours;
+
+    int animate;
+    double step;
 };
 
 #endif // NODE_HPP
