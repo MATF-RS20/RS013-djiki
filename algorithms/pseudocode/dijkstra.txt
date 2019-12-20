@@ -1,0 +1,12 @@
+Input: Graph G, starting node and target node
+Output: Shortest path from the starting node to the target node in graph G (if such path exists)
+
+1. Put all nodes from graph G in set Q
+2. While Q is not empty do
+3. Find node N from Q which has with the smallest found distance to the starting node and delete it from Q
+4. If N is the target node 
+5. Then inform that the path has been found and reconstruct it (going backwards from the target node)
+6. For every node M from Q which is direct neighbour of N do
+7. If current distance from the starting node to M is bigger than distance from the starting node to M over node N 
+8. Then change parent of node M to N and remember new distance
+9. Inform that requested path doesn't exist (Q is empty and path was not found)
