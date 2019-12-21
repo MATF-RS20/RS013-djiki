@@ -1,7 +1,8 @@
 #include <iostream>
 #include <iterator>
-#include <set>
+#include <queue>
 #include <vector>
+#include <algorithm>
 #include <map>
 
 class Graph {
@@ -19,21 +20,32 @@ private:
     std::map<int, std::vector<int>> adjacencyList;
 };
 
-std::vector<int> DFS(int start, int end, Graph* G)
+std::vector<int> BFS(int start, int end, Graph* G)
 {
-    std::set<int> visitedNodes;
-    std::vector<int> path;
-    
-    visitedNodes.insert(start);
-    path.push_back(start);
-    
-    while (!path.empty())
+    std::queue<int> S;
+    S.push(start);
+    std::map<int, int> parent;
+    parent[start] = start;
+
+    while (!S.empty())
     {
-        int n = path.back();
+        int n = S.back();
+        S.pop();
 
         if (n == end)
         {
             std::cout << "Path has been found: ";
+            std::vector<int> path;
+
+            while (parent[n] != n)
+            {
+                path.push_back(n);
+                n = parent[n];
+            }
+
+            path.push_back(start);
+            std::reverse(std::begin(path), std::end(path));
+
             std::copy(std::cbegin(path), std::cend(path),
                       std::ostream_iterator<int>(std::cout, " "));
 
@@ -41,19 +53,15 @@ std::vector<int> DFS(int start, int end, Graph* G)
             return path;
         }
 
-        bool hasUnvisited = false;
         for (auto& m : G->getNeighbours(n))
         {
-            if (visitedNodes.find(m) == visitedNodes.end())
+            if (parent.find(m) == parent.end())
             {
-                path.push_back(m);
-                visitedNodes.insert(m);
-                hasUnvisited = true;
+                parent[m] = n;
+
+                S.push(m);
             }
         }
-
-        if (!hasUnvisited)
-            path.pop_back();
     }
 
     std::cout << "Requested path doesn't exist!" << std::endl;
@@ -68,7 +76,7 @@ int main()
     aList[3] = {1};
 
     Graph* G = new Graph(aList);
-    DFS(1, 3, G);
+    BFS(1, 3, G);
 
     return 0;
 }

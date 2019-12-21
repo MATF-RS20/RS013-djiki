@@ -139,7 +139,6 @@ void DrawGraph::drawEdge(Node* node)
         return;
 
     start->addNeighbour(end);
-    end->addNeighbour(start);
 
     Edge* newEdge = new Edge(start, end, value, this);
 
