@@ -88,7 +88,7 @@ void DrawGraph::mousePressEvent(QMouseEvent* event)
     if (directions->isVisible())
         directions->setVisible(false);
 
-    if (event->button() == Qt::LeftButton)
+    if (event->buttons() == Qt::LeftButton)
     {
         QPointF mapped = ui->graphicsView->mapToScene(event->pos());
         Node* newNode = new Node(mapped.x(), mapped.y());
@@ -131,12 +131,30 @@ void DrawGraph::drawEdge(Node* node)
     if (start == end)
         return;
 
-    if (start->isNeighbour(end) || end->isNeighbour(start))
+    if (start->isNeighbour(end))
         return;
 
-    auto [status, value] = getWeightFromUser(start, end);
-    if (!status)
-        return;
+    int value = 0;
+
+    if (end->isNeighbour(start))
+    {
+        for (auto& e : edges)
+        {
+            if (e->getStart() == end && e->getEnd() == start)
+            {
+                value = e->getEdgeWeight();
+                break;
+            }
+        }
+    }
+    else
+    {
+        auto answer = getWeightFromUser(start, end);
+        if (!answer.first)
+            return;
+
+        value = answer.second;
+    }
 
     start->addNeighbour(end);
 
@@ -150,7 +168,6 @@ void DrawGraph::drawEdge(Node* node)
 
     edges.push_back(newEdge);
     scene->addItem(newEdge);
-
 }
 
 std::pair<bool, int> DrawGraph::getWeightFromUser(const Node* start, const Node* end)

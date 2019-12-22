@@ -19,6 +19,7 @@ public:
 
     Node* getStart() const;
     Node* getEnd() const;
+    int getEdgeWeight() const;
 
     void animateEdge();
     void advance(int phase) override;
@@ -29,12 +30,13 @@ public Q_SLOTS:
 
 private:
     std::pair<QPointF, QPointF> getCurrentNodeCoords() const;
-    void drawNodeWeight(QPainter* painter) const;
+    void drawEdgeWeight(QPainter* painter) const;
+    void drawArrow(QPainter* painter) const;
 
     Node* start;
     Node* end;
 
-    int nodeWeight;
+    int edgeWeight;
     bool animate;
     double animationStep;
 

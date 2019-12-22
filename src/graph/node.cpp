@@ -49,6 +49,12 @@ void Node::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
     painter->drawText(rect, Qt::AlignCenter, QString::number(nodeNumber));
 }
 
+QPainterPath Node::shape() const
+{
+    QGraphicsEllipseItem* item = new QGraphicsEllipseItem(boundingRect());
+    return item->shape();
+}
+
 void Node::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     if (event->button() == Qt::RightButton)

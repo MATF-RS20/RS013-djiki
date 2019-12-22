@@ -8,7 +8,7 @@
 Edge::Edge(Node* s, Node* e, int w, QWidget* p)
     : start(s)
     , end(e)
-    , nodeWeight(w)
+    , edgeWeight(w)
     , parent(p)
 {
     animate = false;
@@ -50,7 +50,8 @@ void Edge::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
         painter->drawLine(currentCoords.first, second);
     }
 
-    drawNodeWeight(painter);
+    drawEdgeWeight(painter);
+    drawArrow(painter);
 }
 
 std::pair<QPointF, QPointF> Edge::getCurrentNodeCoords() const
@@ -65,7 +66,7 @@ std::pair<QPointF, QPointF> Edge::getCurrentNodeCoords() const
                           QPointF(endX, endY));
 }
 
-void Edge::drawNodeWeight(QPainter* painter) const
+void Edge::drawEdgeWeight(QPainter* painter) const
 {
     std::pair<QPointF, QPointF> currentCoords = getCurrentNodeCoords();
     qreal lineAngle = QLineF(currentCoords.first, currentCoords.second).angle();
@@ -77,8 +78,44 @@ void Edge::drawNodeWeight(QPainter* painter) const
     if (lineAngle > 100 && lineAngle < 270)
         painter->rotate(180);
 
-    QString value = nodeWeight == std::numeric_limits<int>::max() ? "Inf" : QString::number(nodeWeight);
+    QString value = edgeWeight == std::numeric_limits<int>::max() ? "Inf" : QString::number(edgeWeight);
     painter->drawText(0, -10, value);
+
+    painter->restore();
+}
+
+void Edge::drawArrow(QPainter *painter) const
+{
+    std::pair<QPointF, QPointF> currentCoords = getCurrentNodeCoords();
+    QLineF line = QLineF(currentCoords.first, currentCoords.second);
+
+    painter->save();
+
+    QPolygonF endPolygon = end->mapToScene(end->shape().toFillPolygon());
+    painter->drawPolygon(endPolygon);
+    QPointF intersectPoint;
+    QPointF p1 = endPolygon.first();
+
+    for (int i = 1; i < endPolygon.count(); i++)
+    {
+        QPointF p2 = endPolygon.at(i);
+        QLineF polyLine = QLineF(p1, p2);
+        QLineF::IntersectType intersectionType = polyLine.intersect(line, &intersectPoint);
+       if (intersectionType == QLineF::BoundedIntersection)
+           break;
+       p1 = p2;
+    }
+
+    painter->translate(intersectPoint);
+
+    QRectF rect(0, 0, 20, 10);
+    rect.moveCenter(QPointF(0, 0));
+
+    painter->rotate(-line.angle());
+
+    painter->drawLine(rect.topLeft(), QPointF(0, 0));
+    painter->drawLine(rect.bottomLeft(), QPointF(0, 0));
+
     painter->restore();
 }
 
@@ -104,7 +141,7 @@ void Edge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent*)
 
     if (status && !enteredValue.isEmpty())
     {
-        nodeWeight = enteredValue == "Inf" ?
+        edgeWeight = enteredValue == "Inf" ?
                      std::numeric_limits<int>::max() :
                      enteredValue.toInt();
     }
@@ -120,6 +157,11 @@ Node* Edge::getStart() const
 Node* Edge::getEnd() const
 {
     return end;
+}
+
+int Edge::getEdgeWeight() const
+{
+    return edgeWeight;
 }
 
 void Edge::animateEdge()
