@@ -1,5 +1,7 @@
 #include "graphwindow.hpp"
 #include "ui_graphwindow.h"
+#include "../backend/bfs.hpp"
+#include <unistd.h>
 
 GraphWindow::GraphWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -140,4 +142,13 @@ bool GraphWindow::eventFilter(QObject *watched, QEvent *event)
 void GraphWindow::setGraph(Graph* g)
 {
     this->currentGraph = g;
+    BFS algo = BFS(this->currentGraph);
+    algo.solve();
+    auto states = algo.getStates();
+    for(auto s : states)
+    {
+        s.currentNode->animateNode();
+        qDebug() << "State " << s.currentNode->getNodeNumber();
+        s.currentNode->stopAnimation();
+    }
 }

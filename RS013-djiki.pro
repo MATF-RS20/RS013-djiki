@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/backend/bfs.cpp \
     src/graph/drawgraph.cpp \
     src/graph/edge.cpp \
     src/graph/graph.cpp \
@@ -28,6 +29,8 @@ SOURCES += \
     src/gui/codegraph.cpp
 
 HEADERS += \
+    src/backend/bfs.hpp \
+    src/backend/graphstate.hpp \
     src/graph/drawgraph.hpp \
     src/graph/edge.hpp \
     src/graph/graph.hpp \
