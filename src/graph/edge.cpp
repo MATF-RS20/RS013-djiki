@@ -92,7 +92,7 @@ void Edge::drawArrow(QPainter *painter) const
     painter->save();
 
     QPolygonF endPolygon = end->mapToScene(end->shape().toFillPolygon());
-    painter->drawPolygon(endPolygon);
+
     QPointF intersectPoint;
     QPointF p1 = endPolygon.first();
 
@@ -101,8 +101,10 @@ void Edge::drawArrow(QPainter *painter) const
         QPointF p2 = endPolygon.at(i);
         QLineF polyLine = QLineF(p1, p2);
         QLineF::IntersectType intersectionType = polyLine.intersect(line, &intersectPoint);
+
        if (intersectionType == QLineF::BoundedIntersection)
            break;
+
        p1 = p2;
     }
 

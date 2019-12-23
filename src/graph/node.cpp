@@ -36,7 +36,6 @@ void Node::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
     }
 
     pen.setWidth(3);
-
     painter->setPen(pen);
 
     QBrush brush(Qt::white);
@@ -52,7 +51,10 @@ void Node::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 QPainterPath Node::shape() const
 {
     QGraphicsEllipseItem* item = new QGraphicsEllipseItem(boundingRect());
-    return item->shape();
+    QPainterPath path = item->shape();
+    delete item;
+
+    return path;
 }
 
 void Node::mousePressEvent(QGraphicsSceneMouseEvent* event)

@@ -2,14 +2,14 @@
 #include "ui_drawgraph.h"
 
 #include <limits>
+#include <iostream>
 
 #include <QGraphicsScene>
+#include <QGraphicsView>
 #include <QMouseEvent>
 #include <QPainter>
-#include <QGraphicsView>
 #include <QInputDialog>
 #include <QGraphicsProxyWidget>
-#include <QPalette>
 #include <QScrollBar>
 #include <QPushButton>
 #include <QCheckBox>
@@ -29,14 +29,19 @@ DrawGraph::DrawGraph(QWidget* parent)
 
 void DrawGraph::initializeScene()
 {
-    scene = new QGraphicsScene(0, 0, 2000, 1500, this);
+    QGraphicsScene* scene = new QGraphicsScene(0, 0, 2000, 1500, this);
     ui->graphicsView->setScene(scene);
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
 
     QFont font = QFont("Times", 12);
-    QPushButton* clearBtn = createCheckBoxBtnOrLabel<QPushButton>("Clear", QPointF(width()-110, 40), font);
-    QLabel* helpLabel = createCheckBoxBtnOrLabel<QLabel>("Help", QPointF(width()-80, 90), font);
-    QCheckBox* doneBox = createCheckBoxBtnOrLabel<QCheckBox>("Done drawing graph", QPointF(20, 40), font);
+
+    clearItem = createCheckBoxBtnOrLabel<QPushButton>("Clear", QPointF(width()-130, 20), font);
+    helpItem = createCheckBoxBtnOrLabel<QLabel>("Help", QPointF(width()-100, 70), font);
+    QGraphicsProxyWidget* doneItem = createCheckBoxBtnOrLabel<QCheckBox>("Done drawing graph", QPointF(20, 20), font);
+
+    QPushButton* clearBtn = static_cast<QPushButton*>(clearItem->widget());
+    QLabel* helpLabel = static_cast<QLabel*>(helpItem->widget());
+    QCheckBox* doneBox = static_cast<QCheckBox*>(doneItem->widget());
 
     QObject::connect(clearBtn, &QPushButton::clicked,
                      this, &DrawGraph::onClearGraph);
@@ -48,26 +53,26 @@ void DrawGraph::initializeScene()
 }
 
 template <typename T>
-T* DrawGraph::createCheckBoxBtnOrLabel(const QString& label, const QPointF& position, QFont font)
+QGraphicsProxyWidget* DrawGraph::createCheckBoxBtnOrLabel(const QString& label, const QPointF& position, QFont font)
 {
     T* btn = new T(label);
 
     btn->setFont(font);
 
-    QGraphicsProxyWidget* item = scene->addWidget(btn);
+    QGraphicsProxyWidget* item = ui->graphicsView->scene()->addWidget(btn);
     item->setPos(position);
     ui->graphicsView->centerOn(item);
 
     btn->setParent(this);
 
-    return btn;
+    return item;
 }
 
 QString DrawGraph::drawDirections(QFont font)
 {
     QString instructions = "Click anywhere to create nodes and click and drag to move them.\n\n"
                            "Right click on node to delete it.\n\n"
-                           "Create edges by clicking on two nodes, holding control key.\n\n"
+                           "Create directed edges by clicking on two nodes, holding control key.\n\n"
                            "After that enter node weight (Integer value or 'Inf').\n\n"
                            "Double click on edge to change it's weight.\n\n"
                            "Right click on edge to delete it.\n\n"
@@ -75,8 +80,10 @@ QString DrawGraph::drawDirections(QFont font)
                            "You can start over from scratch by clicking Clear button.\n\n";
 
     font.setBold(true);
-    directions = scene->addText(instructions, font);
-    directions->setPos(QPointF(90, 120));
+    directions = ui->graphicsView->scene()->addText(instructions, font);
+    qreal textWidth = directions->boundingRect().width();
+    qreal textHeight = directions->boundingRect().height();
+    directions->setPos(QPointF(width()/2 - textWidth/2, height()/2 - textHeight/2 + 50));
 
     directions->setDefaultTextColor("#5599ff");
 
@@ -100,16 +107,29 @@ void DrawGraph::mousePressEvent(QMouseEvent* event)
         QObject::connect(newNode, &Node::nodeDeleted,
                          this, &DrawGraph::deleteFromNeighbours);
 
-        scene->addItem(newNode);
+        ui->graphicsView->scene()->addItem(newNode);
     }
+}
+
+void DrawGraph::resizeEvent(QResizeEvent *)
+{
+    clearItem->setPos(QPointF(width()-130, 20));
+    helpItem->setPos(QPointF(width()-100, 70));
+
+    int x = (width() - 600) / 200;
+    QFont font("Times", 12+x);
+    directions->setFont(font);
+
+    qreal textWidth = directions->boundingRect().width();
+    qreal textHeight = directions->boundingRect().height();
+    directions->setPos(QPointF(width()/2 - textWidth/2, height()/2 - textHeight/2 + 50));
 }
 
 DrawGraph::~DrawGraph()
 {
     onClearGraph();
 
-    scene->clear();
-    delete scene;
+    ui->graphicsView->scene()->clear();
 }
 
 void DrawGraph::drawEdge(Node* node)
@@ -167,7 +187,7 @@ void DrawGraph::drawEdge(Node* node)
                      newEdge, &Edge::nodeMoved);
 
     edges.push_back(newEdge);
-    scene->addItem(newEdge);
+    ui->graphicsView->scene()->addItem(newEdge);
 }
 
 std::pair<bool, int> DrawGraph::getWeightFromUser(const Node* start, const Node* end)
@@ -190,7 +210,7 @@ void DrawGraph::onClearGraph()
 
     for (const auto& n : nodes)
     {
-        scene->removeItem(n);
+        ui->graphicsView->scene()->removeItem(n);
         delete n;
     }
     nodes.clear();
@@ -198,7 +218,7 @@ void DrawGraph::onClearGraph()
 
     for (const auto& e : edges)
     {
-        scene->removeItem(e);
+        ui->graphicsView->scene()->removeItem(e);
         delete e;
     }
     edges.clear();
@@ -211,7 +231,7 @@ void DrawGraph::onDoneDrawing()
     this->setEnabled(false);
 
     animationTimer = new QTimer(this);
-    QObject::connect(animationTimer, &QTimer::timeout, scene, &QGraphicsScene::advance);
+    QObject::connect(animationTimer, &QTimer::timeout, ui->graphicsView->scene(), &QGraphicsScene::advance);
     animationTimer->start(500);
     qDebug() << "TIMER STARTED!!! (stop it at the end of animations)";
 
@@ -254,5 +274,4 @@ void DrawGraph::deleteFromNeighbours(Node* n)
         edges.remove(*it);
         it++;
     }
-
 }

@@ -19,6 +19,7 @@ public:
     explicit DrawGraph(QWidget* parent = nullptr);
 
     void mousePressEvent(QMouseEvent* event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
     ~DrawGraph() override;
 
@@ -36,11 +37,13 @@ private Q_SLOTS:
 
 private:
     Ui::drawGraph* ui;
-    QGraphicsScene* scene;
     void initializeScene();
 
     template <typename T>
-    T* createCheckBoxBtnOrLabel(const QString& label, const QPointF& position, QFont font);
+    QGraphicsProxyWidget* createCheckBoxBtnOrLabel(const QString& label, const QPointF& position, QFont font);
+    QGraphicsProxyWidget* clearItem;
+    QGraphicsProxyWidget* helpItem;
+
     QString drawDirections(QFont font);
     QGraphicsTextItem* directions;
 
