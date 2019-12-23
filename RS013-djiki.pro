@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     src/graph/drawgraph.cpp \
     src/graph/edge.cpp \
+    src/graph/graph.cpp \
     src/graph/node.cpp \
     src/gui/collectionwindow.cpp \
     src/gui/graphwindow.cpp \
@@ -29,6 +30,7 @@ SOURCES += \
 HEADERS += \
     src/graph/drawgraph.hpp \
     src/graph/edge.hpp \
+    src/graph/graph.hpp \
     src/graph/node.hpp \
     src/gui/collectionwindow.hpp \
     src/gui/graphwindow.hpp \
