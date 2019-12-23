@@ -11,9 +11,9 @@ class Graph
 public:
     Graph(QVector<Node*> *nodes, QVector<Edge*> *edges);
 
-    const Node* getNodeByNodeNumber(unsigned n) const;
-    const QVector<Node*> getNeighbours(const Node* node) const;
-    const QMap<Node*, int> getNeighboursWeighted(const Node* node) const;
+    Node* getNodeByNodeNumber(unsigned n) const;
+    const QVector<Node*> getNeighbours(Node* node) const;
+    const QMap<Node*, int> getNeighboursWeighted(Node* node) const;
     unsigned getGraphSize();
 private:
     QVector<Node*> *nodes;

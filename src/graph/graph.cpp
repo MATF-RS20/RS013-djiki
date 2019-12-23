@@ -6,7 +6,7 @@ Graph::Graph(QVector<Node*> *nodes, QVector<Edge*> *edges)
 , edges(edges)
 {}
 
-const Node* Graph::getNodeByNodeNumber(unsigned n) const
+Node* Graph::getNodeByNodeNumber(unsigned n) const
 {
     for(auto node : *this->nodes)
     {
@@ -17,12 +17,12 @@ const Node* Graph::getNodeByNodeNumber(unsigned n) const
     return nullptr;
 }
 
-const QVector<Node*> Graph::getNeighbours(const Node* node) const
+const QVector<Node*> Graph::getNeighbours(Node* node) const
 {
     return node->getNeighbours();
 }
 
-const QMap<Node*, int> Graph::getNeighboursWeighted(const Node* node) const
+const QMap<Node*, int> Graph::getNeighboursWeighted(Node* node) const
 {
     QMap<Node*, int> neighbours;
     for(auto edge : *this->edges)
