@@ -8,6 +8,7 @@ GraphWindow::GraphWindow(QWidget *parent) :
     ui->setupUi(this);
     drawGraph = new DrawGraph;
     setCentralWidget(drawGraph);
+    connect(drawGraph, SIGNAL(doneDrawingGraph(Graph*)), this, SLOT(setGraph(Graph*)));
 
     createDockWindows();
 
@@ -134,4 +135,9 @@ bool GraphWindow::eventFilter(QObject *watched, QEvent *event)
             return false;
     }
     return false;
+}
+
+void GraphWindow::setGraph(Graph* g)
+{
+    this->currentGraph = g;
 }

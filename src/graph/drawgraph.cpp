@@ -242,6 +242,8 @@ void DrawGraph::onDoneDrawing()
             qDebug() << "NODE: " << n->getNodeNumber();
             qDebug() << node->getNodeNumber();
         }
+    Graph g = Graph(&nodes, &edges);
+    emit doneDrawingGraph(&g);
 }
 
 void DrawGraph::deleteFromNeighbours(Node* n)

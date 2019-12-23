@@ -8,6 +8,7 @@
 #include "../graph/drawgraph.hpp"
 #include "algograph.hpp"
 #include "codegraph.hpp"
+#include "../graph/graph.hpp"
 
 namespace Ui {
 class GraphWindow;
@@ -23,6 +24,7 @@ public:
 
 private slots:
     void pushButtonReturn_clicked();
+    void setGraph(Graph *g);
 
 private:
     void createDockWindows();
@@ -38,6 +40,7 @@ private:
     DrawGraph *drawGraph;
     AlgoGraph *algoGraph;
     CodeGraph *codeGraph;
+    Graph *currentGraph;
 
     QDockWidget *dockRight;
     QDockWidget *dockTop;

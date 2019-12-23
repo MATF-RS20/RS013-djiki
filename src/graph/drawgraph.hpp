@@ -3,6 +3,7 @@
 
 #include "../graph/node.hpp"
 #include "../graph/edge.hpp"
+#include "graph.hpp"
 
 #include <QWidget>
 #include <QTimer>
@@ -34,6 +35,9 @@ private Q_SLOTS:
     void onDoneDrawing();
     /* When user clicks 'Clear' button this slot receives signal */
     void onClearGraph();
+
+Q_SIGNALS:
+    void doneDrawingGraph(Graph *g);
 
 private:
     Ui::drawGraph* ui;
