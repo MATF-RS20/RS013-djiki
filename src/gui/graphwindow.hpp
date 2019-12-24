@@ -25,12 +25,12 @@ public:
 private slots:
     void pushButtonReturn_clicked();
     void setGraph(Graph *g);
+    void changeRightDockWindow();
 
 private:
     void createDockWindows();
     void createTopDockWindow();
     void createRightDockWindow();
-    void changeRightDockWindow();
     void setAlgoGraphAtRightDockWindow();
     void setCodeGraphAtRightDockWindow();
     bool isChild(const QString &str);
@@ -45,9 +45,14 @@ private:
     QDockWidget *dockRight;
     QDockWidget *dockTop;
     QPushButton *pushButtonReturn;
+    QSequentialAnimationGroup *group;
+    QPropertyAnimation *hideAlgo;
+    QPropertyAnimation *showCode;
+    QSequentialAnimationGroup *group2;
+    QPropertyAnimation *hideCode;
+    QPropertyAnimation *showAlgo;
 
-    QPropertyAnimation *animateRightDockWindow;
-    QPropertyAnimation *animationShowCode;
+    int num = 0;
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);

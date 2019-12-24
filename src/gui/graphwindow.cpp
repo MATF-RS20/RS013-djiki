@@ -12,16 +12,43 @@ GraphWindow::GraphWindow(QWidget *parent) :
     setCentralWidget(drawGraph);
     connect(drawGraph, SIGNAL(doneDrawingGraph(Graph*)), this, SLOT(setGraph(Graph*)));
 
+    codeGraph = new CodeGraph(dockRight);
+
     createDockWindows();
 
     setWindowTitle(tr("Graph Window"));
 
     this->installEventFilter(this);
 
-    animateRightDockWindow = new QPropertyAnimation(dockRight, "maximumWidth");
-    animateRightDockWindow->setDuration(1000);
-    animateRightDockWindow->setStartValue(algoGraph->width());
-    animateRightDockWindow->setEndValue(0);
+    group = new QSequentialAnimationGroup();
+
+    hideAlgo = new QPropertyAnimation(dockRight, "maximumWidth");
+    hideAlgo->setDuration(2000);
+    hideAlgo->setStartValue(algoGraph->width());
+    hideAlgo->setEndValue(0);
+
+    showCode = new QPropertyAnimation(dockRight, "maximumWidth");
+    showCode->setDuration(2000);
+    showCode->setStartValue(0);
+    showCode->setEndValue(codeGraph->width());
+
+    group->addAnimation(hideAlgo);
+    group->addAnimation(showCode);
+
+    group2 = new QSequentialAnimationGroup();
+
+    hideCode = new QPropertyAnimation(dockRight, "maximumWidth");
+    hideCode->setDuration(2000);
+    hideCode->setStartValue(codeGraph->width());
+    hideCode->setEndValue(0);
+
+    showAlgo = new QPropertyAnimation(dockRight, "maximumWidth");
+    showAlgo->setDuration(2000);
+    showAlgo->setStartValue(0);
+    showAlgo->setEndValue(algoGraph->width());
+
+    group2->addAnimation(hideCode);
+    group2->addAnimation(showAlgo);
 }
 
 GraphWindow::~GraphWindow()
@@ -86,7 +113,6 @@ void GraphWindow::setAlgoGraphAtRightDockWindow()
 
 void GraphWindow::setCodeGraphAtRightDockWindow()
 {
-    codeGraph = new CodeGraph(dockRight);
     codeGraph->setObjectName("codeGraph");
     dockRight->setWidget(codeGraph);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
@@ -120,21 +146,31 @@ bool GraphWindow::eventFilter(QObject *watched, QEvent *event)
         QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
         if(keyEvent->key() == Qt::Key_Shift)
         {
-            if(dockRight->maximumWidth() == 0)
+            if(num == 0)
             {
-                changeRightDockWindow();
-                animateRightDockWindow->setDirection(QAbstractAnimation::Backward);
-                animateRightDockWindow->start();
+                qDebug("U prvi sam uso");
+                qInfo() << num;
+                group->start();
+                connect(group, SIGNAL(currentAnimationChanged(QAbstractAnimation*)), this, SLOT(changeRightDockWindow()));
+                num++;
+                qInfo() << num;
+                return true;
             }
-            else if(dockRight->maximumWidth() != 0)
+            else
             {
-                animateRightDockWindow->setDirection(QAbstractAnimation::Forward);
-                animateRightDockWindow->start();
+                qDebug("U drugi sam uso");
+                qInfo() << num;
+                group2->start();
+                connect(group2, SIGNAL(currentAnimationChanged(QAbstractAnimation*)), this, SLOT(changeRightDockWindow()));
+                num--;
+                qInfo() << num;
+                return true;
             }
-            return true;
         }
         else
+        {
             return false;
+        }
     }
     return false;
 }
