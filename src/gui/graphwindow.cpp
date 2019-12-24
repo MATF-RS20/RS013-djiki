@@ -1,7 +1,8 @@
 #include "graphwindow.hpp"
 #include "ui_graphwindow.h"
 #include "../backend/bfs.hpp"
-#include <unistd.h>
+#include "../backend/graphalgorithmexecutorthread.hpp"
+#include "../backend/graphalgorithmdrawingthread.hpp"
 
 GraphWindow::GraphWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -142,13 +143,27 @@ bool GraphWindow::eventFilter(QObject *watched, QEvent *event)
 void GraphWindow::setGraph(Graph* g)
 {
     this->currentGraph = g;
-    BFS algo = BFS(this->currentGraph);
-    algo.solve();
-    auto states = algo.getStates();
-    for(auto s : states)
-    {
-        s.currentNode->animateNode();
-        qDebug() << "State " << s.currentNode->getNodeNumber();
-        s.currentNode->stopAnimation();
-    }
+    BFS* algo = new BFS(this->currentGraph);
+    auto thread = new GraphAlgorithmExecutorThread(algo);
+    QObject::connect(thread, SIGNAL(graphAlgorithmFinished(BFS*)),
+                     this, SLOT(graphAlgorithmFinished(BFS*)));
+
+    QObject::connect(thread, &GraphAlgorithmExecutorThread::graphAlgorithmFinished,
+                     thread, &QObject::deleteLater,
+                     Qt::QueuedConnection);
+
+    thread->start();
+}
+
+void GraphWindow::graphAlgorithmFinished(BFS* algo)
+{
+
+    auto states = algo->getStates();
+    auto thread = new GraphAlgorithmDrawingThread(states);
+    QObject::connect(thread, &GraphAlgorithmDrawingThread::graphAlgorithmDrawingFinished,
+                     thread, &QObject::deleteLater,
+                     Qt::QueuedConnection);
+
+    delete algo;
+    thread->start();
 }

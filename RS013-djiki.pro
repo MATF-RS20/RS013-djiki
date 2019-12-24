@@ -17,6 +17,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     src/backend/bfs.cpp \
+    src/backend/graphalgorithmdrawingthread.cpp \
+    src/backend/graphalgorithmexecutorthread.cpp \
     src/graph/drawgraph.cpp \
     src/graph/edge.cpp \
     src/graph/graph.cpp \
@@ -30,6 +32,8 @@ SOURCES += \
 
 HEADERS += \
     src/backend/bfs.hpp \
+    src/backend/graphalgorithmdrawingthread.hpp \
+    src/backend/graphalgorithmexecutorthread.hpp \
     src/backend/graphstate.hpp \
     src/graph/drawgraph.hpp \
     src/graph/edge.hpp \
