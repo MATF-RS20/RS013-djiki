@@ -8,11 +8,9 @@ GraphWindow::GraphWindow(QWidget *parent) :
     ui(new Ui::GraphWindow)
 {
     ui->setupUi(this);
-    drawGraph = new DrawGraph;
+    drawGraph = new DrawGraph(this);
     setCentralWidget(drawGraph);
     connect(drawGraph, SIGNAL(doneDrawingGraph(Graph*)), this, SLOT(setGraph(Graph*)));
-
-    codeGraph = new CodeGraph(dockRight);
 
     createDockWindows();
 
@@ -30,7 +28,7 @@ GraphWindow::GraphWindow(QWidget *parent) :
     showCode = new QPropertyAnimation(dockRight, "maximumWidth");
     showCode->setDuration(2000);
     showCode->setStartValue(0);
-    showCode->setEndValue(codeGraph->width());
+    showCode->setEndValue(algoGraph->width());
 
     group->addAnimation(hideAlgo);
     group->addAnimation(showCode);
@@ -39,7 +37,7 @@ GraphWindow::GraphWindow(QWidget *parent) :
 
     hideCode = new QPropertyAnimation(dockRight, "maximumWidth");
     hideCode->setDuration(2000);
-    hideCode->setStartValue(codeGraph->width());
+    hideCode->setStartValue(algoGraph->width());
     hideCode->setEndValue(0);
 
     showAlgo = new QPropertyAnimation(dockRight, "maximumWidth");
@@ -58,6 +56,10 @@ GraphWindow::~GraphWindow()
 
 void GraphWindow::pushButtonReturn_clicked()
 {
+    deleteChildren();
+    delete drawGraph;
+    delete dockTop;
+    delete dockRight;
     this->close(); // or this->hide();
 
     // Showing the MainWindow
@@ -91,12 +93,13 @@ void GraphWindow::createRightDockWindow()
 
 void GraphWindow::changeRightDockWindow()
 {
+    qDebug() << "Tuj sam";
     if(isChild("algoGraph"))
     {
         deleteChildren();
         setCodeGraphAtRightDockWindow();
     }
-    else
+    else if(isChild("codeGraph"))
     {
         deleteChildren();
         setAlgoGraphAtRightDockWindow();
@@ -113,6 +116,7 @@ void GraphWindow::setAlgoGraphAtRightDockWindow()
 
 void GraphWindow::setCodeGraphAtRightDockWindow()
 {
+    codeGraph = new CodeGraph(dockRight);
     codeGraph->setObjectName("codeGraph");
     dockRight->setWidget(codeGraph);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
@@ -154,9 +158,10 @@ bool GraphWindow::eventFilter(QObject *watched, QEvent *event)
                 connect(group, SIGNAL(currentAnimationChanged(QAbstractAnimation*)), this, SLOT(changeRightDockWindow()));
                 num++;
                 qInfo() << num;
+                connect(group, SIGNAL(finished()), group, SLOT(deleteLater()));
                 return true;
             }
-            else
+            else if(num != 0)
             {
                 qDebug("U drugi sam uso");
                 qInfo() << num;
@@ -164,6 +169,7 @@ bool GraphWindow::eventFilter(QObject *watched, QEvent *event)
                 connect(group2, SIGNAL(currentAnimationChanged(QAbstractAnimation*)), this, SLOT(changeRightDockWindow()));
                 num--;
                 qInfo() << num;
+                connect(group2, SIGNAL(finished()), group2, SLOT(deleteLater()));
                 return true;
             }
         }
