@@ -9,6 +9,7 @@
 #include "algograph.hpp"
 #include "codegraph.hpp"
 #include "../graph/graph.hpp"
+#include "../backend/bfs.hpp"
 
 namespace Ui {
 class GraphWindow;
@@ -24,8 +25,9 @@ public:
 
 private slots:
     void pushButtonReturn_clicked();
-    void setGraph(Graph *g);
     void changeRightDockWindow();
+    void setGraph(Graph *g);
+    void graphAlgorithmFinished(BFS* algo);
 
 Q_SIGNALS:
     void nextAnimationInGroupStarted(QAbstractAnimation* group);
