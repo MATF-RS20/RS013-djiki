@@ -27,6 +27,9 @@ private slots:
     void setGraph(Graph *g);
     void changeRightDockWindow();
 
+Q_SIGNALS:
+    void nextAnimationInGroupStarted(QAbstractAnimation* group);
+
 private:
     void createDockWindows();
     void createTopDockWindow();

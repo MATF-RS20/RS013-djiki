@@ -21,11 +21,13 @@ GraphWindow::GraphWindow(QWidget *parent) :
     group = new QSequentialAnimationGroup();
 
     hideAlgo = new QPropertyAnimation(dockRight, "maximumWidth");
+    hideAlgo->setObjectName("hideAlgo");
     hideAlgo->setDuration(2000);
     hideAlgo->setStartValue(algoGraph->width());
     hideAlgo->setEndValue(0);
 
     showCode = new QPropertyAnimation(dockRight, "maximumWidth");
+    showCode->setObjectName("showCode");
     showCode->setDuration(2000);
     showCode->setStartValue(0);
     showCode->setEndValue(algoGraph->width());
@@ -36,11 +38,13 @@ GraphWindow::GraphWindow(QWidget *parent) :
     group2 = new QSequentialAnimationGroup();
 
     hideCode = new QPropertyAnimation(dockRight, "maximumWidth");
+    hideCode->setObjectName("hideCode");
     hideCode->setDuration(2000);
     hideCode->setStartValue(algoGraph->width());
     hideCode->setEndValue(0);
 
     showAlgo = new QPropertyAnimation(dockRight, "maximumWidth");
+    showAlgo->setObjectName("showAlgo");
     showAlgo->setDuration(2000);
     showAlgo->setStartValue(0);
     showAlgo->setEndValue(algoGraph->width());
@@ -93,7 +97,6 @@ void GraphWindow::createRightDockWindow()
 
 void GraphWindow::changeRightDockWindow()
 {
-    qDebug() << "Tuj sam";
     if(isChild("algoGraph"))
     {
         deleteChildren();
@@ -152,24 +155,20 @@ bool GraphWindow::eventFilter(QObject *watched, QEvent *event)
         {
             if(num == 0)
             {
-                qDebug("U prvi sam uso");
-                qInfo() << num;
+                group->blockSignals(true);
                 group->start();
-                connect(group, SIGNAL(currentAnimationChanged(QAbstractAnimation*)), this, SLOT(changeRightDockWindow()));
+                group->blockSignals(false);
+                connect(group, SIGNAL(currentAnimationChanged(QAbstractAnimation*)), this, SLOT(changeRightDockWindow()), Qt::UniqueConnection);
                 num++;
-                qInfo() << num;
-                connect(group, SIGNAL(finished()), group, SLOT(deleteLater()));
                 return true;
             }
-            else if(num != 0)
+            else
             {
-                qDebug("U drugi sam uso");
-                qInfo() << num;
+                group2->blockSignals(true);
                 group2->start();
-                connect(group2, SIGNAL(currentAnimationChanged(QAbstractAnimation*)), this, SLOT(changeRightDockWindow()));
+                group2->blockSignals(false);
+                connect(group2, SIGNAL(currentAnimationChanged(QAbstractAnimation*)), this, SLOT(changeRightDockWindow()), Qt::UniqueConnection);
                 num--;
-                qInfo() << num;
-                connect(group2, SIGNAL(finished()), group2, SLOT(deleteLater()));
                 return true;
             }
         }
