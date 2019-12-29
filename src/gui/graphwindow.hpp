@@ -29,9 +29,6 @@ private slots:
     void setGraph(Graph *g);
     void graphAlgorithmFinished(BFS* algo);
 
-Q_SIGNALS:
-    void nextAnimationInGroupStarted(QAbstractAnimation* group);
-
 private:
     void createDockWindows();
     void createTopDockWindow();
@@ -40,6 +37,7 @@ private:
     void setCodeGraphAtRightDockWindow();
     bool isChild(const QString &str);
     void deleteChildren();
+    void animationSetup();
 
     Ui::GraphWindow *ui;
     DrawGraph *drawGraph;
@@ -58,6 +56,7 @@ private:
     QPropertyAnimation *showAlgo;
 
     int num = 0;
+    QString name;
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);

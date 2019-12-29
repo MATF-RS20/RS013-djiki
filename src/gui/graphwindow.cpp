@@ -19,39 +19,7 @@ GraphWindow::GraphWindow(QWidget *parent) :
 
     this->installEventFilter(this);
 
-    group = new QSequentialAnimationGroup();
-
-    hideAlgo = new QPropertyAnimation(dockRight, "maximumWidth");
-    hideAlgo->setObjectName("hideAlgo");
-    hideAlgo->setDuration(2000);
-    hideAlgo->setStartValue(algoGraph->width());
-    hideAlgo->setEndValue(0);
-
-    showCode = new QPropertyAnimation(dockRight, "maximumWidth");
-    showCode->setObjectName("showCode");
-    showCode->setDuration(2000);
-    showCode->setStartValue(0);
-    showCode->setEndValue(algoGraph->width());
-
-    group->addAnimation(hideAlgo);
-    group->addAnimation(showCode);
-
-    group2 = new QSequentialAnimationGroup();
-
-    hideCode = new QPropertyAnimation(dockRight, "maximumWidth");
-    hideCode->setObjectName("hideCode");
-    hideCode->setDuration(2000);
-    hideCode->setStartValue(algoGraph->width());
-    hideCode->setEndValue(0);
-
-    showAlgo = new QPropertyAnimation(dockRight, "maximumWidth");
-    showAlgo->setObjectName("showAlgo");
-    showAlgo->setDuration(2000);
-    showAlgo->setStartValue(0);
-    showAlgo->setEndValue(algoGraph->width());
-
-    group2->addAnimation(hideCode);
-    group2->addAnimation(showAlgo);
+    animationSetup();
 }
 
 GraphWindow::~GraphWindow()
@@ -100,6 +68,7 @@ void GraphWindow::changeRightDockWindow()
 {
     if(isChild("algoGraph"))
     {
+        name = algoGraph->getAlgoName();
         deleteChildren();
         setCodeGraphAtRightDockWindow();
     }
@@ -124,6 +93,7 @@ void GraphWindow::setCodeGraphAtRightDockWindow()
     codeGraph->setObjectName("codeGraph");
     dockRight->setWidget(codeGraph);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
+    codeGraph->setText(name);
 }
 
 bool GraphWindow::isChild(const QString &str)
@@ -145,6 +115,43 @@ void GraphWindow::deleteChildren()
     {
         delete child;
     }
+}
+
+void GraphWindow::animationSetup()
+{
+    group = new QSequentialAnimationGroup();
+
+    hideAlgo = new QPropertyAnimation(dockRight, "maximumWidth");
+    hideAlgo->setObjectName("hideAlgo");
+    hideAlgo->setDuration(2000);
+    hideAlgo->setStartValue(algoGraph->width());
+    hideAlgo->setEndValue(0);
+
+    showCode = new QPropertyAnimation(dockRight, "maximumWidth");
+    showCode->setObjectName("showCode");
+    showCode->setDuration(2000);
+    showCode->setStartValue(0);
+    showCode->setEndValue(algoGraph->width());
+
+    group->addAnimation(hideAlgo);
+    group->addAnimation(showCode);
+
+    group2 = new QSequentialAnimationGroup();
+
+    hideCode = new QPropertyAnimation(dockRight, "maximumWidth");
+    hideCode->setObjectName("hideCode");
+    hideCode->setDuration(2000);
+    hideCode->setStartValue(algoGraph->width());
+    hideCode->setEndValue(0);
+
+    showAlgo = new QPropertyAnimation(dockRight, "maximumWidth");
+    showAlgo->setObjectName("showAlgo");
+    showAlgo->setDuration(2000);
+    showAlgo->setStartValue(0);
+    showAlgo->setEndValue(algoGraph->width());
+
+    group2->addAnimation(hideCode);
+    group2->addAnimation(showAlgo);
 }
 
 bool GraphWindow::eventFilter(QObject *watched, QEvent *event)
@@ -198,7 +205,6 @@ void GraphWindow::setGraph(Graph* g)
 
 void GraphWindow::graphAlgorithmFinished(BFS* algo)
 {
-
     auto states = algo->getStates();
     auto thread = new GraphAlgorithmDrawingThread(states);
     QObject::connect(thread, &GraphAlgorithmDrawingThread::graphAlgorithmDrawingFinished,
