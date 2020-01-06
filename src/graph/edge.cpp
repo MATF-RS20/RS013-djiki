@@ -5,10 +5,11 @@
 #include <QInputDialog>
 #include <QDebug>
 
-Edge::Edge(Node* s, Node* e, int w, QWidget* p)
+Edge::Edge(Node* s, Node* e, int w, bool curve, QWidget* p)
     : start(s)
     , end(e)
     , edgeWeight(w)
+    , curve(curve)
     , parent(p)
 {
     animate = false;
@@ -29,6 +30,35 @@ QRectF Edge::boundingRect() const
     return rect;
 }
 
+QPainterPath Edge::shape() const
+{
+    std::pair<QPointF, QPointF> currentCoords = getCurrentNodeCoords();
+    QLineF line(currentCoords.first, currentCoords.second);
+    line.translate(QPointF(-10, -10));
+    QPointF topLeft = line.p1();
+    QPointF topRight = line.p2();
+
+    line.translate(QPointF(20, 20));
+    QPointF bottomLeft = line.p1();
+    QPointF bottomRight = line.p2();
+
+    QPolygonF poly;
+    poly << currentCoords.second
+         << currentCoords.first;
+
+    poly << topLeft
+         << topRight
+         << bottomRight
+         << bottomLeft
+         << currentCoords.first;
+
+
+    QPainterPath path;
+    path.addPolygon(poly);
+
+    return path;
+}
+
 void Edge::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
     QPen pen;
@@ -40,18 +70,51 @@ void Edge::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
     {
         pen.setColor("orange");
         painter->setPen(pen);
-        painter->drawLine(currentCoords.first, currentCoords.second);
+
+        if (curve)
+        {
+            QPainterPath path;
+            path.moveTo(currentCoords.first);
+
+            QPointF control;
+            if (start == end)
+                control = QPointF((currentCoords.first + currentCoords.second)/2 + QPointF(-20, 30));
+            else
+                control = QPointF((currentCoords.first + currentCoords.second)/2 + QPointF(15, 15));
+
+            path.quadTo(control, currentCoords.second);
+            painter->strokePath(path, pen);
+        }
+        else
+        {
+            painter->drawLine(currentCoords.first, currentCoords.second);
+        }
     }
     else
     {
         pen.setColor(Qt::red);
         painter->setPen(pen);
+
         QPointF second = (1.0 - animationStep)*currentCoords.first + animationStep*currentCoords.second;
-        painter->drawLine(currentCoords.first, second);
+
+        if (curve)
+        {
+            QPainterPath path;
+            path.moveTo(currentCoords.first);
+            QPointF control((currentCoords.first + currentCoords.second)/2 - QPointF(15, 15));
+            path.quadTo(control, second);
+            painter->strokePath(path, pen);
+        }
+        else
+        {
+            painter->drawLine(currentCoords.first, second);
+        }
     }
 
     drawEdgeWeight(painter);
-    drawArrow(painter);
+
+    if (start != end)
+        drawArrow(painter);
 }
 
 std::pair<QPointF, QPointF> Edge::getCurrentNodeCoords() const
@@ -62,8 +125,10 @@ std::pair<QPointF, QPointF> Edge::getCurrentNodeCoords() const
     qreal endX = end->getX() + end->scenePos().x() + Node::radius/2;
     qreal endY = end->getY() + end->scenePos().y() + Node::radius/2;
 
-    return std::make_pair(QPointF(startX, startY),
-                          QPointF(endX, endY));
+    if (start == end)
+        return std::make_pair(QPointF(startX, startY) - QPointF(8, 0), QPointF(endX, endY) + QPointF(5, 20));
+    else
+        return std::make_pair(QPointF(startX, startY), QPointF(endX, endY));
 }
 
 void Edge::drawEdgeWeight(QPainter* painter) const
@@ -79,7 +144,16 @@ void Edge::drawEdgeWeight(QPainter* painter) const
         painter->rotate(180);
 
     QString value = edgeWeight == std::numeric_limits<int>::max() ? "Inf" : QString::number(edgeWeight);
-    painter->drawText(0, -10, value);
+
+    if (curve)
+    {
+        painter->rotate(180);
+        painter->drawText(0, -20, value);
+    }
+    else
+    {
+        painter->drawText(0, -10, value);
+    }
 
     painter->restore();
 }
@@ -114,6 +188,14 @@ void Edge::drawArrow(QPainter *painter) const
     rect.moveCenter(QPointF(0, 0));
 
     painter->rotate(-line.angle());
+
+    if (curve)
+    {
+        if (line.angle() > 120 && line.angle() < 330)
+            painter->rotate(-20);
+        else
+            painter->rotate(20);
+    }
 
     painter->drawLine(rect.topLeft(), QPointF(0, 0));
     painter->drawLine(rect.bottomLeft(), QPointF(0, 0));

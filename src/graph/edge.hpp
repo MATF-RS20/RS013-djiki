@@ -8,9 +8,10 @@ class Edge : public QObject, public QGraphicsItem {
     Q_INTERFACES(QGraphicsItem)
 
 public:
-    Edge(Node* s, Node* e, int w, QWidget* p);
+    Edge(Node* s, Node* e, int w, bool curve, QWidget* p);
 
     QRectF boundingRect() const override;
+    QPainterPath shape() const override;
 
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
 
@@ -37,6 +38,8 @@ private:
     Node* end;
 
     int edgeWeight;
+    bool curve;
+
     bool animate;
     double animationStep;
 

@@ -148,13 +148,17 @@ void DrawGraph::drawEdge(Node* node)
     Node* end = std::move(selectedNodes[1]);
     selectedNodes.clear();
 
-    if (start == end)
-        return;
-
     if (start->isNeighbour(end))
         return;
 
-    int value = 0;
+    auto [status, value] = getWeightFromUser(start, end);
+    if (!status)
+        return;
+
+    bool curve = false;
+
+    if (start == end)
+        curve = true;
 
     if (end->isNeighbour(start))
     {
@@ -162,23 +166,17 @@ void DrawGraph::drawEdge(Node* node)
         {
             if (e->getStart() == end && e->getEnd() == start)
             {
-                value = e->getEdgeWeight();
+                if (value != e->getEdgeWeight())
+                    curve = true;
+
                 break;
             }
         }
     }
-    else
-    {
-        auto answer = getWeightFromUser(start, end);
-        if (!answer.first)
-            return;
-
-        value = answer.second;
-    }
 
     start->addNeighbour(end);
 
-    Edge* newEdge = new Edge(start, end, value, this);
+    Edge* newEdge = new Edge(start, end, value, curve, this);
 
     QObject::connect(start, &Node::nodeMoved,
                      newEdge, &Edge::nodeMoved);
