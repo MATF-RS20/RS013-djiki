@@ -123,13 +123,13 @@ void GraphWindow::animationSetup()
 
     hideAlgo = new QPropertyAnimation(dockRight, "maximumWidth");
     hideAlgo->setObjectName("hideAlgo");
-    hideAlgo->setDuration(2000);
+    hideAlgo->setDuration(700);
     hideAlgo->setStartValue(algoGraph->width());
     hideAlgo->setEndValue(0);
 
     showCode = new QPropertyAnimation(dockRight, "maximumWidth");
     showCode->setObjectName("showCode");
-    showCode->setDuration(2000);
+    showCode->setDuration(500);
     showCode->setStartValue(0);
     showCode->setEndValue(algoGraph->width());
 
@@ -140,13 +140,13 @@ void GraphWindow::animationSetup()
 
     hideCode = new QPropertyAnimation(dockRight, "maximumWidth");
     hideCode->setObjectName("hideCode");
-    hideCode->setDuration(2000);
+    hideCode->setDuration(500);
     hideCode->setStartValue(algoGraph->width());
     hideCode->setEndValue(0);
 
     showAlgo = new QPropertyAnimation(dockRight, "maximumWidth");
     showAlgo->setObjectName("showAlgo");
-    showAlgo->setDuration(2000);
+    showAlgo->setDuration(700);
     showAlgo->setStartValue(0);
     showAlgo->setEndValue(algoGraph->width());
 
@@ -159,7 +159,7 @@ bool GraphWindow::eventFilter(QObject *watched, QEvent *event)
     if(this == watched && event->type() == QEvent::KeyPress)
     {
         QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
-        if(keyEvent->key() == Qt::Key_Shift)
+        if(keyEvent->key() == Qt::Key_Alt)
         {
             if(num == 0)
             {

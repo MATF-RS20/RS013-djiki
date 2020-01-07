@@ -15,7 +15,7 @@ CodeGraph::~CodeGraph()
 
 void CodeGraph::on_pushButtonReturn_clicked()
 {
-    QKeyEvent *event = new QKeyEvent ( QEvent::KeyPress, Qt::Key_Shift, Qt::NoModifier);
+    QKeyEvent *event = new QKeyEvent(QEvent::KeyPress, Qt::Key_Alt, Qt::NoModifier);
     QCoreApplication::postEvent(this->parent(), event);
 }
 

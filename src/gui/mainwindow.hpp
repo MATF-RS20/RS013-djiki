@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef MAINWINDOW_HPP
+#define MAINWINDOW_HPP
 
 #include <QMainWindow>
 #include "graphwindow.hpp"
@@ -26,4 +26,4 @@ private:
     GraphWindow *graphWindow;
     CollectionWindow *collectionWindow;
 };
-#endif // MAINWINDOW_H
+#endif // MAINWINDOW_HPP
