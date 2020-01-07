@@ -57,7 +57,7 @@
       </layout>
      </item>
      <item>
-      <widget class="GraphCodeEdit" name="plainTextEdit"/>
+      <widget class="GraphCodeEdit" name="algoPseudocode"/>
      </item>
     </layout>
    </item>

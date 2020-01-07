@@ -83,6 +83,7 @@ void GraphWindow::setAlgoGraphAtRightDockWindow()
 {
     algoGraph = new AlgoGraph(dockRight);
     algoGraph->setObjectName("algoGraph");
+    algoGraph->getAlgoName();
     dockRight->setWidget(algoGraph);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
 }
