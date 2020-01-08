@@ -2,6 +2,9 @@
 
 #include <limits>
 
+#include <QGraphicsSceneMouseEvent>
+#include <QPainter>
+#include <QGraphicsScene>
 #include <QInputDialog>
 #include <QDebug>
 
@@ -13,7 +16,7 @@ Edge::Edge(Node* s, Node* e, int w, bool curve, QWidget* p)
     , parent(p)
 {
     animate = false;
-    animationStep = 0;
+    currentStep = 0;
 
     setFlag(ItemIsSelectable);
 }
@@ -24,8 +27,8 @@ QRectF Edge::boundingRect() const
 
     QRectF rect(currentCoords.first, currentCoords.second);
     rect = rect.normalized();
-    rect.setTopLeft(rect.topLeft() + QPointF(-30, -30));
-    rect.setBottomRight(rect.bottomRight() + QPointF(35, 35));
+    rect.setTopLeft(rect.topLeft() + QPointF(-40, -40));
+    rect.setBottomRight(rect.bottomRight() + QPointF(40, 40));
 
     return rect;
 }
@@ -44,14 +47,12 @@ QPainterPath Edge::shape() const
 
     QPolygonF poly;
     poly << currentCoords.second
-         << currentCoords.first;
-
-    poly << topLeft
+         << currentCoords.first
+         << topLeft
          << topRight
          << bottomRight
          << bottomLeft
          << currentCoords.first;
-
 
     QPainterPath path;
     path.addPolygon(poly);
@@ -95,7 +96,7 @@ void Edge::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
         pen.setColor(Qt::red);
         painter->setPen(pen);
 
-        QPointF second = (1.0 - animationStep)*currentCoords.first + animationStep*currentCoords.second;
+        QPointF second = (1.0 - currentStep)*currentCoords.first + currentStep*currentCoords.second;
 
         if (curve)
         {
@@ -258,11 +259,11 @@ void Edge::advance(int phase)
     if (!phase || !animate)
         return;
 
-    animationStep += 0.1;
+    currentStep += 0.1;
 
-    if (animationStep > 1)
+    if (currentStep > 1)
     {
-        animationStep = 0;
+        currentStep = 0;
         animate = false;
     }
 

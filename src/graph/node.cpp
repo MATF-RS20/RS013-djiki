@@ -1,17 +1,27 @@
 #include "../graph/node.hpp"
 #include <QApplication>
+#include <QGraphicsSceneMouseEvent>
+#include <QPainter>
+#include <QGraphicsScene>
 #include <QDebug>
 
 unsigned Node::numberOfNodes = 0;
 unsigned Node::radius = 20;
+QStack<unsigned> Node::deletedNumbers;
 
 Node::Node(double x, double y)
-    : posX(x)
-    , posY(y)
+    : nodePosX(x)
+    , nodePosY(y)
 {
-    nodeNumber = numberOfNodes++;
-    animate = 0;
-    step = 0;
+    if (deletedNumbers.empty())
+        nodeNumber = numberOfNodes++;
+    else
+    {
+        nodeNumber = deletedNumbers.pop();
+    }
+
+    animation = 0;
+    currentStep = 0;
 
     setZValue(10);
     setFlag(ItemIsMovable);
@@ -19,19 +29,19 @@ Node::Node(double x, double y)
 
 QRectF Node::boundingRect() const
 {
-    return QRectF(posX, posY, radius*1.5, radius*1.5);
+    return QRectF(nodePosX, nodePosY, radius*1.5, radius*1.5);
 }
 
 void Node::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
     QPen pen;
 
-    if (!animate)
+    if (!animation)
         pen.setColor("#0e5a77");
     else
     {
         QColor color;
-        color.setRedF(step);
+        color.setRedF(currentStep);
         pen.setColor(color);
     }
 
@@ -62,6 +72,7 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent* event)
     if (event->button() == Qt::RightButton)
     {
         scene()->removeItem(this);
+        deletedNumbers.push_back(nodeNumber);
         emit nodeDeleted(this);
     }
     else if (QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
@@ -70,7 +81,6 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent* event)
     }
     else
     {
-        update();
         QGraphicsItem::mousePressEvent(event);
         emit nodeMoved();
     }
@@ -78,7 +88,6 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-    update();
     QGraphicsItem::mouseReleaseEvent(event);
     emit nodeMoved();
 }
@@ -96,9 +105,11 @@ void Node::addNeighbour(Node* neighbour)
 
 void Node::removeNeighbour(Node* neighbour)
 {
+    if (!isNeighbour(neighbour))
+        return;
+
     auto position = std::find(std::begin(neighbours), std::end(neighbours), neighbour);
-    if (position != neighbours.end())
-        neighbours.erase(position);
+    neighbours.erase(position);
 }
 
 bool Node::isNeighbour(Node* n)
@@ -114,46 +125,50 @@ void Node::clearNeighbours()
     neighbours.clear();
 }
 
+void Node::animateNode()
+{
+    animation = 1;
+}
+
 void Node::stopAnimation()
 {
-    animate = 0;
+    animation = 0;
 }
 
 void Node::advance(int phase)
 {
-    if (!phase || !animate)
+    /* This function is called twice for every item,
+       first time with phase = 0, indicating that
+       items are about to advance, and then all items
+       advance with phase = 1 */
+    if (!phase || !animation)
         return;
 
-    step += animate*0.1;
+    currentStep += animation*0.1;
 
-    if (step > 1)
+    if (currentStep > 1)
     {
-        animate = -1;
-        step += animate*0.1;
+        animation = -1;
+        currentStep += animation*0.1;
     }
 
-    if (step < 0)
+    if (currentStep < 0)
     {
-        animate = 1;
-        step += animate*0.1;
+        animation = 1;
+        currentStep += animation*0.1;
     }
 
     update();
 }
 
-void Node::animateNode()
-{
-    animate = 1;
-}
-
 double Node::getX() const
 {
-    return posX;
+    return nodePosX;
 }
 
 double Node::getY() const
 {
-    return posY;
+    return nodePosY;
 }
 
 unsigned Node::getNodeNumber() const
