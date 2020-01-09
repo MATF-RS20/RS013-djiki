@@ -11,14 +11,14 @@ public:
         QString highlighColor = "#5599ff";
         QString html = "";
         html += "<table border='0'>";
-        html += "<tr><th colspan='2'>Input: " + input + " </th></tr>";
-        html += "<tr><th colspan='2'>Output: " + output + " </th></tr>";
+        html += "<tr><td colspan='2'><pre>Input: " + input + " </pre></td></tr>";
+        html += "<tr><td colspan='2'><pre>Output: " + output + " </pre></td></tr>";
         html += "<tr><th colspan='2'></th></tr>";
 
         unsigned lineNumber = 1;
         for(auto line : code){
             html += "<tr" + (activeLine && (lineNumber == activeLine) ? " bgcolor='" + highlighColor + "'" : "") +">";
-            html += "<td>" + QString(lineNumber) + "</td><td><pre>" + line + "</pre></td></tr>";
+            html += "<td><pre>" + QString::number(lineNumber) + "</pre></td><td><pre>" + line + "</pre></td></tr>";
 
             lineNumber++;
         }
@@ -35,7 +35,7 @@ public:
 
     void setOutput(const char* outputLine)
     {
-        input = QString(outputLine);
+        output = QString(outputLine);
     }
 
     void operator+=(const char* nextLine)
