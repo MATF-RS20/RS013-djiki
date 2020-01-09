@@ -1,5 +1,6 @@
 #include "graphwindow.hpp"
 #include "ui_graphwindow.h"
+#include "../backend/graphalgorithm.hpp"
 #include "../backend/bfs.hpp"
 #include "../backend/graphalgorithmexecutorthread.hpp"
 #include "../backend/graphalgorithmdrawingthread.hpp"
@@ -193,8 +194,8 @@ void GraphWindow::setGraph(Graph* g)
     this->currentGraph = g;
     BFS* algo = new BFS(this->currentGraph);
     auto thread = new GraphAlgorithmExecutorThread(algo);
-    QObject::connect(thread, SIGNAL(graphAlgorithmFinished(BFS*)),
-                     this, SLOT(graphAlgorithmFinished(BFS*)));
+    QObject::connect(thread, SIGNAL(graphAlgorithmFinished(GraphAlgorithm*)),
+                     this, SLOT(graphAlgorithmFinished(GraphAlgorithm*)));
 
     QObject::connect(thread, &GraphAlgorithmExecutorThread::graphAlgorithmFinished,
                      thread, &QObject::deleteLater,
@@ -203,7 +204,7 @@ void GraphWindow::setGraph(Graph* g)
     thread->start();
 }
 
-void GraphWindow::graphAlgorithmFinished(BFS* algo)
+void GraphWindow::graphAlgorithmFinished(GraphAlgorithm* algo)
 {
     auto states = algo->getStates();
     auto thread = new GraphAlgorithmDrawingThread(states);

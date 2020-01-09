@@ -2,11 +2,8 @@
 #include <queue>
 
 BFS::BFS(Graph *g)
-    : graph(*g)
-{
-    start = graph.getNodeByNodeNumber(0);
-    end = graph.getNodeByNodeNumber(graph.getGraphSize()-1);
-}
+    : GraphAlgorithm(g)
+{}
 
 void BFS::solve()
 {
@@ -57,24 +54,4 @@ void BFS::solve()
     addState(start, 8);
     outcome = QString("Requested path doesn't exist!");
 
-}
-
-QString BFS::getOutcome() const
-{
-    return outcome;
-}
-
-
-QVector<GraphState> BFS::getStates() const
-{
-    return states;
-}
-
-void BFS::addState(Node* currentNode, unsigned currentLine)
-{
-    this->states.append(GraphState(currentNode, nullptr, currentLine));
-}
-void BFS::addState(Node* currentNode, Edge* currentEdge, unsigned currentLine)
-{
-    this->states.append(GraphState(currentNode, currentEdge, currentLine));
 }

@@ -8,16 +8,16 @@ class GraphAlgorithmExecutorThread : public QThread
     Q_OBJECT
 
 public:
-    GraphAlgorithmExecutorThread(BFS* algorithmInstance);
+    GraphAlgorithmExecutorThread(GraphAlgorithm* algorithmInstance);
 
 signals:
-    void graphAlgorithmFinished(BFS* algorithmInstance);
+    void graphAlgorithmFinished(GraphAlgorithm* algorithmInstance);
 
 protected:
     void run() override;
 
 private:
-    BFS* algorithmInstance;
+    GraphAlgorithm* algorithmInstance;
 };
 
 #endif // GRAPHALGORITHMEXECUTORTHREAD_HPP

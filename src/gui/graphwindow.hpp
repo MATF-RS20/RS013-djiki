@@ -27,7 +27,7 @@ private slots:
     void pushButtonReturn_clicked();
     void changeRightDockWindow();
     void setGraph(Graph *g);
-    void graphAlgorithmFinished(BFS* algo);
+    void graphAlgorithmFinished(GraphAlgorithm* algo);
 
 private:
     void createDockWindows();

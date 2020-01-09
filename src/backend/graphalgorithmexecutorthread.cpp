@@ -1,6 +1,6 @@
 #include "graphalgorithmexecutorthread.hpp"
 
-GraphAlgorithmExecutorThread::GraphAlgorithmExecutorThread(BFS* algorithmInstance)
+GraphAlgorithmExecutorThread::GraphAlgorithmExecutorThread(GraphAlgorithm* algorithmInstance)
     :algorithmInstance(algorithmInstance)
 {
 
