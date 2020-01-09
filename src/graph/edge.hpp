@@ -41,7 +41,7 @@ private:
     bool curve;
 
     bool animate;
-    double animationStep;
+    double currentStep;
 
     QWidget* parent;
 };

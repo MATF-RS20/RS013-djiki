@@ -2,10 +2,7 @@
 #define NODE_HPP
 
 #include <QGraphicsItem>
-#include <QPainter>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsScene>
-#include <QPropertyAnimation>
+#include <QStack>
 
 class Node : public QObject, public QGraphicsItem {
     Q_OBJECT
@@ -39,6 +36,7 @@ public:
 
     static unsigned radius;
     static unsigned numberOfNodes;
+    static QStack<unsigned> deletedNumbers;
 
 Q_SIGNALS:
     /* When user starts drawing edge this signal is emitted */
@@ -51,13 +49,13 @@ Q_SIGNALS:
 private:
     unsigned nodeNumber;
 
-    double posX;
-    double posY;
+    double nodePosX;
+    double nodePosY;
 
     QVector<Node*> neighbours;
 
-    int animate;
-    double step;
+    int animation;
+    double currentStep;
 };
 
 #endif // NODE_HPP

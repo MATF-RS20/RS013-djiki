@@ -222,6 +222,7 @@ void DrawGraph::onClearGraph()
     edges.clear();
 
     Node::numberOfNodes = 0;
+    Node::deletedNumbers.clear();
 }
 
 void DrawGraph::onDoneDrawing()
@@ -235,11 +236,13 @@ void DrawGraph::onDoneDrawing()
 
     // Debug neighbours
     for (auto& n: nodes)
+    {
         for (auto& node: n->getNeighbours())
         {
             qDebug() << "NODE: " << n->getNodeNumber();
             qDebug() << node->getNodeNumber();
         }
+    }
     Graph g = Graph(&nodes, &edges);
     emit doneDrawingGraph(&g);
 }
@@ -264,6 +267,7 @@ void DrawGraph::deleteFromNeighbours(Node* n)
         if (edges[i]->getStart() == n || edges[i]->getEnd() == n)
         {
             edges[i]->setVisible(false);
+            edges[i]->deleteLater();
             toRemove.push_back(i);
         }
     }
@@ -274,4 +278,6 @@ void DrawGraph::deleteFromNeighbours(Node* n)
         edges.remove(*it);
         it++;
     }
+
+    n->deleteLater();
 }

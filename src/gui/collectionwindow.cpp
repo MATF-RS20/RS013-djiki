@@ -7,6 +7,7 @@ CollectionWindow::CollectionWindow(QWidget *parent) :
     ui(new Ui::CollectionWindow)
 {
     ui->setupUi(this);
+    this->resize(this->width() * 1.3, this->height() * 1.3);
 
     createDockWindows();
 }
