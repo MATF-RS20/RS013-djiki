@@ -3,13 +3,14 @@
 
 #include <QThread>
 #include "graphstate.hpp"
+#include "graphalgorithm.hpp"
 
 class GraphAlgorithmDrawingThread : public QThread
 {
     Q_OBJECT
 
 public:
-    GraphAlgorithmDrawingThread(QVector<GraphState> states);
+    GraphAlgorithmDrawingThread(GraphAlgorithm* algorithmInstance);
 
 signals:
     void graphAlgorithmDrawingFinished();
@@ -20,7 +21,7 @@ protected:
 private:
     void animateCurrentState(GraphState currentState);
     void highlightCurrentPseudocodeLine(unsigned line);
-    QVector<GraphState> states;
+    GraphAlgorithm* algorithm;
 };
 
 

@@ -255,14 +255,13 @@ void GraphWindow::setGraph(Graph* g)
 
 void GraphWindow::graphAlgorithmFinished(GraphAlgorithm* algo)
 {
-    auto states = algo->getStates();
-    auto thread = new GraphAlgorithmDrawingThread(states);
+    auto thread = new GraphAlgorithmDrawingThread(algo);
     QObject::connect(thread, &GraphAlgorithmDrawingThread::graphAlgorithmDrawingFinished,
                      thread, &QObject::deleteLater,
                      Qt::QueuedConnection);
 
-    delete algo;
     thread->start();
+    //TODO delete algorithm on return to main menu
 }
 
 void GraphWindow::on_actionPlay_triggered()
