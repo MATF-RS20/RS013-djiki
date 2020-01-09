@@ -29,6 +29,9 @@ public Q_SLOTS:
     /* If user moves node edge needs to be redrawn, so this slot receives signal */
     void nodeMoved();
 
+Q_SIGNALS:
+    void edgeDeleted(Edge* e);
+
 private:
     std::pair<QPointF, QPointF> getCurrentNodeCoords() const;
     void drawEdgeWeight(QPainter* painter) const;

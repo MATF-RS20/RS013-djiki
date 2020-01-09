@@ -25,6 +25,7 @@ DrawGraph::DrawGraph(QWidget* parent)
     ui->setupUi(this);
 
     initializeScene();
+    finished = false;
 }
 
 void DrawGraph::initializeScene()
@@ -37,7 +38,7 @@ void DrawGraph::initializeScene()
 
     clearItem = createCheckBoxBtnOrLabel<QPushButton>("Clear", QPointF(width()-130, 20), font);
     helpItem = createCheckBoxBtnOrLabel<QLabel>("Help", QPointF(width()-100, 70), font);
-    QGraphicsProxyWidget* doneItem = createCheckBoxBtnOrLabel<QCheckBox>("Done drawing graph", QPointF(20, 20), font);
+    doneItem = createCheckBoxBtnOrLabel<QCheckBox>("Done drawing graph", QPointF(20, 20), font);
 
     QPushButton* clearBtn = static_cast<QPushButton*>(clearItem->widget());
     QLabel* helpLabel = static_cast<QLabel*>(helpItem->widget());
@@ -95,7 +96,7 @@ void DrawGraph::mousePressEvent(QMouseEvent* event)
     if (directions->isVisible())
         directions->setVisible(false);
 
-    if (event->buttons() == Qt::LeftButton)
+    if (event->buttons() == Qt::LeftButton && !finished)
     {
         QPointF mapped = ui->graphicsView->mapToScene(event->pos());
         Node* newNode = new Node(mapped.x(), mapped.y());
@@ -227,22 +228,23 @@ void DrawGraph::onClearGraph()
 
 void DrawGraph::onDoneDrawing()
 {
-    this->setEnabled(false);
+    /* Disable scene, but leave scrollbars enabled ( before this->setEnabled(false) ) */
+    finished = true;
+    doneItem->setEnabled(false);
+    clearItem->setEnabled(false);
+    helpItem->setEnabled(false);
+
+    for (auto& n: nodes)
+        n->setEnabled(false);
+
+    for (auto& e: edges)
+        e->setEnabled(false);
 
     animationTimer = new QTimer(this);
     QObject::connect(animationTimer, &QTimer::timeout, ui->graphicsView->scene(), &QGraphicsScene::advance);
     animationTimer->start(500);
     qDebug() << "TIMER STARTED!!! (stop it at the end of animations)";
 
-    // Debug neighbours
-    for (auto& n: nodes)
-    {
-        for (auto& node: n->getNeighbours())
-        {
-            qDebug() << "NODE: " << n->getNodeNumber();
-            qDebug() << node->getNodeNumber();
-        }
-    }
     Graph g = Graph(&nodes, &edges);
     emit doneDrawingGraph(&g);
 }
@@ -280,4 +282,13 @@ void DrawGraph::deleteFromNeighbours(Node* n)
     }
 
     n->deleteLater();
+}
+
+void DrawGraph::removeEdge(Edge *e)
+{
+    auto it = std::find(std::begin(edges), std::end(edges), e);
+    if (it != edges.end())
+        edges.erase(it);
+
+    e->deleteLater();
 }

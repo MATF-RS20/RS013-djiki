@@ -29,6 +29,8 @@ public Q_SLOTS:
     void drawEdge(Node* node);
     /* When node is deleted this slot receives signal */
     void deleteFromNeighbours(Node* n);
+    /* Remove deleted edge from edges */
+    void removeEdge(Edge* e);
 
 private Q_SLOTS:
     /* When user clicks 'done drawing graph' checkbox this slot receives signal */
@@ -47,6 +49,8 @@ private:
     QGraphicsProxyWidget* createCheckBoxBtnOrLabel(const QString& label, const QPointF& position, QFont font);
     QGraphicsProxyWidget* clearItem;
     QGraphicsProxyWidget* helpItem;
+    QGraphicsProxyWidget* doneItem;
+    bool finished;
 
     QString drawDirections(QFont font);
     QGraphicsTextItem* directions;

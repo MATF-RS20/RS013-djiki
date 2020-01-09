@@ -102,7 +102,13 @@ void Edge::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
         {
             QPainterPath path;
             path.moveTo(currentCoords.first);
-            QPointF control((currentCoords.first + currentCoords.second)/2 - QPointF(15, 15));
+
+            QPointF control;
+            if (start == end)
+                control = QPointF((currentCoords.first + second)/2 + QPointF(-20, 30));
+            else
+                control = QPointF((currentCoords.first + second)/2 + QPointF(15, 15));
+
             path.quadTo(control, second);
             painter->strokePath(path, pen);
         }
@@ -212,6 +218,8 @@ void Edge::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
         start->removeNeighbour(end);
         end->removeNeighbour(start);
+
+        emit edgeDeleted(this);
     }
 }
 
