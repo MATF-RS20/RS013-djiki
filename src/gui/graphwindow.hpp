@@ -34,14 +34,12 @@ protected:
 
 private slots:
     void pushButtonReturn_clicked();
+    void enableRightDockWindow();
     void changeRightDockWindow();
     void setGraph(Graph *g);
     void graphAlgorithmFinished(GraphAlgorithm* algo);
-
     void on_actionPlay_triggered();
-
     void on_actionPause_triggered();
-
     void on_actionStop_triggered();
 
 private:
