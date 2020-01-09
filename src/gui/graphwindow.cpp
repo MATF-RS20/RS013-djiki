@@ -14,8 +14,9 @@ GraphWindow::GraphWindow(QWidget *parent) :
 
     drawGraph = new DrawGraph(this);
     setCentralWidget(drawGraph);
-    connect(drawGraph, SIGNAL(doneDrawingGraph(Graph*)), this, SLOT(setGraph(Graph*)));
 
+    connect(drawGraph, SIGNAL(doneDrawingGraph(Graph*)), this, SLOT(setGraph(Graph*)));
+    connect(drawGraph, SIGNAL(doneDrawingGraph(Graph*)), this, SLOT(enableRightDockWindow()));
     createDockWindows();
 
     setWindowTitle(tr("Graph Window"));
@@ -25,6 +26,10 @@ GraphWindow::GraphWindow(QWidget *parent) :
     slider = new QSlider(Qt::Horizontal, this);
     ui->toolBar->addWidget(slider);
     ui->toolBar->setMovable(false);
+    ui->toolBar->setStyleSheet("QSlider::handle:horizontal {"
+                               "background-color: #5599ff; "
+                               "border-radius: 9px;"
+                               "} ");
 
     animationSetup();
 }
@@ -45,6 +50,11 @@ void GraphWindow::pushButtonReturn_clicked()
     // Showing the MainWindow
     QWidget *parent = this->parentWidget();
     parent->show();
+}
+
+void GraphWindow::enableRightDockWindow()
+{
+    dockRight->setDisabled(false);
 }
 
 void GraphWindow::createDockWindows()
@@ -73,6 +83,7 @@ void GraphWindow::createRightDockWindow()
     dockRight = new QDockWidget(this);
     dockRight->setAttribute(Qt::WA_DeleteOnClose);
     dockRight->setTitleBarWidget(new QWidget()); // remove title bar
+    dockRight->setDisabled(true);
     setAlgoGraphAtRightDockWindow();
 }
 
