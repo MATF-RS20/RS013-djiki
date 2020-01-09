@@ -2,6 +2,7 @@
 #define GRAPHALGORITHM_HPP
 #include "graphstate.hpp"
 #include "../graph/graph.hpp"
+#include "pseudocode.hpp"
 
 class GraphAlgorithm
 {
@@ -12,6 +13,7 @@ public:
 
     QString getOutcome() const;
     QVector<GraphState> getStates() const;
+    QString getPseudoCodeHTML(unsigned activeLine = 0) const;
 protected:
     void addState(Node* currentNode, unsigned currentLine);
     void addState(Node* currentNode, Edge* currentEdge, unsigned currentLine);
@@ -21,6 +23,7 @@ protected:
     Graph graph;
     QVector<GraphState> states;
     QString outcome;
+    Pseudocode code;
 };
 
 #endif // GRAPHALGORITHM_HPP

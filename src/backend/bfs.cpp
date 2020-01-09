@@ -3,7 +3,20 @@
 
 BFS::BFS(Graph *g)
     : GraphAlgorithm(g)
-{}
+{
+    code.setInput("Graph G, starting node and target node");
+    code.setOutput("Shortest path from the starting node to the target node in graph G (if such path exists)");
+
+
+    code += "Put only starting node in queue S";
+    code += "While queue S is not empty do";
+    code += "\tTake the begining of the queue S as N";
+    code += "\tIf N is the target node ";
+    code += "\t\tThen inform that the path has been found and reconstruct it (going backwards from the target node)";
+    code += "\tFor every descendant M of node N for which parent is not defined do";
+    code += "\t\tRemember N as parent of M and add it to the end of queue S";
+    code += "Inform that requested path doesn't exist";
+}
 
 void BFS::solve()
 {

@@ -39,6 +39,7 @@ HEADERS += \
     src/backend/graphalgorithmdrawingthread.hpp \
     src/backend/graphalgorithmexecutorthread.hpp \
     src/backend/graphstate.hpp \
+    src/backend/pseudocode.hpp \
     src/graph/drawgraph.hpp \
     src/graph/edge.hpp \
     src/graph/graph.hpp \
