@@ -1,6 +1,9 @@
 <RCC>
-  <qresource prefix="images">
-    <file>graph.svg</file>
-    <file>collections.svg</file>
-  </qresource>
+    <qresource prefix="/images">
+        <file>graph.svg</file>
+        <file>collections.svg</file>
+        <file>control_stop.png</file>
+        <file>control_play.png</file>
+        <file>control_pause.png</file>
+    </qresource>
 </RCC>

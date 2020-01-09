@@ -5,8 +5,6 @@
 #include "../backend/graphalgorithmexecutorthread.hpp"
 #include "../backend/graphalgorithmdrawingthread.hpp"
 
-#include <QDebug>
-
 GraphWindow::GraphWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::GraphWindow)
@@ -23,6 +21,10 @@ GraphWindow::GraphWindow(QWidget *parent) :
     setWindowTitle(tr("Graph Window"));
 
     this->installEventFilter(this);
+
+    slider = new QSlider(Qt::Horizontal, this);
+    ui->toolBar->addWidget(slider);
+    ui->toolBar->setMovable(false);
 
     animationSetup();
 }
@@ -250,4 +252,19 @@ void GraphWindow::graphAlgorithmFinished(GraphAlgorithm* algo)
 
     delete algo;
     thread->start();
+}
+
+void GraphWindow::on_actionPlay_triggered()
+{
+
+}
+
+void GraphWindow::on_actionPause_triggered()
+{
+
+}
+
+void GraphWindow::on_actionStop_triggered()
+{
+
 }

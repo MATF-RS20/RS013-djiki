@@ -11,6 +11,8 @@
 #include "../graph/graph.hpp"
 #include "../backend/bfs.hpp"
 
+#include <QSlider>
+
 namespace Ui {
 class GraphWindow;
 }
@@ -26,11 +28,21 @@ public:
     const static int buttonWidth = 150;
     const static int buttonHeight = 40;
 
+protected:
+    bool eventFilter(QObject *watched, QEvent *event);
+    void paintEvent(QPaintEvent *event);
+
 private slots:
     void pushButtonReturn_clicked();
     void changeRightDockWindow();
     void setGraph(Graph *g);
     void graphAlgorithmFinished(GraphAlgorithm* algo);
+
+    void on_actionPlay_triggered();
+
+    void on_actionPause_triggered();
+
+    void on_actionStop_triggered();
 
 private:
     void createDockWindows();
@@ -57,13 +69,10 @@ private:
     QSequentialAnimationGroup *group2;
     QPropertyAnimation *hideCode;
     QPropertyAnimation *showAlgo;
+    QSlider *slider;
 
     int num = 0;
     QString name;
-
-protected:
-    bool eventFilter(QObject *watched, QEvent *event);
-    void paintEvent(QPaintEvent *event);
 };
 
 #endif // GRAPHWINDOW_HPP
