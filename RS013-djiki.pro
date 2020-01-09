@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui webenginewidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -30,8 +30,7 @@ SOURCES += \
     src/gui/mainwindow.cpp \
     src/gui/algograph.cpp \
     src/gui/codegraph.cpp \
-    src/gui/graphcodeedit.cpp \
-    src/gui/graphcodelinenumber.cpp
+    src/gui/graphcodeedit.cpp
 
 HEADERS += \
     src/backend/bfs.hpp \
@@ -49,8 +48,7 @@ HEADERS += \
     src/gui/mainwindow.hpp \
     src/gui/algograph.hpp \
     src/gui/codegraph.hpp \
-    src/gui/graphcodeedit.hpp \
-    src/gui/graphcodelinenumber.hpp
+    src/gui/graphcodeedit.hpp
 
 FORMS += \
     src/graph/drawgraph.ui \
@@ -59,8 +57,7 @@ FORMS += \
     src/gui/mainwindow.ui \
     src/gui/algograph.ui \
     src/gui/codegraph.ui \
-    src/gui/graphcodeedit.ui \
-    src/gui/graphcodelinenumber.ui
+    src/gui/graphcodeedit.ui
 
 RESOURCES += \
     src/gui/images/images.qrc

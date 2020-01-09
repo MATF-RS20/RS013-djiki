@@ -3,7 +3,7 @@
  <comment/>
  <exportmacro/>
  <class>GraphCodeEdit</class>
- <widget class="QWidget" name="GraphCodeEdit">
+ <widget class="QWebEngineView" name="GraphCodeEdit">
   <property name="geometry">
    <rect>
     <x>0</x>
