@@ -4,11 +4,15 @@
 #include "../backend/graphalgorithmexecutorthread.hpp"
 #include "../backend/graphalgorithmdrawingthread.hpp"
 
+#include <QDebug>
+
 GraphWindow::GraphWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::GraphWindow)
 {
     ui->setupUi(this);
+    this->resize(this->width() * 1.3, this->height() * 1.3);
+
     drawGraph = new DrawGraph(this);
     setCentralWidget(drawGraph);
     connect(drawGraph, SIGNAL(doneDrawingGraph(Graph*)), this, SLOT(setGraph(Graph*)));
@@ -33,7 +37,7 @@ void GraphWindow::pushButtonReturn_clicked()
     delete drawGraph;
     delete dockTop;
     delete dockRight;
-    this->close(); // or this->hide();
+    this->close();
 
     // Showing the MainWindow
     QWidget *parent = this->parentWidget();
@@ -50,7 +54,12 @@ void GraphWindow::createTopDockWindow()
 {
     dockTop = new QDockWidget(this);
     dockTop->setTitleBarWidget(new QWidget());
-    pushButtonReturn = new QPushButton();
+
+    pushButtonReturn = new QPushButton(" ", this);
+    pushButtonReturn->setFixedWidth(buttonWidth);
+    pushButtonReturn->setFixedHeight(buttonHeight);
+    pushButtonReturn->setStyleSheet(QString("background-color: #5599ff"));
+
     connect(pushButtonReturn, &QPushButton::clicked, this, &GraphWindow::pushButtonReturn_clicked);
     dockTop->setWidget(pushButtonReturn);
     addDockWidget(Qt::TopDockWidgetArea, dockTop);
@@ -82,6 +91,7 @@ void GraphWindow::changeRightDockWindow()
 void GraphWindow::setAlgoGraphAtRightDockWindow()
 {
     algoGraph = new AlgoGraph(dockRight);
+    algoGraph->setMinimumWidth(this->width() * 0.2);
     algoGraph->setObjectName("algoGraph");
     algoGraph->getAlgoName();
     dockRight->setWidget(algoGraph);
@@ -91,6 +101,7 @@ void GraphWindow::setAlgoGraphAtRightDockWindow()
 void GraphWindow::setCodeGraphAtRightDockWindow()
 {
     codeGraph = new CodeGraph(dockRight);
+    codeGraph->setMinimumWidth(this->width() * 0.35);
     codeGraph->setObjectName("codeGraph");
     dockRight->setWidget(codeGraph);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
@@ -187,6 +198,30 @@ bool GraphWindow::eventFilter(QObject *watched, QEvent *event)
         }
     }
     return false;
+}
+
+void GraphWindow::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
+
+    int x = pushButtonReturn->pos().x();
+    int y = pushButtonReturn->pos().y();
+    int w = pushButtonReturn->width();
+    int h = pushButtonReturn->height();
+
+    QPoint point1(x + triangleWidth, y);
+    QPoint point2(x, y + h/2);
+    QPoint point3(x + triangleWidth, y + h);
+    QPoint point4(x + triangleWidth, y + 3*h/4);
+    QPoint point5(x + w, y + 3*h/4);
+    QPoint point6(x + w, y + h/4);
+    QPoint point7(x + triangleWidth, y + h/4);
+
+    QPolygon polygon;
+    polygon << point1 << point2 << point3 << point4 << point5 << point6 << point7;
+    QRegion region(polygon);
+
+    pushButtonReturn->setMask(region);
 }
 
 void GraphWindow::setGraph(Graph* g)

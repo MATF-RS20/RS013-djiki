@@ -23,6 +23,7 @@ GraphCodeEdit::GraphCodeEdit(QWidget *parent) :
     this->setTabStopWidth(tabStop * metrics.width(' '));
 
     this->setReadOnly(true);
+    this->setTextInteractionFlags(Qt::TextSelectableByKeyboard | Qt::TextSelectableByMouse);
     updateLineNumberAreaWidth(0);
     highlightCurrentLine();
 }
@@ -74,15 +75,16 @@ void GraphCodeEdit::highlightCurrentLine()
 {
     QList<QTextEdit::ExtraSelection> extraSelections;
 
-    QTextEdit::ExtraSelection selection;
+    QTextCursor cursor = textCursor();
+    cursor.movePosition(QTextCursor::StartOfBlock, QTextCursor::MoveAnchor);
+    cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
 
-    QColor lineColor = QColor(Qt::blue).lighter(130);
+    QTextEdit::ExtraSelection selectionBlock;
+    QColor lineColor = QColor(85, 153, 255);
 
-    selection.format.setBackground(lineColor);
-    selection.format.setProperty(QTextFormat::FullWidthSelection, true);
-    selection.cursor = textCursor();
-    selection.cursor.clearSelection();
-    extraSelections.append(selection);
+    selectionBlock.cursor = cursor;
+    selectionBlock.format.setBackground(lineColor);
+    extraSelections.append(selectionBlock);
 
     setExtraSelections(extraSelections);
 }

@@ -22,6 +22,9 @@ class GraphWindow : public QMainWindow
 public:
     explicit GraphWindow(QWidget *parent = 0);
     ~GraphWindow();
+    const static int triangleWidth = 50;
+    const static int buttonWidth = 150;
+    const static int buttonHeight = 40;
 
 private slots:
     void pushButtonReturn_clicked();
@@ -60,6 +63,7 @@ private:
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
+    void paintEvent(QPaintEvent *event);
 };
 
 #endif // GRAPHWINDOW_HPP
