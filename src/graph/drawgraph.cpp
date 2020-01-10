@@ -303,3 +303,8 @@ QVector<Edge *> DrawGraph::getEdges() const
 {
     return edges;
 }
+
+QTimer* DrawGraph::getAnimationTimer() const
+{
+    return animationTimer;
+}

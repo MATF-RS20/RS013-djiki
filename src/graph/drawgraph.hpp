@@ -24,6 +24,7 @@ public:
 
     QVector<Node*> getNodes() const;
     QVector<Edge*> getEdges() const;
+    QTimer* getAnimationTimer() const;
 
     ~DrawGraph() override;
 

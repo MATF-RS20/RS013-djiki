@@ -41,9 +41,6 @@ GraphWindow::GraphWindow(QWidget *parent) :
                                "} ");
 
     animationSetup();
-
-//    QString path = "test.png";
-//    drawGraph->grab().save(path);
 }
 
 GraphWindow::~GraphWindow()
@@ -53,6 +50,8 @@ GraphWindow::~GraphWindow()
 
 void GraphWindow::pushButtonReturn_clicked()
 {
+    if(drawGraph->getAnimationTimer()->timerId() == -1)
+        drawGraph->getAnimationTimer()->stop();
     deleteChildren();
     delete drawGraph;
     delete dockTop;
@@ -316,20 +315,24 @@ void GraphWindow::on_actionSave_As_Image_triggered()
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     tr("Save As Image"), "",
                                                     tr("JPEG (*.jpg, *.jpeg);;PNG (*.png)"),
-                                                    &filter);
-    if(!fileName.contains("."))
-        fileName.append(QString(".png"));
+                                                    &filter,
+                                                    QFileDialog::DontUseNativeDialog);
 
     if(fileName.isEmpty())
         return;
-    else
+    if(!fileName.contains("."))
+        fileName.append(QString(".png"));
+
+    QFile file(fileName);
+    if(!file.open(QIODevice::WriteOnly))
     {
-        QFile file(fileName);
-        if(!file.open(QIODevice::WriteOnly))
-        {
-            QMessageBox::information(this, tr("Unable to open file"), file.errorString());
-            return;
-        }
-        drawGraph->grab().save(&file);
+        QMessageBox::information(this, tr("Unable to open file"), file.errorString());
+        return;
     }
+    drawGraph->grab().save(&file);
+}
+
+void GraphWindow::on_actionExit_triggered()
+{
+    QApplication::quit();
 }
