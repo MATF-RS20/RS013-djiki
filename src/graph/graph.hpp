@@ -9,6 +9,7 @@
 class Graph
 {
 public:
+    Graph();
     Graph(QVector<Node*> *nodes, QVector<Edge*> *edges);
 
     Node* getNodeByNodeNumber(unsigned n) const;

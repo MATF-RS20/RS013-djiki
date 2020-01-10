@@ -7,8 +7,10 @@
 class GraphAlgorithm
 {
 public:
+    GraphAlgorithm();
     GraphAlgorithm(Graph *g);
 
+    void setGraph(Graph g);
     virtual void solve() = 0;
 
     QString getOutcome() const;

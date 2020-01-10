@@ -1,8 +1,18 @@
 #include "graphalgorithm.hpp"
 
+GraphAlgorithm::GraphAlgorithm()
+{}
+
 GraphAlgorithm::GraphAlgorithm(Graph *g)
     : graph(*g)
 {
+    start = graph.getNodeByNodeNumber(0);
+    end = graph.getNodeByNodeNumber(graph.getGraphSize()-1);
+}
+
+void GraphAlgorithm::setGraph(Graph g)
+{
+    graph = g;
     start = graph.getNodeByNodeNumber(0);
     end = graph.getNodeByNodeNumber(graph.getGraphSize()-1);
 }

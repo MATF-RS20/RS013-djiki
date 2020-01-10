@@ -6,8 +6,10 @@
 class BFS : public GraphAlgorithm
 {
 public:
+    BFS();
     BFS(Graph *g);
 
+    void definePseudocode();
     void solve();
 };
 

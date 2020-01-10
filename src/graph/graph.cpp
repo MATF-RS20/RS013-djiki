@@ -1,6 +1,9 @@
 #include "graph.hpp"
 #include <algorithm>
 
+Graph::Graph()
+{}
+
 Graph::Graph(QVector<Node*> *nodes, QVector<Edge*> *edges)
 : nodes(nodes)
 , edges(edges)

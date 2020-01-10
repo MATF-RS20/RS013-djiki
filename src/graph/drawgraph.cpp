@@ -245,8 +245,8 @@ void DrawGraph::onDoneDrawing()
     animationTimer->start(500);
     qDebug() << "TIMER STARTED!!! (stop it at the end of animations)";
 
-    Graph g = Graph(&nodes, &edges);
-    emit doneDrawingGraph(&g);
+    Graph* g = new Graph(&nodes, &edges);
+    emit doneDrawingGraph(g);
 }
 
 void DrawGraph::deleteFromNeighbours(Node* n)

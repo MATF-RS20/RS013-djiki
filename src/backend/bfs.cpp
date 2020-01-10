@@ -1,8 +1,19 @@
 #include "bfs.hpp"
 #include <queue>
 
+BFS::BFS()
+    : GraphAlgorithm()
+{
+    definePseudocode();
+}
+
 BFS::BFS(Graph *g)
     : GraphAlgorithm(g)
+{
+    definePseudocode();
+}
+
+void BFS::definePseudocode()
 {
     code.setInput("Graph G, starting node and target node");
     code.setOutput("Shortest path from the starting node to the target node in graph G (if such path exists)");
