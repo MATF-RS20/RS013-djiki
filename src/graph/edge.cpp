@@ -37,22 +37,35 @@ QPainterPath Edge::shape() const
 {
     std::pair<QPointF, QPointF> currentCoords = getCurrentNodeCoords();
     QLineF line(currentCoords.first, currentCoords.second);
-    line.translate(QPointF(-10, -10));
-    QPointF topLeft = line.p1();
-    QPointF topRight = line.p2();
-
-    line.translate(QPointF(20, 20));
-    QPointF bottomLeft = line.p1();
-    QPointF bottomRight = line.p2();
 
     QPolygonF poly;
-    poly << currentCoords.second
-         << currentCoords.first
-         << topLeft
-         << topRight
-         << bottomRight
-         << bottomLeft
-         << currentCoords.first;
+    if (start == end)
+    {
+        line.translate(QPointF(-20, 30));
+
+        poly << currentCoords.first
+             << currentCoords.second
+             << line.p2()
+             << line.p1();
+    }
+    else
+    {
+        line.translate(QPointF(-10, -10));
+        QPointF topLeft = line.p1();
+        QPointF topRight = line.p2();
+
+        line.translate(QPointF(20, 20));
+        QPointF bottomLeft = line.p1();
+        QPointF bottomRight = line.p2();
+
+        poly << currentCoords.second
+             << currentCoords.first
+             << topLeft
+             << topRight
+             << bottomRight
+             << bottomLeft
+             << currentCoords.first;
+    }
 
     QPainterPath path;
     path.addPolygon(poly);

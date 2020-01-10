@@ -30,7 +30,8 @@ SOURCES += \
     src/gui/mainwindow.cpp \
     src/gui/algograph.cpp \
     src/gui/codegraph.cpp \
-    src/gui/graphcodeedit.cpp
+    src/gui/graphcodeedit.cpp \
+    tests/graph_tests.cpp
 
 HEADERS += \
     src/backend/bfs.hpp \
@@ -48,7 +49,8 @@ HEADERS += \
     src/gui/mainwindow.hpp \
     src/gui/algograph.hpp \
     src/gui/codegraph.hpp \
-    src/gui/graphcodeedit.hpp
+    src/gui/graphcodeedit.hpp \
+    tests/testing.hpp
 
 FORMS += \
     src/graph/drawgraph.ui \

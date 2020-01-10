@@ -207,20 +207,21 @@ void DrawGraph::onClearGraph()
     if (directions->isVisible())
         directions->setVisible(false);
 
-    for (const auto& n : nodes)
-    {
-        ui->graphicsView->scene()->removeItem(n);
-        delete n;
-    }
-    nodes.clear();
-    selectedNodes.clear();
-
     for (const auto& e : edges)
     {
         ui->graphicsView->scene()->removeItem(e);
         delete e;
     }
     edges.clear();
+
+    for (const auto& n : nodes)
+    {
+        ui->graphicsView->scene()->removeItem(n);
+        delete n;
+    }
+
+    nodes.clear();
+    selectedNodes.clear();
 
     Node::numberOfNodes = 0;
     Node::deletedNumbers.clear();
@@ -291,4 +292,14 @@ void DrawGraph::removeEdge(Edge *e)
         edges.erase(it);
 
     e->deleteLater();
+}
+
+QVector<Node *> DrawGraph::getNodes() const
+{
+    return nodes;
+}
+
+QVector<Edge *> DrawGraph::getEdges() const
+{
+    return edges;
 }

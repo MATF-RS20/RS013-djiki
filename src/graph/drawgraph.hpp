@@ -22,6 +22,9 @@ public:
     void mousePressEvent(QMouseEvent* event) override;
     void resizeEvent(QResizeEvent *event) override;
 
+    QVector<Node*> getNodes() const;
+    QVector<Edge*> getEdges() const;
+
     ~DrawGraph() override;
 
 public Q_SLOTS:
