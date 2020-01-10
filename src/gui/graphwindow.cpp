@@ -92,6 +92,11 @@ void GraphWindow::changeRightDockWindow()
     if(isChild("algoGraph"))
     {
         name = algoGraph->getAlgoName();
+
+        algorithmInstance = algoGraph->getAlgorithmInstance();
+        algorithmInstance->setGraph(*currentGraph);
+        executeAlgorithm(algorithmInstance);
+
         deleteChildren();
         setCodeGraphAtRightDockWindow();
     }
@@ -241,9 +246,12 @@ void GraphWindow::paintEvent(QPaintEvent *event)
 void GraphWindow::setGraph(Graph* g)
 {
     this->currentGraph = g;
-    BFS* algo = new BFS(this->currentGraph);
-    executeAlgorithm(algo);
+}
 
+Graph* GraphWindow::getGraph()
+{
+    qDebug() << currentGraph->getGraphSize();
+    return currentGraph;
 }
 
 void GraphWindow::executeAlgorithm(GraphAlgorithm* algorithmInstance)

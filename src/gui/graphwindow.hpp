@@ -27,6 +27,7 @@ public:
     const static int triangleWidth = 50;
     const static int buttonWidth = 150;
     const static int buttonHeight = 40;
+    Graph* getGraph();
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
@@ -58,6 +59,7 @@ private:
     AlgoGraph *algoGraph;
     CodeGraph *codeGraph;
     Graph *currentGraph;
+    GraphAlgorithm* algorithmInstance;
 
     QDockWidget *dockRight;
     QDockWidget *dockTop;

@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QKeyEvent>
+#include "../backend/graphalgorithm.hpp"
 
 namespace Ui {
 class AlgoGraph;
@@ -16,6 +17,7 @@ public:
     explicit AlgoGraph(QWidget *parent = 0);
     ~AlgoGraph();
     QString getAlgoName();
+    GraphAlgorithm* getAlgorithmInstance();
 
 private slots:
     void on_pushButtonAStar_clicked();
@@ -28,6 +30,7 @@ private slots:
 private:
     Ui::AlgoGraph *ui;
     QString algoName;
+    GraphAlgorithm* algorithmInstance;
 };
 
 #endif // ALGOGRAPH_HPP
