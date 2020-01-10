@@ -41,6 +41,9 @@ GraphWindow::GraphWindow(QWidget *parent) :
                                "} ");
 
     animationSetup();
+
+//    QString path = "test.png";
+//    drawGraph->grab().save(path);
 }
 
 GraphWindow::~GraphWindow()
@@ -305,4 +308,28 @@ void GraphWindow::changePlaybackSpeed(int sliderValue)
     sliderValue -= slider->maximum() / 2 +1;
     sliderValue = 1000 * pow(2, -sliderValue);
     playback.second = sliderValue;
+}
+
+void GraphWindow::on_actionSave_As_Image_triggered()
+{
+    QString filter = "PNG (*.png)";
+    QString fileName = QFileDialog::getSaveFileName(this,
+                                                    tr("Save As Image"), "",
+                                                    tr("JPEG (*.jpg, *.jpeg);;PNG (*.png)"),
+                                                    &filter);
+    if(!fileName.contains("."))
+        fileName.append(QString(".png"));
+
+    if(fileName.isEmpty())
+        return;
+    else
+    {
+        QFile file(fileName);
+        if(!file.open(QIODevice::WriteOnly))
+        {
+            QMessageBox::information(this, tr("Unable to open file"), file.errorString());
+            return;
+        }
+        drawGraph->grab().save(&file);
+    }
 }

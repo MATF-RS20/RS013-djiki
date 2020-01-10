@@ -47,6 +47,8 @@ private slots:
     void on_actionStop_triggered();
     void changePlaybackSpeed(int);
 
+    void on_actionSave_As_Image_triggered();
+
 private:
     void createDockWindows();
     void createTopDockWindow();
