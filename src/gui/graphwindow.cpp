@@ -242,7 +242,13 @@ void GraphWindow::setGraph(Graph* g)
 {
     this->currentGraph = g;
     BFS* algo = new BFS(this->currentGraph);
-    auto thread = new GraphAlgorithmExecutorThread(algo);
+    executeAlgorithm(algo);
+
+}
+
+void GraphWindow::executeAlgorithm(GraphAlgorithm* algorithmInstance)
+{
+    auto thread = new GraphAlgorithmExecutorThread(algorithmInstance);
     QObject::connect(thread, SIGNAL(graphAlgorithmFinished(GraphAlgorithm*)),
                      this, SLOT(graphAlgorithmFinished(GraphAlgorithm*)));
 

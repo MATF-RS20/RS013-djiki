@@ -51,6 +51,7 @@ private:
     bool isChild(const QString &str);
     void deleteChildren();
     void animationSetup();
+    void executeAlgorithm(GraphAlgorithm* algorithmInstance);
 
     Ui::GraphWindow *ui;
     DrawGraph *drawGraph;
