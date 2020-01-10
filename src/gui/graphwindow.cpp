@@ -25,7 +25,7 @@ GraphWindow::GraphWindow(QWidget *parent) :
 
     setWindowTitle(tr("Graph Window"));
 
-    this->installEventFilter(this);
+    //this->installEventFilter(this);
 
     slider = new QSlider(Qt::Horizontal, this);
     slider->setMinimum(1);
@@ -64,6 +64,19 @@ void GraphWindow::pushButtonReturn_clicked()
 void GraphWindow::enableRightDockWindow()
 {
     dockRight->setDisabled(false);
+}
+
+void GraphWindow::animateRightDockWindow()
+{
+    group->blockSignals(true);
+    group->start();
+    group->blockSignals(false);
+    connect(group, SIGNAL(currentAnimationChanged(QAbstractAnimation*)), this, SLOT(changeRightDockWindow()), Qt::UniqueConnection);
+
+    group2->blockSignals(true);
+    group2->start();
+    group2->blockSignals(false);
+    connect(group2, SIGNAL(currentAnimationChanged(QAbstractAnimation*)), this, SLOT(changeRightDockWindow()), Qt::UniqueConnection);
 }
 
 void GraphWindow::createDockWindows()
@@ -194,38 +207,20 @@ void GraphWindow::animationSetup()
     group2->addAnimation(showAlgo);
 }
 
-bool GraphWindow::eventFilter(QObject *watched, QEvent *event)
+void GraphWindow::mousePressEvent(QMouseEvent *event)
 {
-    if(this == watched && event->type() == QEvent::KeyPress)
+    if(event->button() == Qt::LeftButton)
     {
-        QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
-        if(keyEvent->key() == Qt::Key_Alt)
-        {
-            if(num == 0)
-            {
-                group->blockSignals(true);
-                group->start();
-                group->blockSignals(false);
-                connect(group, SIGNAL(currentAnimationChanged(QAbstractAnimation*)), this, SLOT(changeRightDockWindow()), Qt::UniqueConnection);
-                num++;
-                return true;
-            }
-            else
-            {
-                group2->blockSignals(true);
-                group2->start();
-                group2->blockSignals(false);
-                connect(group2, SIGNAL(currentAnimationChanged(QAbstractAnimation*)), this, SLOT(changeRightDockWindow()), Qt::UniqueConnection);
-                num--;
-                return true;
-            }
-        }
-        else
-        {
-            return false;
-        }
+        group->blockSignals(true);
+        group->start();
+        group->blockSignals(false);
+        connect(group, SIGNAL(currentAnimationChanged(QAbstractAnimation*)), this, SLOT(changeRightDockWindow()), Qt::UniqueConnection);
+
+        group2->blockSignals(true);
+        group2->start();
+        group2->blockSignals(false);
+        connect(group2, SIGNAL(currentAnimationChanged(QAbstractAnimation*)), this, SLOT(changeRightDockWindow()), Qt::UniqueConnection);
     }
-    return false;
 }
 
 void GraphWindow::paintEvent(QPaintEvent *event)

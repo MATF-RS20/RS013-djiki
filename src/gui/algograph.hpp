@@ -2,7 +2,7 @@
 #define ALGOGRAPH_HPP
 
 #include <QWidget>
-#include <QKeyEvent>
+#include <QMouseEvent>
 #include "../backend/graphalgorithm.hpp"
 
 namespace Ui {

@@ -32,12 +32,13 @@ public:
     static QMutex playbackMutex;
 
 protected:
-    bool eventFilter(QObject *watched, QEvent *event);
+    void mousePressEvent(QMouseEvent* event) override;
     void paintEvent(QPaintEvent *event);
 
 private slots:
     void pushButtonReturn_clicked();
     void enableRightDockWindow();
+    void animateRightDockWindow();
     void changeRightDockWindow();
     void setGraph(Graph *g);
     void graphAlgorithmFinished(GraphAlgorithm* algo);

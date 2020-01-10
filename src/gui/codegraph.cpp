@@ -15,7 +15,8 @@ CodeGraph::~CodeGraph()
 
 void CodeGraph::on_pushButtonReturn_clicked()
 {
-    QKeyEvent *event = new QKeyEvent(QEvent::KeyPress, Qt::Key_Alt, Qt::NoModifier);
+    QPoint pos(this->width()/2, this->height()/2);
+    QMouseEvent *event = new QMouseEvent(QEvent::MouseButtonPress, pos, Qt::MouseButton::LeftButton, Qt::MouseButton::LeftButton, Qt::KeyboardModifier::NoModifier);
     QCoreApplication::postEvent(this->parent(), event);
 }
 
