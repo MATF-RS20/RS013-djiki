@@ -124,7 +124,7 @@ void GraphWindow::setCodeGraphAtRightDockWindow()
     codeGraph->setObjectName("codeGraph");
     dockRight->setWidget(codeGraph);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
-    codeGraph->setText(name);
+    codeGraph->setText(name, algorithmInstance->getPseudoCodeHTML());
 }
 
 bool GraphWindow::isChild(const QString &str)
@@ -270,6 +270,9 @@ void GraphWindow::executeAlgorithm(GraphAlgorithm* algorithmInstance)
 void GraphWindow::graphAlgorithmFinished(GraphAlgorithm* algo)
 {
     auto thread = new GraphAlgorithmDrawingThread(algo);
+    QObject::connect(thread, SIGNAL(updateHTML(QString)),
+                     this->codeGraph, SLOT(updateHTML(QString)));
+
     QObject::connect(thread, &GraphAlgorithmDrawingThread::graphAlgorithmDrawingFinished,
                      thread, &QObject::deleteLater,
                      Qt::QueuedConnection);

@@ -26,5 +26,5 @@ void GraphAlgorithmDrawingThread::animateCurrentState(GraphState currentState)
 
 void GraphAlgorithmDrawingThread::highlightCurrentPseudocodeLine(unsigned line)
 {
-    qDebug() << algorithm->getPseudoCodeHTML(line);
+    emit updateHTML(algorithm->getPseudoCodeHTML(line));
 }
