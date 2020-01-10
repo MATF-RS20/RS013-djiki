@@ -28,6 +28,8 @@ public:
     const static int buttonWidth = 150;
     const static int buttonHeight = 40;
     Graph* getGraph();
+    static QPair<int, unsigned> playback;
+    static QMutex playbackMutex;
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
@@ -42,6 +44,7 @@ private slots:
     void on_actionPlay_triggered();
     void on_actionPause_triggered();
     void on_actionStop_triggered();
+    void changePlaybackSpeed(int);
 
 private:
     void createDockWindows();

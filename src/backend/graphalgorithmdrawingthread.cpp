@@ -1,5 +1,6 @@
 #include "graphalgorithmdrawingthread.hpp"
 #include <QDebug>
+#include "../gui/graphwindow.hpp"
 
 GraphAlgorithmDrawingThread::GraphAlgorithmDrawingThread(GraphAlgorithm* algorithmInstance)
     : algorithm(algorithmInstance)
@@ -8,12 +9,14 @@ GraphAlgorithmDrawingThread::GraphAlgorithmDrawingThread(GraphAlgorithm* algorit
 void GraphAlgorithmDrawingThread::run()
 {
     //TODO check mutex for play/pause/speed change in every iteration
-    unsigned delay = 1;
     QVector<GraphState> states = algorithm->getStates();
     for(auto currentState : states){ 
         animateCurrentState(currentState);
         highlightCurrentPseudocodeLine(currentState.currentLine);
-        sleep(delay);
+
+
+        unsigned delay = GraphWindow::playback.second;
+        QThread::msleep(delay);
     }
 
     emit graphAlgorithmDrawingFinished();

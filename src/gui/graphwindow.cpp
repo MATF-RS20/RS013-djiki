@@ -5,10 +5,14 @@
 #include "../backend/graphalgorithmexecutorthread.hpp"
 #include "../backend/graphalgorithmdrawingthread.hpp"
 
+QMutex GraphWindow::playbackMutex;
+QPair<int, unsigned> GraphWindow::playback(-1, 1000);
+
 GraphWindow::GraphWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::GraphWindow)
 {
+    playbackMutex.lock();
     ui->setupUi(this);
     this->resize(this->width() * 1.3, this->height() * 1.3);
 
@@ -24,6 +28,11 @@ GraphWindow::GraphWindow(QWidget *parent) :
     this->installEventFilter(this);
 
     slider = new QSlider(Qt::Horizontal, this);
+    slider->setMinimum(1);
+    slider->setMaximum(7);
+    slider->setTickInterval(1);
+    slider->setValue(4);
+    connect(slider, SIGNAL(valueChanged(int)), this, SLOT(changePlaybackSpeed(int)));
     ui->toolBar->addWidget(slider);
     ui->toolBar->setMovable(false);
     ui->toolBar->setStyleSheet("QSlider::handle:horizontal {"
@@ -283,15 +292,22 @@ void GraphWindow::graphAlgorithmFinished(GraphAlgorithm* algo)
 
 void GraphWindow::on_actionPlay_triggered()
 {
-
+    playback.first = 1;
 }
 
 void GraphWindow::on_actionPause_triggered()
 {
-
+    playback.first = 0;
 }
 
 void GraphWindow::on_actionStop_triggered()
 {
+    playback.first = -1;
+}
 
+void GraphWindow::changePlaybackSpeed(int sliderValue)
+{
+    sliderValue -= slider->maximum() / 2 +1;
+    sliderValue = 1000 * pow(2, -sliderValue);
+    playback.second = sliderValue;
 }
