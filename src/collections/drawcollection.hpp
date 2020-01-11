@@ -13,10 +13,19 @@ class DrawCollection : public QWidget
 
 public:
     explicit DrawCollection(QWidget *parent = nullptr);
-    ~DrawCollection();
+
+    void mousePressEvent(QMouseEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
+
+    ~DrawCollection() override;
 
 private:
     Ui::DrawCollection *ui;
+    void initializeScene();
+    std::pair<qreal, qreal> getWindowSize() const;
+
+    template <typename T>
+    QGraphicsProxyWidget* createCheckBoxBtnOrLabel(const QString& label, const QPointF& position, QFont font);
 };
 
 #endif // DRAWCOLLECTION_HPP
