@@ -1,0 +1,17 @@
+Input: Graph G, starting node and target node
+Output: Shortest path from the starting node to the target node in graph G (if such path exists)
+
+1. Put only starting node in the OPEN list
+2. While the OPEN list is not empty
+3. 	Take form the open list the node N (current node) with the best (lowest) f(N)
+4. 	If n is target node
+5. 		Then inform that the path has been found and reconstruct it (going backwards from the target node)
+6. 	For every descendant M of node N do
+7. 		If M is not in OPEN or CLOSED list
+8. 			Then add M in OPEN list and mark N as his parent.
+Calculate f(M) and join it to node M
+9. 		Else
+10. 			If path from starting node to node M via node N is better (shorter or cheaper) then existing path to M (current value of g(M))
+11. 				Then remeber N as parent of M, update f(M) and if M was in CLOSE list move it to OPEN list
+12. 	Delete N from OPEN list and add it to CLOSE list
+13. Inform that requested path doesn't exist
