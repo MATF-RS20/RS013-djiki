@@ -4,6 +4,7 @@
 #include "../backend/bfs.hpp"
 #include "../backend/graphalgorithmexecutorthread.hpp"
 #include "../backend/graphalgorithmdrawingthread.hpp"
+#include "ui_drawgraph.h"
 
 QMutex GraphWindow::playbackMutex;
 QPair<int, unsigned> GraphWindow::playback(-1, 1000);
@@ -323,13 +324,45 @@ void GraphWindow::on_actionSave_As_Image_triggered()
     if(!fileName.contains("."))
         fileName.append(QString(".png"));
 
+
     QFile file(fileName);
     if(!file.open(QIODevice::WriteOnly))
     {
         QMessageBox::information(this, tr("Unable to open file"), file.errorString());
         return;
     }
+
+    QGraphicsProxyWidget* doneItem = drawGraph->getDoneItem();
+    QGraphicsProxyWidget* helpItem = drawGraph->getHelpItem();
+    QGraphicsProxyWidget* clearItem = drawGraph->getClearItem();
+    QGraphicsTextItem* directions = drawGraph->getDirections();
+    Ui::drawGraph* ui = drawGraph->getUi();
+
+    doneItem->setVisible(false);
+    helpItem->setVisible(false);
+    clearItem->setVisible(false);
+
+    bool returnDirections = false;
+    if (directions->isVisible())
+    {
+        directions->setVisible(false);
+        returnDirections = true;
+    }
+
+    ui->graphicsView->horizontalScrollBar()->hide();
+    ui->graphicsView->verticalScrollBar()->hide();
+
     drawGraph->grab().save(&file);
+
+    doneItem->setVisible(true);
+    helpItem->setVisible(true);
+    clearItem->setVisible(true);
+
+    if (returnDirections)
+        directions->setVisible(true);
+
+    ui->graphicsView->horizontalScrollBar()->show();
+    ui->graphicsView->verticalScrollBar()->show();
 }
 
 void GraphWindow::on_actionExit_triggered()

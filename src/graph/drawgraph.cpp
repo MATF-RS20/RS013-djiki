@@ -308,3 +308,28 @@ QTimer* DrawGraph::getAnimationTimer() const
 {
     return animationTimer;
 }
+
+Ui::drawGraph* DrawGraph::getUi() const
+{
+    return ui;
+}
+
+QGraphicsProxyWidget* DrawGraph::getClearItem() const
+{
+    return clearItem;
+}
+
+QGraphicsProxyWidget* DrawGraph::getHelpItem() const
+{
+    return helpItem;
+}
+
+QGraphicsProxyWidget* DrawGraph::getDoneItem() const
+{
+    return doneItem;
+}
+
+QGraphicsTextItem* DrawGraph::getDirections() const
+{
+    return directions;
+}

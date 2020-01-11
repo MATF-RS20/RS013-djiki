@@ -26,6 +26,12 @@ public:
     QVector<Edge*> getEdges() const;
     QTimer* getAnimationTimer() const;
 
+    Ui::drawGraph* getUi() const;
+    QGraphicsProxyWidget* getClearItem() const;
+    QGraphicsProxyWidget* getHelpItem() const;
+    QGraphicsProxyWidget* getDoneItem() const;
+    QGraphicsTextItem* getDirections() const;
+
     ~DrawGraph() override;
 
 public Q_SLOTS:
@@ -46,17 +52,17 @@ Q_SIGNALS:
     void doneDrawingGraph(Graph *g);
 
 private:
-    Ui::drawGraph* ui;
     void initializeScene();
+    Ui::drawGraph* ui;
 
     template <typename T>
     QGraphicsProxyWidget* createCheckBoxBtnOrLabel(const QString& label, const QPointF& position, QFont font);
-    QGraphicsProxyWidget* clearItem;
-    QGraphicsProxyWidget* helpItem;
-    QGraphicsProxyWidget* doneItem;
     bool finished;
 
     QString drawDirections(QFont font);
+    QGraphicsProxyWidget* clearItem;
+    QGraphicsProxyWidget* helpItem;
+    QGraphicsProxyWidget* doneItem;
     QGraphicsTextItem* directions;
 
     QVector<Node*> nodes;
