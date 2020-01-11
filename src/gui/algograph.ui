@@ -28,7 +28,7 @@
         </sizepolicy>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(85, 153, 255);</string>
+        <string notr="true"/>
        </property>
        <property name="text">
         <string>A*</string>

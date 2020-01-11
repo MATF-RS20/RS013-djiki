@@ -43,8 +43,20 @@
      <addaction name="actionPause"/>
      <addaction name="actionStop"/>
     </widget>
+    <widget class="QMenu" name="menuChange_Theme">
+     <property name="title">
+      <string>Change Theme</string>
+     </property>
+     <addaction name="actionCombinear"/>
+     <addaction name="actionDarkeum"/>
+     <addaction name="actionDiffnes"/>
+     <addaction name="actionIntegrid"/>
+     <addaction name="actionMedize"/>
+    </widget>
     <addaction name="separator"/>
     <addaction name="menuAnimation"/>
+    <addaction name="separator"/>
+    <addaction name="menuChange_Theme"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -77,6 +89,9 @@
    <addaction name="actionStop"/>
   </widget>
   <action name="actionPlay">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="images/images.qrc">
      <normaloff>:/images/control_play.png</normaloff>:/images/control_play.png</iconset>
@@ -117,6 +132,31 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionDiffnes">
+   <property name="text">
+    <string>Diffnes</string>
+   </property>
+  </action>
+  <action name="actionCombinear">
+   <property name="text">
+    <string>Combinear</string>
+   </property>
+  </action>
+  <action name="actionDarkeum">
+   <property name="text">
+    <string>Darkeum</string>
+   </property>
+  </action>
+  <action name="actionIntegrid">
+   <property name="text">
+    <string>Integrid</string>
+   </property>
+  </action>
+  <action name="actionMedize">
+   <property name="text">
+    <string>Medize</string>
    </property>
   </action>
  </widget>

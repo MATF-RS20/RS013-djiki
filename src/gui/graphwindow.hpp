@@ -48,6 +48,11 @@ private slots:
     void changePlaybackSpeed(int);
     void on_actionSave_As_Image_triggered();
     void on_actionExit_triggered();
+    void on_actionDiffnes_triggered();
+    void on_actionCombinear_triggered();
+    void on_actionDarkeum_triggered();
+    void on_actionIntegrid_triggered();
+    void on_actionMedize_triggered();
 
 private:
     void createDockWindows();
@@ -59,6 +64,7 @@ private:
     void deleteChildren();
     void animationSetup();
     void executeAlgorithm(GraphAlgorithm* algorithmInstance);
+    void setTheme(QFile *file);
 
     Ui::GraphWindow *ui;
     DrawGraph *drawGraph;

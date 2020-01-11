@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/stylesheets">
+        <file>Diffnes.qss</file>
+        <file>Combinear.qss</file>
+        <file>Integrid.qss</file>
+        <file>Medize.qss</file>
+        <file>Darkeum.qss</file>
+    </qresource>
+</RCC>

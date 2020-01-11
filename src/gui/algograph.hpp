@@ -18,6 +18,7 @@ public:
     ~AlgoGraph();
     QString getAlgoName();
     GraphAlgorithm* getAlgorithmInstance();
+    Ui::AlgoGraph* getUi() const;
 
 private slots:
     void on_pushButtonAStar_clicked();

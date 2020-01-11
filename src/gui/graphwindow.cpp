@@ -16,6 +16,8 @@ GraphWindow::GraphWindow(QWidget *parent) :
     playbackMutex.lock();
     ui->setupUi(this);
     this->resize(this->width() * 1.3, this->height() * 1.3);
+    this->setStyleSheet("background-color: rgb(13, 13, 23); "
+                        "color: rgb(239, 235, 231);");
 
     drawGraph = new DrawGraph(this);
     setCentralWidget(drawGraph);
@@ -25,8 +27,6 @@ GraphWindow::GraphWindow(QWidget *parent) :
     createDockWindows();
 
     setWindowTitle(tr("Graph Window"));
-
-    //this->installEventFilter(this);
 
     slider = new QSlider(Qt::Horizontal, this);
     slider->setMinimum(1);
@@ -274,6 +274,18 @@ void GraphWindow::executeAlgorithm(GraphAlgorithm* algorithmInstance)
     thread->start();
 }
 
+void GraphWindow::setTheme(QFile *file)
+{
+    this->setStyleSheet(QString());
+    ui->toolBar->setStyleSheet(QString());
+    Ui::AlgoGraph *ui = algoGraph->getUi();
+
+    file->open(QFile::ReadOnly | QFile::Text);
+    QTextStream stream(file);
+    this->setStyleSheet(stream.readAll());
+    file->close();
+}
+
 void GraphWindow::graphAlgorithmFinished(GraphAlgorithm* algo)
 {
     auto thread = new GraphAlgorithmDrawingThread(algo);
@@ -368,4 +380,34 @@ void GraphWindow::on_actionSave_As_Image_triggered()
 void GraphWindow::on_actionExit_triggered()
 {
     QApplication::quit();
+}
+
+void GraphWindow::on_actionDiffnes_triggered()
+{
+    QFile file(":/stylesheets/Diffnes.qss");
+    setTheme(&file);
+}
+
+void GraphWindow::on_actionCombinear_triggered()
+{
+    QFile file(":/stylesheets/Combinear.qss");
+    setTheme(&file);
+}
+
+void GraphWindow::on_actionDarkeum_triggered()
+{
+    QFile file(":/stylesheets/Darkeum.qss");
+    setTheme(&file);
+}
+
+void GraphWindow::on_actionIntegrid_triggered()
+{
+    QFile file(":/stylesheets/Integrid.qss");
+    setTheme(&file);
+}
+
+void GraphWindow::on_actionMedize_triggered()
+{
+    QFile file(":/stylesheets/Medize.qss");
+    setTheme(&file);
 }

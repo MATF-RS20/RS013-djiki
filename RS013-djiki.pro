@@ -62,7 +62,8 @@ FORMS += \
     src/gui/graphcodeedit.ui
 
 RESOURCES += \
-    src/gui/images/images.qrc
+    src/gui/images/images.qrc \
+    src/gui/stylesheets/stylesheets.qrc
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
