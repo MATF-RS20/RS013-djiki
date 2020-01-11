@@ -41,7 +41,7 @@ private slots:
     void animateRightDockWindow();
     void changeRightDockWindow();
     void setGraph(Graph *g);
-    void graphAlgorithmFinished(GraphAlgorithm* algo);
+    void startAlgorithmPlayback(GraphAlgorithm* algo);
     void on_actionPlay_triggered();
     void on_actionPause_triggered();
     void on_actionStop_triggered();
@@ -86,6 +86,13 @@ private:
 
     int num = 0;
     QString name;
+};
+
+enum playbackSettings
+{
+    play,
+    pause,
+    stop
 };
 
 #endif // GRAPHWINDOW_HPP

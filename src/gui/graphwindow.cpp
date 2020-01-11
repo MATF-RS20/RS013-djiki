@@ -7,13 +7,12 @@
 #include "ui_drawgraph.h"
 
 QMutex GraphWindow::playbackMutex;
-QPair<int, unsigned> GraphWindow::playback(-1, 1000);
+QPair<int, unsigned> GraphWindow::playback(1, 1000);
 
 GraphWindow::GraphWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::GraphWindow)
 {
-    playbackMutex.lock();
     ui->setupUi(this);
     this->resize(this->width() * 1.3, this->height() * 1.3);
     this->setStyleSheet("background-color: rgb(13, 13, 23); "
@@ -265,7 +264,7 @@ void GraphWindow::executeAlgorithm(GraphAlgorithm* algorithmInstance)
 {
     auto thread = new GraphAlgorithmExecutorThread(algorithmInstance);
     QObject::connect(thread, SIGNAL(graphAlgorithmFinished(GraphAlgorithm*)),
-                     this, SLOT(graphAlgorithmFinished(GraphAlgorithm*)));
+                     this, SLOT(startAlgorithmPlayback(GraphAlgorithm*)));
 
     QObject::connect(thread, &GraphAlgorithmExecutorThread::graphAlgorithmFinished,
                      thread, &QObject::deleteLater,
@@ -286,7 +285,7 @@ void GraphWindow::setTheme(QFile *file)
     file->close();
 }
 
-void GraphWindow::graphAlgorithmFinished(GraphAlgorithm* algo)
+void GraphWindow::startAlgorithmPlayback(GraphAlgorithm* algo)
 {
     auto thread = new GraphAlgorithmDrawingThread(algo);
     QObject::connect(thread, SIGNAL(updateHTML(QString)),
@@ -302,17 +301,29 @@ void GraphWindow::graphAlgorithmFinished(GraphAlgorithm* algo)
 
 void GraphWindow::on_actionPlay_triggered()
 {
-    playback.first = 1;
+    if(playback.first == stop && isChild("codeGraph")){
+        playback.first = play;
+        startAlgorithmPlayback(algorithmInstance);
+    }
+    playbackMutex.try_lock();
+    playback.first = play;
+    playbackMutex.unlock();
 }
 
 void GraphWindow::on_actionPause_triggered()
 {
-    playback.first = 0;
+    playbackMutex.try_lock();
+    playback.first = pause;
 }
 
 void GraphWindow::on_actionStop_triggered()
 {
-    playback.first = -1;
+    playbackMutex.try_lock();
+    playback.first = stop;
+    playbackMutex.unlock();
+
+    if(isChild("codeGraph"))
+        codeGraph->setText(name, algorithmInstance->getPseudoCodeHTML());
 }
 
 void GraphWindow::changePlaybackSpeed(int sliderValue)

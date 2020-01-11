@@ -11,6 +11,12 @@ void GraphAlgorithmDrawingThread::run()
     //TODO check mutex for play/pause/speed change in every iteration
     QVector<GraphState> states = algorithm->getStates();
     for(auto currentState : states){ 
+
+        GraphWindow::playbackMutex.lock();
+        if(GraphWindow::playback.first == stop)
+            break;
+        GraphWindow::playbackMutex.unlock();
+
         animateCurrentState(currentState);
         highlightCurrentPseudocodeLine(currentState.currentLine);
 
