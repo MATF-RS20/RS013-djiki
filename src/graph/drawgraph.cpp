@@ -131,6 +131,8 @@ DrawGraph::~DrawGraph()
     onClearGraph();
 
     ui->graphicsView->scene()->clear();
+
+    delete ui;
 }
 
 void DrawGraph::drawEdge(Node* node)

@@ -20,6 +20,7 @@ SOURCES += \
     src/backend/graphalgorithm.cpp \
     src/backend/graphalgorithmdrawingthread.cpp \
     src/backend/graphalgorithmexecutorthread.cpp \
+    src/collections/drawcollection.cpp \
     src/graph/drawgraph.cpp \
     src/graph/edge.cpp \
     src/graph/graph.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
     src/backend/graphalgorithmexecutorthread.hpp \
     src/backend/graphstate.hpp \
     src/backend/pseudocode.hpp \
+    src/collections/drawcollection.hpp \
     src/graph/drawgraph.hpp \
     src/graph/edge.hpp \
     src/graph/graph.hpp \
@@ -53,6 +55,7 @@ HEADERS += \
     tests/testing.hpp
 
 FORMS += \
+    src/collections/drawcollection.ui \
     src/graph/drawgraph.ui \
     src/gui/collectionwindow.ui \
     src/gui/graphwindow.ui \
