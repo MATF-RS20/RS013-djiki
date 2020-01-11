@@ -179,6 +179,9 @@ void DrawGraph::drawEdge(Node* node)
 
     Edge* newEdge = new Edge(start, end, value, curve, this);
 
+    QObject::connect(newEdge, &Edge::edgeDeleted,
+                     this, &DrawGraph::removeEdge);
+
     QObject::connect(start, &Node::nodeMoved,
                      newEdge, &Edge::nodeMoved);
 

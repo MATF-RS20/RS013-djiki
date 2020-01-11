@@ -41,8 +41,6 @@ public Q_SLOTS:
     void deleteFromNeighbours(Node* n);
     /* Remove deleted edge from edges */
     void removeEdge(Edge* e);
-
-private Q_SLOTS:
     /* When user clicks 'done drawing graph' checkbox this slot receives signal */
     void onDoneDrawing();
     /* When user clicks 'Clear' button this slot receives signal */

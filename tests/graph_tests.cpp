@@ -27,7 +27,40 @@ TEST_CASE("Adding nodes")
     event.setLocalPos(QPointF(200, 200));
     drawG.mousePressEvent(&event);
 
-    REQUIRE(drawG.getNodes().size() == 2);
+    event.setLocalPos(QPointF(300, 300));
+    drawG.mousePressEvent(&event);
+
+    REQUIRE(drawG.getNodes().size() == 3);
+
+    QVector<Node*> nodes = drawG.getNodes();
+    QGraphicsSceneMouseEvent* mouseEvent = new QGraphicsSceneMouseEvent();
+
+    SECTION("Nodes without edges deletion")
+    {
+        mouseEvent->setButton(Qt::RightButton);
+        nodes[2]->mousePressEvent(mouseEvent);
+
+        CHECK(drawG.getNodes().size() == 2);
+    }
+
+    SECTION("Adding edges")
+    {
+        REQUIRE(drawG.getEdges().size() == 0);
+
+        mouseEvent->setButton(Qt::LeftButton);
+        mouseEvent->setModifiers(Qt::ControlModifier);
+        nodes[0]->mousePressEvent(mouseEvent);
+        nodes[1]->mousePressEvent(mouseEvent);
+    }
+
+    SECTION("On clear graph")
+    {
+        drawG.onClearGraph();
+
+        REQUIRE(drawG.getNodes().size() == 0);
+        REQUIRE(drawG.getEdges().size() == 0);
+    }
 }
+
 
 #endif
