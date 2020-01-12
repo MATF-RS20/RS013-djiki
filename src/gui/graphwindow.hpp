@@ -5,10 +5,10 @@
 #include <QPropertyAnimation>
 #include <QPushButton>
 #include <QtWidgets>
-#include "../graph/drawgraph.hpp"
+#include "../drawing/graph/drawgraph.hpp"
 #include "algograph.hpp"
 #include "codegraph.hpp"
-#include "../graph/graph.hpp"
+#include "../drawing/graph/graph.hpp"
 #include "../backend/bfs.hpp"
 
 #include <QSlider>

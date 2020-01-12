@@ -1,8 +1,8 @@
 #ifndef GRAPHSTATE_H
 #define GRAPHSTATE_H
 
-#include "../graph/node.hpp"
-#include "../graph/edge.hpp"
+#include "../drawing/graph/node.hpp"
+#include "../drawing/graph/edge.hpp"
 
 
 struct GraphState {

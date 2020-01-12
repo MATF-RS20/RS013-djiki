@@ -1,8 +1,8 @@
 #ifndef DRAWGRAPH_HPP
 #define DRAWGRAPH_HPP
 
-#include "../graph/node.hpp"
-#include "../graph/edge.hpp"
+#include "node.hpp"
+#include "edge.hpp"
 #include "graph.hpp"
 
 #include <QWidget>

@@ -20,13 +20,13 @@ SOURCES += \
     src/backend/graphalgorithm.cpp \
     src/backend/graphalgorithmdrawingthread.cpp \
     src/backend/graphalgorithmexecutorthread.cpp \
-    src/collections/connection.cpp \
-    src/collections/drawcollection.cpp \
-    src/collections/item.cpp \
-    src/graph/drawgraph.cpp \
-    src/graph/edge.cpp \
-    src/graph/graph.cpp \
-    src/graph/node.cpp \
+    src/drawing/collections/connection.cpp \
+    src/drawing/collections/drawcollection.cpp \
+    src/drawing/collections/item.cpp \
+    src/drawing/graph/drawgraph.cpp \
+    src/drawing/graph/edge.cpp \
+    src/drawing/graph/graph.cpp \
+    src/drawing/graph/node.cpp \
     src/gui/collectionwindow.cpp \
     src/gui/graphwindow.cpp \
     src/gui/main.cpp \
@@ -43,13 +43,13 @@ HEADERS += \
     src/backend/graphalgorithmexecutorthread.hpp \
     src/backend/graphstate.hpp \
     src/backend/pseudocode.hpp \
-    src/collections/connection.hpp \
-    src/collections/drawcollection.hpp \
-    src/collections/item.hpp \
-    src/graph/drawgraph.hpp \
-    src/graph/edge.hpp \
-    src/graph/graph.hpp \
-    src/graph/node.hpp \
+    src/drawing/collections/connection.hpp \
+    src/drawing/collections/drawcollection.hpp \
+    src/drawing/collections/item.hpp \
+    src/drawing/graph/drawgraph.hpp \
+    src/drawing/graph/edge.hpp \
+    src/drawing/graph/graph.hpp \
+    src/drawing/graph/node.hpp \
     src/gui/collectionwindow.hpp \
     src/gui/graphwindow.hpp \
     src/gui/mainwindow.hpp \
@@ -59,8 +59,8 @@ HEADERS += \
     tests/testing.hpp
 
 FORMS += \
-    src/collections/drawcollection.ui \
-    src/graph/drawgraph.ui \
+    src/drawing/collections/drawcollection.ui \
+    src/drawing/graph/drawgraph.ui \
     src/gui/collectionwindow.ui \
     src/gui/graphwindow.ui \
     src/gui/mainwindow.ui \

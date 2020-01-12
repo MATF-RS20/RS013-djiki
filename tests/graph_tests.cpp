@@ -4,9 +4,9 @@
 #include <QApplication>
 #include <QMouseEvent>
 
-#include "../src/graph/drawgraph.hpp"
-#include "../src/graph/node.hpp"
-#include "../src/graph/edge.hpp"
+#include "../src/drawing/graph/drawgraph.hpp"
+#include "../src/drawing/graph/node.hpp"
+#include "../src/drawing/graph/edge.hpp"
 #include "../src/gui/mainwindow.hpp"
 
 #ifdef UNIT_TESTS_ENABLED

@@ -1,4 +1,5 @@
-#include "../graph/node.hpp"
+#include "node.hpp"
+
 #include <QApplication>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>

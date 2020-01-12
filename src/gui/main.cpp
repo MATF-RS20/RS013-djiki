@@ -1,6 +1,6 @@
 #include "mainwindow.hpp"
 #include "../../tests/testing.hpp"
-#include "../collections/drawcollection.hpp"
+#include "../drawing/collections/drawcollection.hpp"
 
 #include <QApplication>
 
