@@ -307,11 +307,20 @@ void GraphWindow::startAlgorithmPlayback(GraphAlgorithm* algo)
                      this->codeGraph, SLOT(updateHTML(QString)));
 
     QObject::connect(thread, &GraphAlgorithmDrawingThread::graphAlgorithmDrawingFinished,
+                     this, &GraphWindow::playbackFinished,
+                     Qt::QueuedConnection);
+
+    QObject::connect(thread, &GraphAlgorithmDrawingThread::graphAlgorithmDrawingFinished,
                      thread, &QObject::deleteLater,
                      Qt::QueuedConnection);
 
     thread->start();
     //TODO delete algorithm on return to main menu
+}
+
+void GraphWindow::playbackFinished()
+{
+    playback.first = stop;
 }
 
 void GraphWindow::on_actionPlay_triggered()
