@@ -50,7 +50,7 @@ GraphWindow::~GraphWindow()
 
 void GraphWindow::pushButtonReturn_clicked()
 {
-    if(drawGraph->getAnimationTimer()->timerId() == -1)
+    if(drawGraph->getAnimationTimer()->timerId() != -1)
         drawGraph->getAnimationTimer()->stop();
     deleteChildren();
     delete drawGraph;
@@ -211,7 +211,7 @@ void GraphWindow::animationSetup()
 
 void GraphWindow::mousePressEvent(QMouseEvent *event)
 {
-    if(event->button() == Qt::LeftButton)
+    if(event->button() == Qt::LeftButton && event->screenPos() == QPoint(-1, -1))
     {
         group->blockSignals(true);
         group->start();
@@ -395,30 +395,45 @@ void GraphWindow::on_actionExit_triggered()
 
 void GraphWindow::on_actionDiffnes_triggered()
 {
-    QFile file(":/stylesheets/Diffnes.qss");
-    setTheme(&file);
+    if(isChild("algoGraph"))
+    {
+        QFile file(":/stylesheets/Diffnes.qss");
+        setTheme(&file);
+    }
 }
 
 void GraphWindow::on_actionCombinear_triggered()
 {
-    QFile file(":/stylesheets/Combinear.qss");
-    setTheme(&file);
+    if(isChild("algoGraph"))
+    {
+        QFile file(":/stylesheets/Combinear.qss");
+        setTheme(&file);
+    }
 }
 
 void GraphWindow::on_actionDarkeum_triggered()
 {
-    QFile file(":/stylesheets/Darkeum.qss");
-    setTheme(&file);
+    if(isChild("algoGraph"))
+    {
+        QFile file(":/stylesheets/Darkeum.qss");
+        setTheme(&file);
+    }
 }
 
 void GraphWindow::on_actionIntegrid_triggered()
 {
-    QFile file(":/stylesheets/Integrid.qss");
-    setTheme(&file);
+    if(isChild("algoGraph"))
+    {
+        QFile file(":/stylesheets/Integrid.qss");
+        setTheme(&file);
+    }
 }
 
 void GraphWindow::on_actionMedize_triggered()
 {
-    QFile file(":/stylesheets/Medize.qss");
-    setTheme(&file);
+    if(isChild("algoGraph"))
+    {
+        QFile file(":/stylesheets/Medize.qss");
+        setTheme(&file);
+    }
 }

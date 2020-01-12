@@ -21,7 +21,7 @@ void AlgoGraph::on_pushButtonAStar_clicked()
     algoName = "A*";
 
     QPoint pos(this->width()/2, this->height()/2);
-    QMouseEvent *event = new QMouseEvent(QEvent::MouseButtonPress, pos, Qt::MouseButton::LeftButton, Qt::MouseButton::LeftButton, Qt::KeyboardModifier::NoModifier);
+    QMouseEvent *event = new QMouseEvent(QEvent::MouseButtonPress, pos, QPoint(-1, -1), Qt::MouseButton::LeftButton, Qt::MouseButton::LeftButton, Qt::KeyboardModifier::NoModifier);
     QCoreApplication::postEvent(this->parent(), event);
 }
 
@@ -30,7 +30,7 @@ void AlgoGraph::on_pushButtonDijkstra_clicked()
     algoName = "Dijkstra";
 
     QPoint pos(this->width()/2, this->height()/2);
-    QMouseEvent *event = new QMouseEvent(QEvent::MouseButtonPress, pos, Qt::MouseButton::LeftButton, Qt::MouseButton::LeftButton, Qt::KeyboardModifier::NoModifier);
+    QMouseEvent *event = new QMouseEvent(QEvent::MouseButtonPress, pos, QPoint(-1, -1), Qt::MouseButton::LeftButton, Qt::MouseButton::LeftButton, Qt::KeyboardModifier::NoModifier);
     QCoreApplication::postEvent(this->parent(), event);
 }
 
@@ -39,7 +39,7 @@ void AlgoGraph::on_pushButtonDFS_clicked()
     algoName = "DFS";
 
     QPoint pos(this->width()/2, this->height()/2);
-    QMouseEvent *event = new QMouseEvent(QEvent::MouseButtonPress, pos, Qt::MouseButton::LeftButton, Qt::MouseButton::LeftButton, Qt::KeyboardModifier::NoModifier);
+    QMouseEvent *event = new QMouseEvent(QEvent::MouseButtonPress, pos, QPoint(-1, -1), Qt::MouseButton::LeftButton, Qt::MouseButton::LeftButton, Qt::KeyboardModifier::NoModifier);
     QCoreApplication::postEvent(this->parent(), event);
 }
 
@@ -49,7 +49,7 @@ void AlgoGraph::on_pushButtonBFS_clicked()
     algorithmInstance = new BFS();
 
     QPoint pos(this->width()/2, this->height()/2);
-    QMouseEvent *event = new QMouseEvent(QEvent::MouseButtonPress, pos, Qt::MouseButton::LeftButton, Qt::MouseButton::LeftButton, Qt::KeyboardModifier::NoModifier);
+    QMouseEvent *event = new QMouseEvent(QEvent::MouseButtonPress, pos, QPoint(-1, -1), Qt::MouseButton::LeftButton, Qt::MouseButton::LeftButton, Qt::KeyboardModifier::NoModifier);
     QCoreApplication::postEvent(this->parent(), event);
 }
 
@@ -58,13 +58,14 @@ void AlgoGraph::on_pushButtonFW_clicked()
     algoName = "FW";
 
     QPoint pos(this->width()/2, this->height()/2);
-    QMouseEvent *event = new QMouseEvent(QEvent::MouseButtonPress, pos, Qt::MouseButton::LeftButton, Qt::MouseButton::LeftButton, Qt::KeyboardModifier::NoModifier);
+    QMouseEvent *event = new QMouseEvent(QEvent::MouseButtonPress, pos, QPoint(-1, -1), Qt::MouseButton::LeftButton, Qt::MouseButton::LeftButton, Qt::KeyboardModifier::NoModifier);
     QCoreApplication::postEvent(this->parent(), event);
 }
 
 void AlgoGraph::on_pushButtonAdd_clicked()
 {
-    QKeyEvent *event = new QKeyEvent(QEvent::KeyPress, Qt::Key_Alt, Qt::NoModifier);
+    QPoint pos(this->width()/2, this->height()/2);
+    QMouseEvent *event = new QMouseEvent(QEvent::MouseButtonPress, pos, QPoint(-1, -1), Qt::MouseButton::LeftButton, Qt::MouseButton::LeftButton, Qt::KeyboardModifier::NoModifier);
     QCoreApplication::postEvent(this->parent(), event);
 }
 
