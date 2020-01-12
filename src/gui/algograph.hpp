@@ -32,6 +32,8 @@ private:
     Ui::AlgoGraph *ui;
     QString algoName;
     GraphAlgorithm* algorithmInstance;
+
+    void notifyParent();
 };
 
 #endif // ALGOGRAPH_HPP
