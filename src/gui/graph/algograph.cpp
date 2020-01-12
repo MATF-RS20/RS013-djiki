@@ -9,12 +9,26 @@ AlgoGraph::AlgoGraph(QWidget *parent) :
     ui(new Ui::AlgoGraph)
 {
     ui->setupUi(this);
-    ui->pushButtonAStar->setStyleSheet("background-color: rgb(85, 153, 255);");
 }
 
 AlgoGraph::~AlgoGraph()
 {
     delete ui;
+}
+
+QString AlgoGraph::getAlgoName()
+{
+    return AlgoGraph::algoName;
+}
+
+GraphAlgorithm* AlgoGraph::getAlgorithmInstance()
+{
+    return AlgoGraph::algorithmInstance;
+}
+
+Ui::AlgoGraph *AlgoGraph::getUi() const
+{
+    return ui;
 }
 
 void AlgoGraph::notifyParent()
@@ -62,22 +76,9 @@ void AlgoGraph::on_pushButtonFW_clicked()
     notifyParent();
 }
 
-void AlgoGraph::on_pushButtonAdd_clicked()
+void AlgoGraph::on_pushButtonPrim_clicked()
 {
+    algoName = "Prim";
+
     notifyParent();
-}
-
-QString AlgoGraph::getAlgoName()
-{
-    return AlgoGraph::algoName;
-}
-
-GraphAlgorithm* AlgoGraph::getAlgorithmInstance()
-{
-    return AlgoGraph::algorithmInstance;
-}
-
-Ui::AlgoGraph *AlgoGraph::getUi() const
-{
-    return ui;
 }

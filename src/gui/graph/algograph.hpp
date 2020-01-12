@@ -26,7 +26,7 @@ private slots:
     void on_pushButtonDFS_clicked();
     void on_pushButtonBFS_clicked();
     void on_pushButtonFW_clicked();
-    void on_pushButtonAdd_clicked();
+    void on_pushButtonPrim_clicked();
 
 private:
     Ui::AlgoGraph *ui;

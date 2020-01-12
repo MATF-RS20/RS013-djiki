@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AlgoGraph</class>
- <widget class="QWidget" name="AlgoGraph">
+ <class>AlgoCollection</class>
+ <widget class="QWidget" name="AlgoCollection">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -20,7 +20,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="pushButtonAStar">
+      <widget class="QPushButton" name="pushButtonBubbleSort">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -31,12 +31,12 @@
         <string notr="true">background-color: rgb(85, 153, 255);</string>
        </property>
        <property name="text">
-        <string>A*</string>
+        <string>Bubble Sort</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButtonDijkstra">
+      <widget class="QPushButton" name="pushButtonInsertionSort">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -47,7 +47,7 @@
         <string notr="true">background-color: rgb(85, 153, 255);</string>
        </property>
        <property name="text">
-        <string>Dijkstra</string>
+        <string>Insertion Sort</string>
        </property>
       </widget>
      </item>
@@ -56,7 +56,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QPushButton" name="pushButtonDFS">
+      <widget class="QPushButton" name="pushButtonMergeSort">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -67,12 +67,12 @@
         <string notr="true">background-color: rgb(85, 153, 255);</string>
        </property>
        <property name="text">
-        <string>DFS</string>
+        <string>Merge Sort</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButtonBFS">
+      <widget class="QPushButton" name="pushButtonSelectionSort">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -83,7 +83,7 @@
         <string notr="true">background-color: rgb(85, 153, 255);</string>
        </property>
        <property name="text">
-        <string>BFS</string>
+        <string>Selection Sort</string>
        </property>
       </widget>
      </item>
@@ -92,7 +92,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QPushButton" name="pushButtonFW">
+      <widget class="QPushButton" name="pushButtonBinarySearch">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -103,12 +103,12 @@
         <string notr="true">background-color: rgb(85, 153, 255);</string>
        </property>
        <property name="text">
-        <string>FW</string>
+        <string>Binary Search</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButtonPrim">
+      <widget class="QPushButton" name="pushButtonQuickSort">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -119,7 +119,7 @@
         <string notr="true">background-color: rgb(85, 153, 255);</string>
        </property>
        <property name="text">
-        <string>Prim</string>
+        <string>Quick Sort</string>
        </property>
       </widget>
      </item>
