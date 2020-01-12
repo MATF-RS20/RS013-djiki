@@ -64,6 +64,7 @@ private:
     void deleteChildren();
     void animationSetup();
     void executeAlgorithm(GraphAlgorithm* algorithmInstance);
+    void clearStylesheets();
     void setTheme(QFile *file);
 
     Ui::GraphWindow *ui;

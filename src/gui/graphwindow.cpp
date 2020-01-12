@@ -5,6 +5,7 @@
 #include "../backend/graphalgorithmexecutorthread.hpp"
 #include "../backend/graphalgorithmdrawingthread.hpp"
 #include "ui_drawgraph.h"
+#include "ui_algograph.h"
 
 QMutex GraphWindow::playbackMutex;
 QPair<int, unsigned> GraphWindow::playback(1, 1000);
@@ -273,12 +274,26 @@ void GraphWindow::executeAlgorithm(GraphAlgorithm* algorithmInstance)
     thread->start();
 }
 
-void GraphWindow::setTheme(QFile *file)
+void GraphWindow::clearStylesheets()
 {
     this->setStyleSheet(QString());
     ui->toolBar->setStyleSheet(QString());
-    Ui::AlgoGraph *ui = algoGraph->getUi();
+    Ui::AlgoGraph *uiAlgo = algoGraph->getUi();
+    algoGraph->setStyleSheet(QString());
+    uiAlgo->pushButtonAdd->setStyleSheet(QString());
+    uiAlgo->pushButtonAStar->setStyleSheet(QString());
+    uiAlgo->pushButtonBFS->setStyleSheet(QString());
+    uiAlgo->pushButtonDFS->setStyleSheet(QString());
+    uiAlgo->pushButtonDijkstra->setStyleSheet(QString());
+    uiAlgo->pushButtonFW->setStyleSheet(QString());
+    pushButtonReturn->setStyleSheet(QString());
+    Ui::drawGraph *uiDraw = drawGraph->getUi();
+    uiDraw->graphicsView->setStyleSheet(QString());
+}
 
+void GraphWindow::setTheme(QFile *file)
+{
+    clearStylesheets();
     file->open(QFile::ReadOnly | QFile::Text);
     QTextStream stream(file);
     this->setStyleSheet(stream.readAll());
