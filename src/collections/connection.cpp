@@ -2,6 +2,7 @@
 
 #include <QPainter>
 #include <QPen>
+#include <QGraphicsScene>
 
 Connection::Connection(Item *first, Item *second)
     : first(first)
@@ -30,6 +31,11 @@ void Connection::paint(QPainter *painter, const QStyleOptionGraphicsItem*, QWidg
     std::pair<QPointF, QPointF> currentCoords = getCurrentItemCoords();
 
     painter->drawLine(currentCoords.first, currentCoords.second);
+}
+
+void Connection::removeFromScene()
+{
+    scene()->removeItem(this);
 }
 
 void Connection::itemMoved()

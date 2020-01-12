@@ -3,6 +3,8 @@
 #include <QPainter>
 #include <QPen>
 #include <QBrush>
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsScene>
 #include <QDebug>
 
 int Item::itemWidth = 40;
@@ -13,7 +15,7 @@ Item::Item(qreal x, qreal y)
     : itemPosX(x)
     , itemPosY(y)
 {
-    itemIndex++;
+    itemIndex = index++;
 
     setZValue(10);
     setFlag(ItemIsMovable);
@@ -36,13 +38,32 @@ void Item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     QBrush brush("#0f1119");
     painter->setBrush(brush);
 
-    painter->drawRect(boundingRect());
+    QRectF rect = boundingRect();
+    painter->drawRect(rect);
+
+    painter->setFont(QFont("Times", 16, QFont::Bold));
+    painter->drawText(rect, Qt::AlignCenter, QString::number(itemIndex));
 }
 
 void Item::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     emit itemMoved();
     QGraphicsItem::mouseMoveEvent(event);
+}
+
+void Item::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (event->button() == Qt::RightButton)
+    {
+        if (this->itemIndex == index-1)
+        {
+            scene()->removeItem(this);
+
+            emit itemDeleted(this);
+
+            index--;
+        }
+    }
 }
 
 qreal Item::getItemPosX() const

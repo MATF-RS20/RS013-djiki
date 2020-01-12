@@ -261,7 +261,6 @@ void DrawGraph::onDoneDrawing()
     animationTimer = new QTimer(this);
     QObject::connect(animationTimer, &QTimer::timeout, ui->graphicsView->scene(), &QGraphicsScene::advance);
     animationTimer->start(500);
-    qDebug() << "TIMER STARTED!!! (stop it at the end of animations)";
 
     Graph* g = new Graph(&nodes, &edges);
     emit doneDrawingGraph(g);

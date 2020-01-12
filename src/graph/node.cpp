@@ -6,7 +6,7 @@
 #include <QDebug>
 
 unsigned Node::numberOfNodes = 0;
-unsigned Node::radius = 30;
+unsigned Node::radius = 20;
 QStack<unsigned> Node::deletedNumbers;
 
 Node::Node(double x, double y)
@@ -29,7 +29,7 @@ Node::Node(double x, double y)
 
 QRectF Node::boundingRect() const
 {
-    return QRectF(nodePosX, nodePosY, radius, radius);
+    return QRectF(nodePosX, nodePosY, radius*1.5, radius*1.5);
 }
 
 void Node::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
@@ -82,14 +82,7 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent* event)
     else
     {
         QGraphicsItem::mousePressEvent(event);
-        emit nodeMoved();
     }
-}
-
-void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
-{
-    QGraphicsItem::mouseReleaseEvent(event);
-    emit nodeMoved();
 }
 
 void Node::mouseMoveEvent(QGraphicsSceneMouseEvent* event)

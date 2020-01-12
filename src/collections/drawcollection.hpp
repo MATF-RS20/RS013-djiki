@@ -2,6 +2,7 @@
 #define DRAWCOLLECTION_HPP
 
 #include "item.hpp"
+#include "connection.hpp"
 
 #include <QWidget>
 
@@ -21,6 +22,9 @@ public:
 
     ~DrawCollection() override;
 
+public Q_SLOTS:
+    void deleteItemFromCollection(Item* item);
+
 private:
     Ui::DrawCollection *ui;
     void initializeScene();
@@ -30,6 +34,7 @@ private:
     QGraphicsProxyWidget* createCheckBoxBtnOrLabel(const QString& label, const QPointF& position, QFont font);
 
     QVector<Item*> collectionItems;
+    QVector<Connection*> connections;
 };
 
 #endif // DRAWCOLLECTION_HPP

@@ -15,6 +15,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
     qreal getItemPosX() const;
     qreal getItemPosY() const;
@@ -25,6 +26,7 @@ public:
 
 Q_SIGNALS:
     void itemMoved();
+    void itemDeleted(Item* item);
 
 private:
     qreal itemPosX;
