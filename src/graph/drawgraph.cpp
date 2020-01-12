@@ -89,7 +89,7 @@ QString DrawGraph::drawDirections(QFont font)
                            "After that enter node weight (Integer value or 'Inf').\n\n"
                            "Double click on edge to change it's weight.\n\n"
                            "Right click on edge to delete it.\n\n"
-                           "When you finish click 'done adding nodes'.\n\n"
+                           "When you finish click 'Done drawing graph'.\n\n"
                            "You can start over from scratch by clicking Clear button.\n\n";
 
     font.setBold(true);
@@ -140,8 +140,6 @@ void DrawGraph::resizeEvent(QResizeEvent *)
 
 DrawGraph::~DrawGraph()
 {
-    onClearGraph();
-
     ui->graphicsView->scene()->clear();
 
     delete ui;
@@ -236,7 +234,6 @@ void DrawGraph::onClearGraph()
         ui->graphicsView->scene()->removeItem(n);
         delete n;
     }
-
     nodes.clear();
     selectedNodes.clear();
 

@@ -24,6 +24,8 @@ public:
 
 public Q_SLOTS:
     void deleteItemFromCollection(Item* item);
+    void onDoneDrawing();
+    void onClearConnection();
 
 private:
     Ui::DrawCollection *ui;
@@ -32,9 +34,18 @@ private:
 
     template <typename T>
     QGraphicsProxyWidget* createCheckBoxBtnOrLabel(const QString& label, const QPointF& position, QFont font);
+    bool finished;
 
     QVector<Item*> collectionItems;
     QVector<Connection*> connections;
+
+    QString drawDirections(QFont font);
+    QGraphicsProxyWidget* clearItem;
+    QGraphicsProxyWidget* helpItem;
+    QGraphicsProxyWidget* doneItem;
+    QGraphicsTextItem* directions;
+
+    QTimer* animationTimer;
 };
 
 #endif // DRAWCOLLECTION_HPP
