@@ -1,5 +1,6 @@
 #include "drawgraph.hpp"
 #include "ui_drawgraph.h"
+#include "../drawing.hpp"
 
 #include <limits>
 #include <iostream>
@@ -9,13 +10,9 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QInputDialog>
-#include <QGraphicsProxyWidget>
-#include <QScrollBar>
 #include <QPushButton>
 #include <QCheckBox>
 #include <QLabel>
-#include <QLineF>
-#include <QScreen>
 #include <QDebug>
 
 
@@ -31,16 +28,11 @@ DrawGraph::DrawGraph(QWidget* parent)
 
 void DrawGraph::initializeScene()
 {
-    std::pair<qreal, qreal> screenSize = getWindowSize();
-    QGraphicsScene* scene = new QGraphicsScene(0, 0, screenSize.first, screenSize.second, this);
-    ui->graphicsView->setScene(scene);
-    ui->graphicsView->setRenderHint(QPainter::Antialiasing);
+    Drawing::setScene(ui->graphicsView, this);
 
-    QFont font = QFont("Times", 12);
-
-    clearItem = createCheckBoxBtnOrLabel<QPushButton>("Clear", QPointF(width()-130, 20), font);
-    helpItem = createCheckBoxBtnOrLabel<QLabel>("Help", QPointF(width()-100, 70), font);
-    doneItem = createCheckBoxBtnOrLabel<QCheckBox>("Done drawing graph", QPointF(20, 20), font);
+    clearItem = Drawing::createBoxBtnOrLabel<QPushButton>(ui->graphicsView, "Clear", QPointF(width()-130, 20), this);
+    helpItem = Drawing::createBoxBtnOrLabel<QLabel>(ui->graphicsView, "Help", QPointF(width()-100, 70), this);
+    doneItem = Drawing::createBoxBtnOrLabel<QCheckBox>(ui->graphicsView, "Done drawing graph", QPointF(20, 20), this);
 
     QPushButton* clearBtn = static_cast<QPushButton*>(clearItem->widget());
     QLabel* helpLabel = static_cast<QLabel*>(helpItem->widget());
@@ -52,37 +44,6 @@ void DrawGraph::initializeScene()
     QObject::connect(doneBox, &QPushButton::clicked,
                      this, &DrawGraph::onDoneDrawing);
 
-    helpLabel->setToolTip(drawDirections(font));
-}
-
-std::pair<qreal, qreal> DrawGraph::getWindowSize() const
-{
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int width = screenGeometry.width();
-    int height = screenGeometry.height();
-
-    return std::make_pair<qreal, qreal>(width, height);
-}
-
-template <typename T>
-QGraphicsProxyWidget* DrawGraph::createCheckBoxBtnOrLabel(const QString& label, const QPointF& position, QFont font)
-{
-    T* btn = new T(label);
-
-    btn->setFont(font);
-
-    QGraphicsProxyWidget* item = ui->graphicsView->scene()->addWidget(btn);
-    item->setPos(position);
-    ui->graphicsView->centerOn(item);
-
-    btn->setParent(this);
-
-    return item;
-}
-
-QString DrawGraph::drawDirections(QFont font)
-{
     QString instructions = "Click anywhere to create nodes and click and drag to move them.\n\n"
                            "Right click on node to delete it.\n\n"
                            "Create directed edges by clicking on two nodes, holding control key.\n\n"
@@ -92,15 +53,8 @@ QString DrawGraph::drawDirections(QFont font)
                            "When you finish click 'Done drawing graph'.\n\n"
                            "You can start over from scratch by clicking Clear button.\n\n";
 
-    font.setBold(true);
-    directions = ui->graphicsView->scene()->addText(instructions, font);
-    qreal textWidth = directions->boundingRect().width();
-    qreal textHeight = directions->boundingRect().height();
-    directions->setPos(QPointF(width()/2 - textWidth/2, height()/2 - textHeight/2 + 50));
-
-    directions->setDefaultTextColor("#5599ff");
-
-    return instructions;
+    directions = Drawing::drawDirections(ui->graphicsView, instructions);
+    helpLabel->setToolTip(instructions);
 }
 
 void DrawGraph::mousePressEvent(QMouseEvent* event)
@@ -108,7 +62,8 @@ void DrawGraph::mousePressEvent(QMouseEvent* event)
     if (directions->isVisible())
         directions->setVisible(false);
 
-    if (event->buttons() == Qt::LeftButton && !finished)
+    if (event->buttons() == Qt::LeftButton &&
+        QGuiApplication::keyboardModifiers().testFlag(Qt::NoModifier) && !finished)
     {
         QPointF mapped = ui->graphicsView->mapToScene(event->pos());
         Node* newNode = new Node(mapped.x(), mapped.y());
@@ -140,6 +95,11 @@ void DrawGraph::resizeEvent(QResizeEvent *)
 
 DrawGraph::~DrawGraph()
 {
+    /* This has to be reinitialized because user can go back to main menu and
+       again start drawing */
+    Node::numberOfNodes = 0;
+    Node::deletedNumbers.clear();
+
     ui->graphicsView->scene()->clear();
 
     delete ui;
@@ -169,14 +129,11 @@ void DrawGraph::drawEdge(Node* node)
         return;
 
     bool curve = false;
-
     if (start == end)
         curve = true;
 
     if (end->isNeighbour(start))
-    {
         for (auto& e : edges)
-        {
             if (e->getStart() == end && e->getEnd() == start)
             {
                 if (value != e->getEdgeWeight())
@@ -184,8 +141,6 @@ void DrawGraph::drawEdge(Node* node)
 
                 break;
             }
-        }
-    }
 
     start->addNeighbour(end);
 
@@ -222,17 +177,19 @@ void DrawGraph::onClearGraph()
     if (directions->isVisible())
         directions->setVisible(false);
 
-    for (const auto& e : edges)
+    for (auto& e : edges)
     {
+        e->setVisible(false);
         ui->graphicsView->scene()->removeItem(e);
-        delete e;
+        e->deleteLater();
     }
     edges.clear();
 
-    for (const auto& n : nodes)
+    for (auto& n : nodes)
     {
+        n->setVisible(false);
         ui->graphicsView->scene()->removeItem(n);
-        delete n;
+        n->deleteLater();
     }
     nodes.clear();
     selectedNodes.clear();
@@ -257,7 +214,7 @@ void DrawGraph::onDoneDrawing()
 
     animationTimer = new QTimer(this);
     QObject::connect(animationTimer, &QTimer::timeout, ui->graphicsView->scene(), &QGraphicsScene::advance);
-    animationTimer->start(500);
+    animationTimer->start(200);
 
     Graph* g = new Graph(&nodes, &edges);
     emit doneDrawingGraph(g);
@@ -265,40 +222,27 @@ void DrawGraph::onDoneDrawing()
 
 void DrawGraph::deleteFromNeighbours(Node* n)
 {
-    int forRemoving = 0;
-    for (int i = 0; i < nodes.size(); i++)
-    {
-        nodes[i]->removeNeighbour(n);
+    for (auto& node: nodes)
+        node->removeNeighbour(n);
 
-        if (nodes[i] == n)
-            forRemoving = i;
-    }
+    auto pos = std::find(std::begin(nodes), std::end(nodes), n);
+    if (pos != std::end(nodes))
+        nodes.erase(pos);
 
-    nodes.remove(forRemoving);
-
-    QVector<int> toRemove;
-
-    for (int i = 0; i < edges.size(); i++)
-    {
-        if (edges[i]->getStart() == n || edges[i]->getEnd() == n)
+    for (auto& edge: edges)
+        if (edge->getStart() == n || edge->getEnd() == n)
         {
-            edges[i]->setVisible(false);
-            edges[i]->deleteLater();
-            toRemove.push_back(i);
+            ui->graphicsView->scene()->removeItem(edge);
+            edge->deleteLater();
         }
-    }
 
-    auto it = std::crbegin(toRemove);
-    while (it != std::crend(toRemove))
-    {
-        edges.remove(*it);
-        it++;
-    }
+    const auto edgeEnd = [n](Edge* e){ return e->getStart() == n || e->getEnd() == n; };
+    edges.erase(std::remove_if(std::begin(edges), std::end(edges), edgeEnd), std::end(edges));
 
     n->deleteLater();
 }
 
-void DrawGraph::removeEdge(Edge *e)
+void DrawGraph::removeEdge(Edge* e)
 {
     auto it = std::find(std::begin(edges), std::end(edges), e);
     if (it != edges.end())
@@ -307,12 +251,12 @@ void DrawGraph::removeEdge(Edge *e)
     e->deleteLater();
 }
 
-QVector<Node *> DrawGraph::getNodes() const
+QVector<Node*> DrawGraph::getNodes() const
 {
     return nodes;
 }
 
-QVector<Edge *> DrawGraph::getEdges() const
+QVector<Edge*> DrawGraph::getEdges() const
 {
     return edges;
 }
@@ -325,24 +269,4 @@ QTimer* DrawGraph::getAnimationTimer() const
 Ui::drawGraph* DrawGraph::getUi() const
 {
     return ui;
-}
-
-QGraphicsProxyWidget* DrawGraph::getClearItem() const
-{
-    return clearItem;
-}
-
-QGraphicsProxyWidget* DrawGraph::getHelpItem() const
-{
-    return helpItem;
-}
-
-QGraphicsProxyWidget* DrawGraph::getDoneItem() const
-{
-    return doneItem;
-}
-
-QGraphicsTextItem* DrawGraph::getDirections() const
-{
-    return directions;
 }

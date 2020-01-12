@@ -80,10 +80,6 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent* event)
     {
         emit drawNeighbour(this);
     }
-    else
-    {
-        QGraphicsItem::mousePressEvent(event);
-    }
 }
 
 void Node::mouseMoveEvent(QGraphicsSceneMouseEvent* event)

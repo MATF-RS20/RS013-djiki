@@ -15,8 +15,6 @@ public:
     QRectF boundingRect() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 
-    void removeFromScene();
-
 public Q_SLOTS:
     void itemMoved();
 

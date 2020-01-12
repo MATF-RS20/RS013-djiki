@@ -20,32 +20,29 @@ public:
     void mousePressEvent(QMouseEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
-    ~DrawCollection() override;
-
-public Q_SLOTS:
-    void deleteItemFromCollection(Item* item);
-    void onDoneDrawing();
-    void onClearConnection();
-
-private:
-    Ui::DrawCollection *ui;
-    void initializeScene();
-    std::pair<qreal, qreal> getWindowSize() const;
-
-    template <typename T>
-    QGraphicsProxyWidget* createCheckBoxBtnOrLabel(const QString& label, const QPointF& position, QFont font);
-    bool finished;
-
-    QVector<Item*> collectionItems;
-    QVector<Connection*> connections;
-
-    QString drawDirections(QFont font);
     QGraphicsProxyWidget* clearItem;
     QGraphicsProxyWidget* helpItem;
     QGraphicsProxyWidget* doneItem;
     QGraphicsTextItem* directions;
 
-    QTimer* animationTimer;
+    ~DrawCollection() override;
+
+public Q_SLOTS:
+    /* After user deletes last drawn item this slot receives signal */
+    void deleteItemFromCollection(Item* item);
+    /* After user clicks 'Done drawing collection' this slot receives signal */
+    void onDoneDrawing();
+    /* After uses clicks 'Clear' button this slot receives signal */
+    void onClearCollection();
+
+private:
+    Ui::DrawCollection *ui;
+    void initializeScene();
+
+    bool finished;  // used to disable creating new item on click after drawing is finished
+
+    QVector<Item*> collectionItems;
+    QVector<Connection*> connections;
 };
 
 #endif // DRAWCOLLECTION_HPP

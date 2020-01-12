@@ -15,8 +15,8 @@ QRectF Connection::boundingRect() const
 
     QRectF rect(currentCoords.first, currentCoords.second);
     rect = rect.normalized();
-    rect.setTopLeft(rect.topLeft() + QPointF(-40, -40));
-    rect.setBottomRight(rect.bottomRight() + QPointF(40, 40));
+    rect.setTopLeft(rect.topLeft() + QPointF(-30, -30));
+    rect.setBottomRight(rect.bottomRight() + QPointF(30, 30));
 
     return rect;
 }
@@ -31,11 +31,6 @@ void Connection::paint(QPainter *painter, const QStyleOptionGraphicsItem*, QWidg
     std::pair<QPointF, QPointF> currentCoords = getCurrentItemCoords();
 
     painter->drawLine(currentCoords.first, currentCoords.second);
-}
-
-void Connection::removeFromScene()
-{
-    scene()->removeItem(this);
 }
 
 void Connection::itemMoved()
