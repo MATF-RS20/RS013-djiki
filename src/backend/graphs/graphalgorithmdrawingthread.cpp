@@ -1,6 +1,6 @@
 #include "graphalgorithmdrawingthread.hpp"
 #include <QDebug>
-#include "../gui/graphwindow.hpp"
+#include "../../gui/graphwindow.hpp"
 
 GraphAlgorithmDrawingThread::GraphAlgorithmDrawingThread(GraphAlgorithm* algorithmInstance)
     : algorithm(algorithmInstance)

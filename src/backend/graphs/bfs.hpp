@@ -1,6 +1,6 @@
 #ifndef BFS_HPP
 #define BFS_HPP
-#include "../drawing/graph/graph.hpp"
+#include "../../drawing/graph/graph.hpp"
 #include "graphalgorithm.hpp"
 
 class BFS : public GraphAlgorithm

@@ -1,8 +1,8 @@
 #ifndef GRAPHALGORITHM_HPP
 #define GRAPHALGORITHM_HPP
 #include "graphstate.hpp"
-#include "../drawing/graph/graph.hpp"
-#include "pseudocode.hpp"
+#include "../../drawing/graph/graph.hpp"
+#include "../pseudocode.hpp"
 
 class GraphAlgorithm
 {

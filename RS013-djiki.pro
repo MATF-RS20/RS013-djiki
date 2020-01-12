@@ -16,10 +16,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    src/backend/bfs.cpp \
-    src/backend/graphalgorithm.cpp \
-    src/backend/graphalgorithmdrawingthread.cpp \
     src/backend/graphalgorithmexecutorthread.cpp \
+    src/backend/graphs/bfs.cpp \
+    src/backend/graphs/graphalgorithm.cpp \
+    src/backend/graphs/graphalgorithmdrawingthread.cpp \
     src/backend/pseudocodeformatter.cpp \
     src/drawing/collections/connection.cpp \
     src/drawing/collections/drawcollection.cpp \
@@ -39,11 +39,11 @@ SOURCES += \
     tests/graph_tests.cpp
 
 HEADERS += \
-    src/backend/bfs.hpp \
-    src/backend/graphalgorithm.hpp \
-    src/backend/graphalgorithmdrawingthread.hpp \
     src/backend/graphalgorithmexecutorthread.hpp \
-    src/backend/graphstate.hpp \
+    src/backend/graphs/bfs.hpp \
+    src/backend/graphs/graphalgorithm.hpp \
+    src/backend/graphs/graphalgorithmdrawingthread.hpp \
+    src/backend/graphs/graphstate.hpp \
     src/backend/pseudocode.hpp \
     src/backend/pseudocodeformatter.hpp \
     src/drawing/collections/connection.hpp \

@@ -1,7 +1,7 @@
 #ifndef GRAPHALGORITHMEXECUTORTHREAD_HPP
 #define GRAPHALGORITHMEXECUTORTHREAD_HPP
 #include <QThread>
-#include "bfs.hpp"
+#include "graphs/graphalgorithm.hpp"
 
 class GraphAlgorithmExecutorThread : public QThread
 {

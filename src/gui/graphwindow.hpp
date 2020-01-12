@@ -9,7 +9,7 @@
 #include "algograph.hpp"
 #include "codegraph.hpp"
 #include "../drawing/graph/graph.hpp"
-#include "../backend/bfs.hpp"
+#include "../backend/graphs/graphalgorithm.hpp"
 
 #include <QSlider>
 
