@@ -2,6 +2,7 @@
 #include "ui_algograph.h"
 
 #include "../backend/graphs/bfs.hpp"
+#include "../backend/graphs/dfs.hpp"
 
 AlgoGraph::AlgoGraph(QWidget *parent) :
     QWidget(parent),
@@ -41,6 +42,7 @@ void AlgoGraph::on_pushButtonDijkstra_clicked()
 void AlgoGraph::on_pushButtonDFS_clicked()
 {
     algoName = "DFS";
+    algorithmInstance = new DFS();
 
     notifyParent();
 }
