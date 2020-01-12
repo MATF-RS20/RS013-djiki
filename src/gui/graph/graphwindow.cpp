@@ -269,7 +269,7 @@ void GraphWindow::clearStylesheets()
     ui->toolBar->setStyleSheet(QString());
     Ui::AlgoGraph *uiAlgo = algoGraph->getUi();
     algoGraph->setStyleSheet(QString());
-    uiAlgo->pushButtonAdd->setStyleSheet(QString());
+    uiAlgo->pushButtonPrim->setStyleSheet(QString());
     uiAlgo->pushButtonAStar->setStyleSheet(QString());
     uiAlgo->pushButtonBFS->setStyleSheet(QString());
     uiAlgo->pushButtonDFS->setStyleSheet(QString());

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CodeGraph</class>
- <widget class="QWidget" name="CodeGraph">
+ <class>CodeCollection</class>
+ <widget class="QWidget" name="CodeCollection">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -21,7 +21,7 @@
        <item>
         <widget class="QLabel" name="labelAlgoName">
          <property name="text">
-          <string>Dijkstra</string>
+          <string>Bubble Sort</string>
          </property>
         </widget>
        </item>
@@ -57,19 +57,12 @@
       </layout>
      </item>
      <item>
-      <widget class="GraphCodeEdit" name="algoPseudocode"/>
+      <widget class="QPlainTextEdit" name="algoPseudocode"/>
      </item>
     </layout>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>GraphCodeEdit</class>
-   <extends>QPlainTextEdit</extends>
-   <header>src/gui/graphcodeedit.hpp</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

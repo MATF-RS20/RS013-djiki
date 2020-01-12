@@ -1,37 +1,37 @@
-#include "codegraph.hpp"
-#include "ui_codegraph.h"
+#include "codecollection.hpp"
+#include "ui_codecollection.h"
 
-CodeGraph::CodeGraph(QWidget *parent) :
+CodeCollection::CodeCollection(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::CodeGraph)
+    ui(new Ui::CodeCollection)
 {
     ui->setupUi(this);
 }
 
-CodeGraph::~CodeGraph()
+CodeCollection::~CodeCollection()
 {
     delete ui;
 }
 
-QString CodeGraph::getText()
+QString CodeCollection::getText()
 {
     return ui->labelAlgoName->text();
 }
 
-void CodeGraph::setText(QString &str, QString html)
+void CodeCollection::setText(QString &str, QString html)
 {
     ui->labelAlgoName->setText(str);
-    ui->algoPseudocode->setHtml(html);
+    //ui->algoPseudocode->setHtml(html);
 }
 
-void CodeGraph::on_pushButtonReturn_clicked()
+void CodeCollection::on_pushButtonReturn_clicked()
 {
     QPoint pos(this->width()/2, this->height()/2);
     QMouseEvent *event = new QMouseEvent(QEvent::MouseButtonPress, pos, QPoint(-1, -1), Qt::MouseButton::LeftButton, Qt::MouseButton::LeftButton, Qt::KeyboardModifier::NoModifier);
     QCoreApplication::postEvent(this->parent(), event);
 }
 
-void CodeGraph::updateHTML(QString html)
+void CodeCollection::updateHTML(QString html)
 {
-    ui->algoPseudocode->setHtml(html);
+//    ui->algoPseudocode->setHtml(html);
 }

@@ -37,7 +37,10 @@ SOURCES += \
     src/gui/graph/graphcodeedit.cpp \
     src/gui/graph/graphwindow.cpp \
     src/gui/main.cpp \
-    src/gui/mainwindow.cpp
+    src/gui/mainwindow.cpp \
+    src/gui/collection/algocollection.cpp \
+    src/gui/collection/codecollection.cpp \
+    src/gui/collection/collectioncodeedit.cpp
 
 HEADERS += \
     src/backend/graphalgorithmexecutorthread.hpp \
@@ -62,7 +65,10 @@ HEADERS += \
     src/gui/graph/codegraph.hpp \
     src/gui/graph/graphcodeedit.hpp \
     src/gui/graph/graphwindow.hpp \
-    src/gui/mainwindow.hpp
+    src/gui/mainwindow.hpp \
+    src/gui/collection/algocollection.hpp \
+    src/gui/collection/codecollection.hpp \
+    src/gui/collection/collectioncodeedit.hpp
 
 FORMS += \
     src/drawing/collections/drawcollection.ui \
@@ -72,7 +78,10 @@ FORMS += \
     src/gui/graph/codegraph.ui \
     src/gui/graph/graphcodeedit.ui \
     src/gui/graph/graphwindow.ui \
-    src/gui/mainwindow.ui
+    src/gui/mainwindow.ui \
+    src/gui/collection/algocollection.ui \
+    src/gui/collection/codecollection.ui \
+    src/gui/collection/collectioncodeedit.ui
 
 RESOURCES += \
     src/gui/images/images.qrc \
