@@ -6,7 +6,7 @@
 #include <QDebug>
 
 unsigned Node::numberOfNodes = 0;
-unsigned Node::radius = 20;
+unsigned Node::radius = 30;
 QStack<unsigned> Node::deletedNumbers;
 
 Node::Node(double x, double y)
@@ -29,7 +29,7 @@ Node::Node(double x, double y)
 
 QRectF Node::boundingRect() const
 {
-    return QRectF(nodePosX, nodePosY, radius*1.5, radius*1.5);
+    return QRectF(nodePosX, nodePosY, radius, radius);
 }
 
 void Node::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)

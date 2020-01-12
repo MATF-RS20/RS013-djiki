@@ -50,8 +50,9 @@ Q_SIGNALS:
     void doneDrawingGraph(Graph *g);
 
 private:
-    void initializeScene();
     Ui::drawGraph* ui;
+    void initializeScene();
+    std::pair<qreal, qreal> getWindowSize() const;
 
     template <typename T>
     QGraphicsProxyWidget* createCheckBoxBtnOrLabel(const QString& label, const QPointF& position, QFont font);

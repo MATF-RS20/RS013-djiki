@@ -1,6 +1,8 @@
 #ifndef DRAWCOLLECTION_HPP
 #define DRAWCOLLECTION_HPP
 
+#include "item.hpp"
+
 #include <QWidget>
 
 namespace Ui {
@@ -26,6 +28,8 @@ private:
 
     template <typename T>
     QGraphicsProxyWidget* createCheckBoxBtnOrLabel(const QString& label, const QPointF& position, QFont font);
+
+    QVector<Item*> collectionItems;
 };
 
 #endif // DRAWCOLLECTION_HPP

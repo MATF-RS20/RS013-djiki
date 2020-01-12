@@ -15,6 +15,7 @@
 #include <QCheckBox>
 #include <QLabel>
 #include <QLineF>
+#include <QScreen>
 #include <QDebug>
 
 
@@ -30,7 +31,8 @@ DrawGraph::DrawGraph(QWidget* parent)
 
 void DrawGraph::initializeScene()
 {
-    QGraphicsScene* scene = new QGraphicsScene(0, 0, 2000, 1500, this);
+    std::pair<qreal, qreal> screenSize = getWindowSize();
+    QGraphicsScene* scene = new QGraphicsScene(0, 0, screenSize.first, screenSize.second, this);
     ui->graphicsView->setScene(scene);
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
 
@@ -51,6 +53,16 @@ void DrawGraph::initializeScene()
                      this, &DrawGraph::onDoneDrawing);
 
     helpLabel->setToolTip(drawDirections(font));
+}
+
+std::pair<qreal, qreal> DrawGraph::getWindowSize() const
+{
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    int width = screenGeometry.width();
+    int height = screenGeometry.height();
+
+    return std::make_pair<qreal, qreal>(width, height);
 }
 
 template <typename T>

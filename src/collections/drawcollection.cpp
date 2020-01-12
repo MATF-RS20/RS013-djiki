@@ -3,6 +3,7 @@
 
 #include <QScreen>
 #include <QMouseEvent>
+#include <QDebug>
 
 DrawCollection::DrawCollection(QWidget* parent) :
     QWidget(parent),
@@ -42,7 +43,12 @@ void DrawCollection::mousePressEvent(QMouseEvent* event)
 {
     if (event->buttons() == Qt::LeftButton)
     {
-        // Create item
+        QPointF mapped = ui->graphicsView->mapToScene(event->pos());
+        Item* newItem = new Item(mapped.x(), mapped.y());
+
+        collectionItems.push_back(newItem);
+
+        ui->graphicsView->scene()->addItem(newItem);
     }
 }
 

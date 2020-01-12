@@ -44,13 +44,6 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item row="1" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-    </layout>
-   </item>
    <item row="0" column="0">
     <widget class="QGraphicsView" name="graphicsView">
      <property name="sizePolicy">
