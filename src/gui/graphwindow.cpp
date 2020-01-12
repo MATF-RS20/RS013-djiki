@@ -50,8 +50,6 @@ GraphWindow::~GraphWindow()
 
 void GraphWindow::pushButtonReturn_clicked()
 {
-    if(drawGraph->getAnimationTimer()->timerId() != -1)
-        drawGraph->getAnimationTimer()->stop();
     deleteChildren();
     delete drawGraph;
     delete dockTop;
@@ -213,15 +211,7 @@ void GraphWindow::mousePressEvent(QMouseEvent *event)
 {
     if(event->button() == Qt::LeftButton && event->screenPos() == QPoint(-1, -1))
     {
-        group->blockSignals(true);
-        group->start();
-        group->blockSignals(false);
-        connect(group, SIGNAL(currentAnimationChanged(QAbstractAnimation*)), this, SLOT(changeRightDockWindow()), Qt::UniqueConnection);
-
-        group2->blockSignals(true);
-        group2->start();
-        group2->blockSignals(false);
-        connect(group2, SIGNAL(currentAnimationChanged(QAbstractAnimation*)), this, SLOT(changeRightDockWindow()), Qt::UniqueConnection);
+        animateRightDockWindow();
     }
 }
 

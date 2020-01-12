@@ -60,15 +60,15 @@ std::vector<int> DFS(int start, int end, Graph* G)
     return std::vector<int>();
 }
 
-int main()
-{
-    std::map<int, std::vector<int>> aList;
-    aList[1] = {2};
-    aList[2] = {1, 3};
-    aList[3] = {1};
+//int main()
+//{
+//    std::map<int, std::vector<int>> aList;
+//    aList[1] = {2};
+//    aList[2] = {1, 3};
+//    aList[3] = {1};
 
-    Graph* G = new Graph(aList);
-    DFS(1, 3, G);
+//    Graph* G = new Graph(aList);
+//    DFS(1, 3, G);
 
-    return 0;
-}
+//    return 0;
+//}

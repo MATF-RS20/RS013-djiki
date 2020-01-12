@@ -42,7 +42,7 @@ void AlgoGraph::on_pushButtonDijkstra_clicked()
 void AlgoGraph::on_pushButtonDFS_clicked()
 {
     algoName = "DFS";
-    algorithmInstance = new DFS();
+//    algorithmInstance = new DFS();
 
     notifyParent();
 }
