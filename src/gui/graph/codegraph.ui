@@ -67,7 +67,7 @@
   <customwidget>
    <class>GraphCodeEdit</class>
    <extends>QPlainTextEdit</extends>
-   <header>src/gui/graphcodeedit.hpp</header>
+   <header location="global">src/gui/graph/graphcodeedit.hpp</header>
   </customwidget>
  </customwidgets>
  <resources/>
