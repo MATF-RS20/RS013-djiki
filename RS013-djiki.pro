@@ -20,6 +20,7 @@ SOURCES += \
     src/backend/graphalgorithm.cpp \
     src/backend/graphalgorithmdrawingthread.cpp \
     src/backend/graphalgorithmexecutorthread.cpp \
+    src/backend/pseudocodeformatter.cpp \
     src/drawing/collections/connection.cpp \
     src/drawing/collections/drawcollection.cpp \
     src/drawing/collections/item.cpp \
@@ -43,6 +44,7 @@ HEADERS += \
     src/backend/graphalgorithmexecutorthread.hpp \
     src/backend/graphstate.hpp \
     src/backend/pseudocode.hpp \
+    src/backend/pseudocodeformatter.hpp \
     src/drawing/collections/connection.hpp \
     src/drawing/collections/drawcollection.hpp \
     src/drawing/collections/item.hpp \

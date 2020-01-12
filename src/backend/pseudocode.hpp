@@ -2,30 +2,31 @@
 #define PSEUDOCODE_H
 #include <QString>
 #include <QVector>
+#include "pseudocodeformatter.hpp"
 
 class Pseudocode
 {
 public:
     QString generateHTML(unsigned activeLine = 0) const
     {
-        QString highlighColor = "#5599ff";
+        PseudoCodeFormatter format;
         QString html = "";
-        html += "<table border='0'>";
-        html += "<tr><td colspan='2'><pre>Input: " + input + " </pre></td></tr>";
-        html += "<tr><td colspan='2'><pre>Output: " + output + " </pre></td></tr>";
-        html += "<tr><th colspan='2'></th></tr>";
+
+        html += format.makeInputRow(input);
+        html += format.makeOutputRow(output);
+        html += format.makeDivider();
 
         unsigned lineNumber = 1;
-        for(auto line : code){
-            html += "<tr" + (activeLine && (lineNumber == activeLine) ? " bgcolor='" + highlighColor + "'" : "") +">";
-            html += "<td><pre>" + QString::number(lineNumber) + "</pre></td><td><pre>" + line + "</pre></td></tr>";
+        for(auto line : code){         
+            if(activeLine && (lineNumber == activeLine))
+                html += format.makeActiveCodeRow(lineNumber, line);
+            else
+                html += format.makeCodeRow(lineNumber, line);
 
             lineNumber++;
         }
 
-        html += "</table>";
-
-        return html;
+        return format.wrapAndStyle(html);
     }
 
     void setInput(const char* inputLine)
