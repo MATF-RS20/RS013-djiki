@@ -31,6 +31,7 @@ Q_SIGNALS:
 private:
     qreal itemPosX;
     qreal itemPosY;
+
     unsigned itemIndex;
 };
 

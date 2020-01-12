@@ -5,7 +5,6 @@
 #include <QBrush>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsScene>
-#include <QDebug>
 
 int Item::itemWidth = 40;
 int Item::itemHeight = 35;
@@ -58,7 +57,6 @@ void Item::mousePressEvent(QGraphicsSceneMouseEvent *event)
         if (this->itemIndex == index-1)
         {
             scene()->removeItem(this);
-
             emit itemDeleted(this);
 
             index--;

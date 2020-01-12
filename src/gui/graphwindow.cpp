@@ -379,10 +379,10 @@ void GraphWindow::on_actionSave_As_Image_triggered()
         return;
     }
 
-    QGraphicsProxyWidget* doneItem = drawGraph->getDoneItem();
-    QGraphicsProxyWidget* helpItem = drawGraph->getHelpItem();
-    QGraphicsProxyWidget* clearItem = drawGraph->getClearItem();
-    QGraphicsTextItem* directions = drawGraph->getDirections();
+    QGraphicsProxyWidget* doneItem = drawGraph->doneItem;
+    QGraphicsProxyWidget* helpItem = drawGraph->helpItem;
+    QGraphicsProxyWidget* clearItem = drawGraph->clearItem;
+    QGraphicsTextItem* directions = drawGraph->directions;
     Ui::drawGraph* ui = drawGraph->getUi();
 
     doneItem->setVisible(false);

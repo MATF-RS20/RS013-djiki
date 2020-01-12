@@ -24,6 +24,7 @@ SOURCES += \
     src/drawing/collections/connection.cpp \
     src/drawing/collections/drawcollection.cpp \
     src/drawing/collections/item.cpp \
+    src/drawing/drawing.cpp \
     src/drawing/graph/drawgraph.cpp \
     src/drawing/graph/edge.cpp \
     src/drawing/graph/graph.cpp \
@@ -48,6 +49,7 @@ HEADERS += \
     src/drawing/collections/connection.hpp \
     src/drawing/collections/drawcollection.hpp \
     src/drawing/collections/item.hpp \
+    src/drawing/drawing.hpp \
     src/drawing/graph/drawgraph.hpp \
     src/drawing/graph/edge.hpp \
     src/drawing/graph/graph.hpp \

@@ -230,7 +230,6 @@ void Edge::mousePressEvent(QGraphicsSceneMouseEvent* event)
         scene()->removeItem(this);
 
         start->removeNeighbour(end);
-        end->removeNeighbour(start);
 
         emit edgeDeleted(this);
     }
