@@ -30,14 +30,14 @@ SOURCES += \
     src/drawing/graph/edge.cpp \
     src/drawing/graph/graph.cpp \
     src/drawing/graph/node.cpp \
-    src/gui/collectionwindow.cpp \
-    src/gui/graphwindow.cpp \
+    tests/graph_tests.cpp \
+    src/gui/collection/collectionwindow.cpp \
+    src/gui/graph/algograph.cpp \
+    src/gui/graph/codegraph.cpp \
+    src/gui/graph/graphcodeedit.cpp \
+    src/gui/graph/graphwindow.cpp \
     src/gui/main.cpp \
-    src/gui/mainwindow.cpp \
-    src/gui/algograph.cpp \
-    src/gui/codegraph.cpp \
-    src/gui/graphcodeedit.cpp \
-    tests/graph_tests.cpp
+    src/gui/mainwindow.cpp
 
 HEADERS += \
     src/backend/graphalgorithmexecutorthread.hpp \
@@ -56,23 +56,23 @@ HEADERS += \
     src/drawing/graph/edge.hpp \
     src/drawing/graph/graph.hpp \
     src/drawing/graph/node.hpp \
-    src/gui/collectionwindow.hpp \
-    src/gui/graphwindow.hpp \
-    src/gui/mainwindow.hpp \
-    src/gui/algograph.hpp \
-    src/gui/codegraph.hpp \
-    src/gui/graphcodeedit.hpp \
-    tests/testing.hpp
+    tests/testing.hpp \
+    src/gui/collection/collectionwindow.hpp \
+    src/gui/graph/algograph.hpp \
+    src/gui/graph/codegraph.hpp \
+    src/gui/graph/graphcodeedit.hpp \
+    src/gui/graph/graphwindow.hpp \
+    src/gui/mainwindow.hpp
 
 FORMS += \
     src/drawing/collections/drawcollection.ui \
     src/drawing/graph/drawgraph.ui \
-    src/gui/collectionwindow.ui \
-    src/gui/graphwindow.ui \
-    src/gui/mainwindow.ui \
-    src/gui/algograph.ui \
-    src/gui/codegraph.ui \
-    src/gui/graphcodeedit.ui
+    src/gui/collection/collectionwindow.ui \
+    src/gui/graph/algograph.ui \
+    src/gui/graph/codegraph.ui \
+    src/gui/graph/graphcodeedit.ui \
+    src/gui/graph/graphwindow.ui \
+    src/gui/mainwindow.ui
 
 RESOURCES += \
     src/gui/images/images.qrc \

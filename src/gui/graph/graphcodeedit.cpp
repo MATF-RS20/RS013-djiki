@@ -1,6 +1,5 @@
 #include "graphcodeedit.hpp"
 #include "ui_graphcodeedit.h"
-#include "graphcodelinenumber.hpp"
 
 GraphCodeEdit::GraphCodeEdit(QWidget *parent) :
     QWebEngineView(parent),

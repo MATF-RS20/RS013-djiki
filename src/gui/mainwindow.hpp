@@ -2,8 +2,8 @@
 #define MAINWINDOW_HPP
 
 #include <QMainWindow>
-#include "graphwindow.hpp"
-#include "collectionwindow.hpp"
+#include "graph/graphwindow.hpp"
+#include "collection/collectionwindow.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

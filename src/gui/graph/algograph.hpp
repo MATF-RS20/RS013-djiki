@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QMouseEvent>
-#include "../backend/graphs/graphalgorithm.hpp"
+#include "../../backend/graphs/graphalgorithm.hpp"
 
 namespace Ui {
 class AlgoGraph;

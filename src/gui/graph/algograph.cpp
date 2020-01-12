@@ -1,8 +1,8 @@
 #include "algograph.hpp"
 #include "ui_algograph.h"
 
-#include "../backend/graphs/bfs.hpp"
-#include "../backend/graphs/dfs.hpp"
+#include "../../backend/graphs/bfs.hpp"
+#include "../../backend/graphs/dfs.hpp"
 
 AlgoGraph::AlgoGraph(QWidget *parent) :
     QWidget(parent),

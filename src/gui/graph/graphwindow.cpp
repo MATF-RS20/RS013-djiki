@@ -1,8 +1,8 @@
 #include "graphwindow.hpp"
 #include "ui_graphwindow.h"
-#include "../backend/graphalgorithmexecutorthread.hpp"
-#include "../backend/graphs/graphalgorithm.hpp"
-#include "../backend/graphs/graphalgorithmdrawingthread.hpp"
+#include "../../backend/graphalgorithmexecutorthread.hpp"
+#include "../../backend/graphs/graphalgorithm.hpp"
+#include "../../backend/graphs/graphalgorithmdrawingthread.hpp"
 #include "ui_drawgraph.h"
 #include "ui_algograph.h"
 
