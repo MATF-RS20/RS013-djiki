@@ -8,18 +8,28 @@ class Item : public QObject, public QGraphicsItem {
     Q_INTERFACES(QGraphicsItem)
 
 public:
-    Item(double x, double y);
+    Item(qreal x, qreal y);
 
     QRectF boundingRect() const override;
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 
-    static unsigned itemHeight;
-    static unsigned itemWidth;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+
+    qreal getItemPosX() const;
+    qreal getItemPosY() const;
+
+    static unsigned index;
+    static int itemHeight;
+    static int itemWidth;
+
+Q_SIGNALS:
+    void itemMoved();
 
 private:
-    double itemPosX;
-    double itemPosY;
+    qreal itemPosX;
+    qreal itemPosY;
+    unsigned itemIndex;
 };
 
 #endif // ITEM_HPP

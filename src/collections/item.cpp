@@ -2,15 +2,20 @@
 
 #include <QPainter>
 #include <QPen>
+#include <QBrush>
 #include <QDebug>
 
-unsigned Item::itemWidth = 40;
-unsigned Item::itemHeight = 35;
+int Item::itemWidth = 40;
+int Item::itemHeight = 35;
+unsigned Item::index = 0;
 
-Item::Item(double x, double y)
+Item::Item(qreal x, qreal y)
     : itemPosX(x)
     , itemPosY(y)
 {
+    itemIndex++;
+
+    setZValue(10);
     setFlag(ItemIsMovable);
 }
 
@@ -28,5 +33,24 @@ void Item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     pen.setWidth(3);
     painter->setPen(pen);
 
+    QBrush brush("#0f1119");
+    painter->setBrush(brush);
+
     painter->drawRect(boundingRect());
+}
+
+void Item::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    emit itemMoved();
+    QGraphicsItem::mouseMoveEvent(event);
+}
+
+qreal Item::getItemPosX() const
+{
+    return itemPosX;
+}
+
+qreal Item::getItemPosY() const
+{
+    return itemPosY;
 }

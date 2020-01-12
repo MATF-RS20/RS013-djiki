@@ -1,6 +1,8 @@
 #include "drawcollection.hpp"
 #include "ui_drawcollection.h"
 
+#include "connection.hpp"
+
 #include <QScreen>
 #include <QMouseEvent>
 #include <QDebug>
@@ -44,11 +46,26 @@ void DrawCollection::mousePressEvent(QMouseEvent* event)
     if (event->buttons() == Qt::LeftButton)
     {
         QPointF mapped = ui->graphicsView->mapToScene(event->pos());
+
         Item* newItem = new Item(mapped.x(), mapped.y());
+
+        ui->graphicsView->scene()->addItem(newItem);
 
         collectionItems.push_back(newItem);
 
-        ui->graphicsView->scene()->addItem(newItem);
+        int n = collectionItems.size();
+        if (n < 2)
+            return;
+
+        Connection* newConnection = new Connection(collectionItems[n-2], newItem);
+
+        QObject::connect(collectionItems[n-2], &Item::itemMoved,
+                         newConnection, &Connection::itemMoved);
+
+        QObject::connect(newItem, &Item::itemMoved,
+                         newConnection, &Connection::itemMoved);
+
+        ui->graphicsView->scene()->addItem(newConnection);
     }
 }
 
