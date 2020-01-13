@@ -15,6 +15,7 @@ public:
 signals:
     void graphAlgorithmDrawingFinished();
     void updateHTML(QString html);
+    void updateLineInBox(QString line);
 
 protected:
     void run() override;

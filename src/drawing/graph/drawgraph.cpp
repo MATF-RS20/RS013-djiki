@@ -34,6 +34,9 @@ void DrawGraph::initializeScene()
     helpItem = Drawing::createBoxBtnOrLabel<QLabel>(ui->graphicsView, "Help", QPointF(width()-100, 70), this);
     doneItem = Drawing::createBoxBtnOrLabel<QCheckBox>(ui->graphicsView, "Done drawing graph", QPointF(20, 20), this);
     doneItem->setEnabled(false);
+    codeItem = Drawing::createBoxBtnOrLabel<QLabel>(ui->graphicsView, "", QPointF(0, 0), this);
+    codeItem->setVisible(false);
+    codeItem->setZValue(100);
 
     QPushButton* clearBtn = static_cast<QPushButton*>(clearItem->widget());
     QLabel* helpLabel = static_cast<QLabel*>(helpItem->widget());
@@ -95,6 +98,11 @@ void DrawGraph::resizeEvent(QResizeEvent *)
     qreal textWidth = directions->boundingRect().width();
     qreal textHeight = directions->boundingRect().height();
     directions->setPos(QPointF(width()/2 - textWidth/2, height()/2 - textHeight/2 + 50));
+
+    QLabel* codeLbl = static_cast<QLabel*>(codeItem->widget());
+    int textW = codeLbl->fontMetrics().boundingRect(codeLbl->text()).width();
+    codeLbl->setGeometry(0, 0, textW+10, 40);
+    codeItem->setPos(QPointF((width() - textW)/2, 90));
 }
 
 DrawGraph::~DrawGraph()
@@ -189,13 +197,36 @@ void DrawGraph::onClearGraph()
     Node::deletedNumbers.clear();
 }
 
+void DrawGraph::updateBox(QString line)
+{
+    line = cleanPseudocodeLine(line);
+
+    QLabel* codeLbl = static_cast<QLabel*>(codeItem->widget());
+    codeLbl->setText(line);
+    int textWidth = codeLbl->fontMetrics().boundingRect(codeLbl->text()).width();
+
+    codeLbl->setGeometry(0, 0, textWidth+10, 40);
+    codeItem->setPos(QPointF((width() - textWidth)/2, 90));
+    codeLbl->setStyleSheet("background-color: rgba(0,0,0,0%)");
+}
+
+QString &DrawGraph::cleanPseudocodeLine(QString &line)
+{
+    while (line.indexOf("\t") != -1 || line.indexOf("\n") != -1)
+    {
+        line = QString::fromStdString(line.toStdString().substr(1));
+    }
+
+    return line;
+}
+
 void DrawGraph::onDoneDrawing()
 {
     /* Disable scene, but leave scrollbars enabled ( before this->setEnabled(false) ) */
     finished = true;
     doneItem->setEnabled(false);
     clearItem->setEnabled(false);
-    helpItem->setEnabled(false);
+    helpItem->setVisible(false);
 
     for (auto& n: nodes)
         n->setEnabled(false);

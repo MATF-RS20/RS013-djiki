@@ -43,3 +43,8 @@ QString GraphAlgorithm::getPseudoCodeHTML(unsigned activeLine) const
 {
     return code.generateHTML(activeLine);
 }
+
+const Pseudocode &GraphAlgorithm::getCode() const
+{
+    return code;
+}

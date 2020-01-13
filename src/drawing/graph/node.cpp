@@ -124,6 +124,8 @@ void Node::stopAnimation()
 {
     animation = false;
     currentStep = 0;
+
+    update();
 }
 
 void Node::advance(int phase)

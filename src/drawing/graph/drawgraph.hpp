@@ -30,6 +30,7 @@ public:
     QGraphicsProxyWidget* clearItem;
     QGraphicsProxyWidget* helpItem;
     QGraphicsProxyWidget* doneItem;
+    QGraphicsProxyWidget* codeItem;
     QGraphicsTextItem* directions;
 
     ~DrawGraph() override;
@@ -48,6 +49,8 @@ public Q_SLOTS:
     /* When user clicks 'Clear' button this slot receives signal */
     void onClearGraph();
 
+    void updateBox(QString line);
+
 Q_SIGNALS:
     void doneDrawingGraph(Graph *g);
 
@@ -63,6 +66,8 @@ private:
     QVector<Edge*> edges;
 
     QTimer* animationTimer;
+
+    QString& cleanPseudocodeLine(QString& line);
 };
 
 #endif // DRAWGRAPH_HPP
