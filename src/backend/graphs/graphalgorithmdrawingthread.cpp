@@ -30,7 +30,31 @@ void GraphAlgorithmDrawingThread::run()
 
 void GraphAlgorithmDrawingThread::animateCurrentState(GraphState currentState)
 {
-    //TODO
+    static Node* activeNode = nullptr;
+    static Edge* activeEdge = nullptr;
+
+    qDebug() << "Currently node:";
+    qDebug() << currentState.currentNode->getNodeNumber();
+    qDebug() << "Active node:";
+
+    if(activeNode)
+    {
+        activeNode->stopAnimation();
+        activeNode = nullptr;
+    }
+
+    if(currentState.currentNode)
+    {
+        activeNode = currentState.currentNode;
+        activeNode->animateNode();
+    }
+
+    if(currentState.currentEdge)
+    {
+        activeEdge = currentState.currentEdge;
+        activeEdge->animateEdge();
+    }
+
 }
 
 void GraphAlgorithmDrawingThread::highlightCurrentPseudocodeLine(unsigned line)

@@ -42,7 +42,7 @@ void Node::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
     else
     {
         QColor color;
-        color.setRedF(currentStep);
+        color.setRedF(1);
         pen.setColor(color);
     }
 
