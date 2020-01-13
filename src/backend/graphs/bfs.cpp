@@ -40,6 +40,7 @@ void BFS::solve()
     while (!S.empty())
     {
         Node* n = S.back();
+        addState(n, 2);
         addState(n, 3);
         S.pop();
 
@@ -52,7 +53,7 @@ void BFS::solve()
 
             while (parent[n] != n)
             {
-                addState(n, 5);
+                addState(n, graph.getEdgeFromTo(parent[n], n), 5);
                 path.push_back(n);
                 n = parent[n];
             }
@@ -65,10 +66,11 @@ void BFS::solve()
 
         for (auto& m : graph.getNeighbours(n))
         {
-            addState(n, 6);
+
             if (parent.find(m) == parent.end())
             {
-                addState(m, 7);
+                addState(n, 6);
+                addState(n, graph.getEdgeFromTo(n,m), 7);
                 parent[m] = n;
 
                 S.push(m);
