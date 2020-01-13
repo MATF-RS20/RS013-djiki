@@ -28,7 +28,7 @@ QRectF Item::boundingRect() const
     return QRectF(itemPosX, itemPosY, itemWidth, itemHeight);
 }
 
-void Item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void Item::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
@@ -57,13 +57,13 @@ void Item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     painter->drawText(rect, Qt::AlignCenter, QString::number(itemIndex));
 }
 
-void Item::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void Item::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
     emit itemMoved();
     QGraphicsItem::mouseMoveEvent(event);
 }
 
-void Item::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void Item::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     if (event->button() == Qt::RightButton)
     {

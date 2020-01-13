@@ -22,6 +22,7 @@ public:
     void resizeEvent(QResizeEvent* event) override;
 
     Ui::DrawCollection* getUi() const;
+    QTimer* getAnimationTimer() const;
 
     QGraphicsProxyWidget* clearItem;
     QGraphicsProxyWidget* helpItem;
@@ -33,6 +34,7 @@ public:
 public Q_SLOTS:
     /* After user deletes last drawn item this slot receives signal */
     void deleteItemFromCollection(Item* item);
+
     /* After user clicks 'Done drawing collection' this slot receives signal */
     void onDoneDrawing();
     /* After uses clicks 'Clear' button this slot receives signal */

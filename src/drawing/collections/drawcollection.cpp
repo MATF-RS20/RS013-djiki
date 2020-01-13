@@ -91,6 +91,11 @@ Ui::DrawCollection* DrawCollection::getUi() const
     return ui;
 }
 
+QTimer* DrawCollection::getAnimationTimer() const
+{
+    return animationTimer;
+}
+
 DrawCollection::~DrawCollection()
 {
     ui->graphicsView->scene()->clear();
