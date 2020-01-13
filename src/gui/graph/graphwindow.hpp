@@ -5,13 +5,12 @@
 #include <QPropertyAnimation>
 #include <QPushButton>
 #include <QtWidgets>
+#include <QSlider>
 #include "../../drawing/graph/drawgraph.hpp"
 #include "algograph.hpp"
 #include "codegraph.hpp"
 #include "../../drawing/graph/graph.hpp"
 #include "../../backend/graphs/graphalgorithm.hpp"
-
-#include <QSlider>
 
 namespace Ui {
 class GraphWindow;
@@ -85,8 +84,6 @@ private:
     QPropertyAnimation *hideCode;
     QPropertyAnimation *showAlgo;
     QSlider *slider;
-
-    int num = 0;
     QString name;
 };
 

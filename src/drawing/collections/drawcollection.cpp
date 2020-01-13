@@ -86,6 +86,11 @@ void DrawCollection::resizeEvent(QResizeEvent*)
     Drawing::resizeDrawingWidget(this);
 }
 
+Ui::DrawCollection *DrawCollection::getUi() const
+{
+    return ui;
+}
+
 DrawCollection::~DrawCollection()
 {
     ui->graphicsView->scene()->clear();

@@ -1,7 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <author/>
- <comment/>
- <exportmacro/>
  <class>CollectionWindow</class>
  <widget class="QMainWindow" name="CollectionWindow">
   <property name="geometry">
@@ -15,10 +13,144 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QMenuBar" name="menubar"/>
   <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionSave_As_Image"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <widget class="QMenu" name="menuAnimation">
+     <property name="title">
+      <string>Animation</string>
+     </property>
+     <addaction name="actionPlay"/>
+     <addaction name="actionPause"/>
+     <addaction name="actionStop"/>
+    </widget>
+    <widget class="QMenu" name="menuChange_Theme">
+     <property name="title">
+      <string>Change Theme</string>
+     </property>
+     <addaction name="actionCombinear"/>
+     <addaction name="actionDarkeum"/>
+     <addaction name="actionDiffnes"/>
+     <addaction name="actionIntegrid"/>
+     <addaction name="actionMedize"/>
+    </widget>
+    <addaction name="menuAnimation"/>
+    <addaction name="menuChange_Theme"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+  </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::BottomToolBarArea</set>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>BottomToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionPlay"/>
+   <addaction name="actionPause"/>
+   <addaction name="actionStop"/>
+  </widget>
+  <action name="actionSave_As_Image">
+   <property name="text">
+    <string>Save As Image</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionPlay">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/images/control_play.png</normaloff>:/images/control_play.png</iconset>
+   </property>
+   <property name="text">
+    <string>Play</string>
+   </property>
+  </action>
+  <action name="actionPause">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/images/control_pause.png</normaloff>:/images/control_pause.png</iconset>
+   </property>
+   <property name="text">
+    <string>Pause</string>
+   </property>
+  </action>
+  <action name="actionStop">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/images/control_stop.png</normaloff>:/images/control_stop.png</iconset>
+   </property>
+   <property name="text">
+    <string>Stop</string>
+   </property>
+  </action>
+  <action name="actionCombinear">
+   <property name="text">
+    <string>Combinear</string>
+   </property>
+  </action>
+  <action name="actionDarkeum">
+   <property name="text">
+    <string>Darkeum</string>
+   </property>
+  </action>
+  <action name="actionDiffnes">
+   <property name="text">
+    <string>Diffnes</string>
+   </property>
+  </action>
+  <action name="actionIntegrid">
+   <property name="text">
+    <string>Integrid</string>
+   </property>
+  </action>
+  <action name="actionMedize">
+   <property name="text">
+    <string>Medize</string>
+   </property>
+  </action>
  </widget>
- <pixmapfunction/>
+ <resources>
+  <include location="../images/images.qrc"/>
+ </resources>
  <connections/>
 </ui>

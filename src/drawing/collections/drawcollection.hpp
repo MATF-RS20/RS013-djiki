@@ -20,6 +20,8 @@ public:
     void mousePressEvent(QMouseEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
+    Ui::DrawCollection* getUi() const;
+
     QGraphicsProxyWidget* clearItem;
     QGraphicsProxyWidget* helpItem;
     QGraphicsProxyWidget* doneItem;
