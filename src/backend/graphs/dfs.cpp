@@ -74,9 +74,11 @@ void DFS::solve()
         }
 
         if (!hasUnvisited)
+        {
             addState(n, 7);
             addState(n, 8);
             path.pop_back();
+        }
     }
 
     addState(start, 10);
