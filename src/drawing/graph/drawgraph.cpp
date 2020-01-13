@@ -13,7 +13,6 @@
 #include <QPushButton>
 #include <QCheckBox>
 #include <QLabel>
-#include <QDebug>
 
 
 DrawGraph::DrawGraph(QWidget* parent)
@@ -34,9 +33,10 @@ void DrawGraph::initializeScene()
     helpItem = Drawing::createBoxBtnOrLabel<QLabel>(ui->graphicsView, "Help", QPointF(width()-100, 70), this);
     doneItem = Drawing::createBoxBtnOrLabel<QCheckBox>(ui->graphicsView, "Done drawing graph", QPointF(20, 20), this);
     doneItem->setEnabled(false);
+
     codeItem = Drawing::createBoxBtnOrLabel<QLabel>(ui->graphicsView, "", QPointF(0, 0), this);
     codeItem->setVisible(false);
-    codeItem->setZValue(100);
+    codeItem->setZValue(100);   // active pseudocode will be above graph
 
     QPushButton* clearBtn = static_cast<QPushButton*>(clearItem->widget());
     QLabel* helpLabel = static_cast<QLabel*>(helpItem->widget());
@@ -51,14 +51,16 @@ void DrawGraph::initializeScene()
     QString instructions = "Click anywhere to create nodes and click and drag to move them.\n\n"
                            "Right click on node to delete it.\n\n"
                            "Create directed edges by clicking on two nodes, holding control key.\n\n"
+                           "Create node loop by clicking twice on the same node.\n\n"
                            "After that enter node weight (Integer value or 'Inf').\n\n"
                            "Double click on edge to change it's weight.\n\n"
                            "Right click on edge to delete it.\n\n"
                            "When you finish click 'Done drawing graph'.\n\n"
-                           "You can start over from scratch by clicking Clear button.\n\n";
+                           "You can start over from scratch by clicking Clear button.\n";
 
     directions = Drawing::drawDirections(ui->graphicsView, instructions);
     helpLabel->setToolTip(instructions);
+    helpLabel->setToolTipDuration(3000);
 }
 
 void DrawGraph::mousePressEvent(QMouseEvent* event)
@@ -82,6 +84,8 @@ void DrawGraph::mousePressEvent(QMouseEvent* event)
         ui->graphicsView->scene()->addItem(newNode);
     }
 
+    /* If there are no nodes, then algorithms don't work at all, so done button is disabled
+       until first node is drawn */
     if (!finished && nodes.size() > 0)
         doneItem->setEnabled(true);
 }
@@ -101,6 +105,7 @@ void DrawGraph::resizeEvent(QResizeEvent *)
 
     QLabel* codeLbl = static_cast<QLabel*>(codeItem->widget());
     int textW = codeLbl->fontMetrics().boundingRect(codeLbl->text()).width();
+
     codeLbl->setGeometry(0, 0, textW+10, 40);
     codeItem->setPos(QPointF((width() - textW)/2, 90));
 }
@@ -199,18 +204,30 @@ void DrawGraph::onClearGraph()
 
 void DrawGraph::updateBox(QString line)
 {
-    line = cleanPseudocodeLine(line);
+    activeLine = cleanPseudocodeLine(line);
 
     QLabel* codeLbl = static_cast<QLabel*>(codeItem->widget());
-    codeLbl->setText(line);
+    codeLbl->setText(activeLine);
     int textWidth = codeLbl->fontMetrics().boundingRect(codeLbl->text()).width();
 
-    codeLbl->setGeometry(0, 0, textWidth+10, 40);
-    codeItem->setPos(QPointF((width() - textWidth)/2, 90));
+    if (textWidth > width()-350)
+    {
+        activeLine = Drawing::splitLine(activeLine);
+        codeLbl->setText(activeLine);
+
+        codeLbl->setGeometry(0, 0, textWidth+10, 40);
+        codeItem->setPos(QPointF((width() - textWidth/2)/2, 90));
+    }
+    else
+    {
+        codeLbl->setGeometry(0, 0, textWidth+10, 40);
+        codeItem->setPos(QPointF((width() - textWidth)/2, 90));
+    }
+
     codeLbl->setStyleSheet("background-color: rgba(0,0,0,0%)");
 }
 
-QString &DrawGraph::cleanPseudocodeLine(QString &line)
+QString& DrawGraph::cleanPseudocodeLine(QString &line)
 {
     while (line.indexOf("\t") != -1 || line.indexOf("\n") != -1)
     {

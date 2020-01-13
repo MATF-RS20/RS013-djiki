@@ -6,6 +6,7 @@
 #include <QScreen>
 #include <QInputDialog>
 
+
 QFont Drawing::font = QFont("Times", 12);
 
 std::pair<qreal, qreal> Drawing::getWindowSize()
@@ -52,4 +53,26 @@ std::pair<bool, int> Drawing::getWeightFromUser(const Node *start, const Node *e
 
     return std::make_pair(status, enteredValue == "Inf" ? std::numeric_limits<int>::max()
                                                         : enteredValue.toInt());
+}
+
+QString Drawing::splitLine(QString line)
+{
+    /* Line is split on space which is aproximately in the middle of the line */
+    QVector<int> indexes;
+    for (int i = 0; i < line.size(); i++)
+    {
+        if (line[i] == ' ')
+            indexes.push_back(i);
+    }
+
+    int n = indexes.size();
+    if (n == 0)
+        return line;
+
+    int half = n % 2 == 0 ? n/2 : (n-1)/2;
+    int splitOn = indexes[half];
+
+    line = line.left(splitOn+1) + "\n" + line.right(line.size()-splitOn-1);
+
+    return line;
 }
