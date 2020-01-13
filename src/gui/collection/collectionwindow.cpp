@@ -22,27 +22,7 @@ CollectionWindow::CollectionWindow(QWidget *parent) :
 
     setWindowTitle(tr("Collection Window"));
 
-    slider = new QSlider(Qt::Horizontal, this);
-    slider->setMinimum(1);
-    slider->setMaximum(7);
-    slider->setTickInterval(1);
-    slider->setValue(4);
-//    connect(slider, SIGNAL(valueChanged(int)), this, SLOT(changePlaybackSpeed(int)));
-
-    plus = new QPushButton("+", this);
-    connect(plus, &QPushButton::clicked, this, &CollectionWindow::plus_clicked);
-    minus = new QPushButton("-", this);
-    connect(minus, &QPushButton::clicked, this, &CollectionWindow::minus_clicked);
-
-    ui->toolBar->addWidget(slider);
-    ui->toolBar->setMovable(false);
-    ui->toolBar->setStyleSheet("QSlider::handle:horizontal {"
-                               "background-color: #5599ff; "
-                               "border-radius: 9px;"
-                               "} ");
-    ui->toolBar->addWidget(plus);
-    ui->toolBar->addWidget(minus);
-
+    toolBarSetup();
     createDockWindows();
     animationSetup();
 }
@@ -144,6 +124,7 @@ void CollectionWindow::setAlgoCollectionAtRightDockWindow()
 
     minus->setDisabled(true);
     plus->setDisabled(true);
+    slider->setDisabled(true);
 }
 
 void CollectionWindow::setCodeCollectionAtRightDockWindow()
@@ -156,6 +137,7 @@ void CollectionWindow::setCodeCollectionAtRightDockWindow()
 
     minus->setEnabled(true);
     plus->setEnabled(true);
+    slider->setEnabled(true);
     QMenu* menuEdit = ui->menubar->findChild<QMenu*>("menuEdit");
     QMenu* menuThemes = menuEdit->findChild<QMenu*>("menuChangeTheme");
     for(auto action : menuThemes->actions())
@@ -220,6 +202,48 @@ void CollectionWindow::animationSetup()
 
     group2->addAnimation(hideCode);
     group2->addAnimation(showAlgo);
+}
+
+void CollectionWindow::toolBarSetup()
+{
+    slider = new QSlider(Qt::Horizontal, this);
+    slider->setMinimum(1);
+    slider->setMaximum(7);
+    slider->setTickInterval(1);
+    slider->setValue(4);
+//    connect(slider, SIGNAL(valueChanged(int)), this, SLOT(changePlaybackSpeed(int)));
+
+    ui->toolBar->addWidget(slider);
+    ui->toolBar->setMovable(false);
+    ui->toolBar->setStyleSheet("QSlider::handle:horizontal {"
+                               "background-color: #5599ff; "
+                               "border-radius: 9px;"
+                               "} ");
+
+    QWidget *fontSizing = new QWidget;
+    QHBoxLayout *hLayout = new QHBoxLayout;
+    QVBoxLayout *vLayout = new QVBoxLayout;
+
+    plus = new QPushButton("+", this);
+    connect(plus, &QPushButton::clicked, this, &CollectionWindow::plus_clicked);
+    minus = new QPushButton("-", this);
+    connect(minus, &QPushButton::clicked, this, &CollectionWindow::minus_clicked);
+
+    hLayout->setSpacing(5);
+    hLayout->setMargin(0);
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->addWidget(plus);
+    hLayout->addWidget(minus);
+
+    QLabel *lblFont = new QLabel("Pseudocode font size");
+    lblFont->setAlignment(Qt::AlignCenter);
+
+    vLayout->setSpacing(0);
+    vLayout->setMargin(0);
+    vLayout->addWidget(lblFont);
+    vLayout->addLayout(hLayout);
+    fontSizing->setLayout(vLayout);
+    ui->toolBar->addWidget(fontSizing);
 }
 
 void CollectionWindow::clearStylesheets()
@@ -342,47 +366,32 @@ void CollectionWindow::on_actionQuit_triggered()
 
 void CollectionWindow::on_actionCombinear_triggered()
 {
-    if(isChild("algoCollection"))
-    {
-        QFile file(":/stylesheets/Combinear.qss");
-        setTheme(&file);
-    }
+    QFile file(":/stylesheets/Combinear.qss");
+    setTheme(&file);
 }
 
 void CollectionWindow::on_actionDarkeum_triggered()
 {
-    if(isChild("algoCollection"))
-    {
-        QFile file(":/stylesheets/Darkeum.qss");
-        setTheme(&file);
-    }
+    QFile file(":/stylesheets/Darkeum.qss");
+    setTheme(&file);
 }
 
 void CollectionWindow::on_actionDiffnes_triggered()
 {
-    if(isChild("algoCollection"))
-    {
-        QFile file(":/stylesheets/Diffnes.qss");
-        setTheme(&file);
-    }
+    QFile file(":/stylesheets/Diffnes.qss");
+    setTheme(&file);
 }
 
 void CollectionWindow::on_actionIntegrid_triggered()
 {
-    if(isChild("algoCollection"))
-    {
-        QFile file(":/stylesheets/Integrid.qss");
-        setTheme(&file);
-    }
+    QFile file(":/stylesheets/Integrid.qss");
+    setTheme(&file);
 }
 
 void CollectionWindow::on_actionMedize_triggered()
 {
-    if(isChild("algoCollection"))
-    {
-        QFile file(":/stylesheets/Medize.qss");
-        setTheme(&file);
-    }
+    QFile file(":/stylesheets/Medize.qss");
+    setTheme(&file);
 }
 
 void CollectionWindow::on_actionPlay_triggered()

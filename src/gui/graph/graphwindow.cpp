@@ -27,27 +27,7 @@ GraphWindow::GraphWindow(QWidget *parent) :
 
     setWindowTitle(tr("Graph Window"));
 
-    slider = new QSlider(Qt::Horizontal, this);
-    slider->setMinimum(1);
-    slider->setMaximum(7);
-    slider->setTickInterval(1);
-    slider->setValue(4);
-    connect(slider, SIGNAL(valueChanged(int)), this, SLOT(changePlaybackSpeed(int)));
-
-    plus = new QPushButton("+", this);
-    connect(plus, &QPushButton::clicked, this, &GraphWindow::plus_clicked);
-    minus = new QPushButton("-", this);
-    connect(minus, &QPushButton::clicked, this, &GraphWindow::minus_clicked);
-
-    ui->toolBar->addWidget(slider);
-    ui->toolBar->setMovable(false);
-    ui->toolBar->setStyleSheet("QSlider::handle:horizontal {"
-                               "background-color: #5599ff; "
-                               "border-radius: 9px;"
-                               "} ");
-    ui->toolBar->addWidget(plus);
-    ui->toolBar->addWidget(minus);
-
+    toolBarSetup();
     createDockWindows();
     animationSetup();
 }
@@ -149,6 +129,7 @@ void GraphWindow::setAlgoGraphAtRightDockWindow()
 
     minus->setDisabled(true);
     plus->setDisabled(true);
+    slider->setDisabled(true);
 }
 
 void GraphWindow::setCodeGraphAtRightDockWindow()
@@ -161,6 +142,7 @@ void GraphWindow::setCodeGraphAtRightDockWindow()
 
     minus->setEnabled(true);
     plus->setEnabled(true);
+    slider->setEnabled(true);
     QMenu* menuEdit = ui->menubar->findChild<QMenu*>("menuEdit");
     QMenu* menuThemes = menuEdit->findChild<QMenu*>("menuChangeTheme");
     for(auto action : menuThemes->actions())
@@ -225,6 +207,48 @@ void GraphWindow::animationSetup()
 
     group2->addAnimation(hideCode);
     group2->addAnimation(showAlgo);
+}
+
+void GraphWindow::toolBarSetup()
+{
+    slider = new QSlider(Qt::Horizontal, this);
+    slider->setMinimum(1);
+    slider->setMaximum(7);
+    slider->setTickInterval(1);
+    slider->setValue(4);
+    connect(slider, SIGNAL(valueChanged(int)), this, SLOT(changePlaybackSpeed(int)));
+
+    ui->toolBar->addWidget(slider);
+    ui->toolBar->setMovable(false);
+    ui->toolBar->setStyleSheet("QSlider::handle:horizontal {"
+                               "background-color: #5599ff; "
+                               "border-radius: 9px;"
+                               "} ");
+
+    QWidget *fontSizing = new QWidget;
+    QHBoxLayout *hLayout = new QHBoxLayout;
+    QVBoxLayout *vLayout = new QVBoxLayout;
+
+    plus = new QPushButton("+", this);
+    connect(plus, &QPushButton::clicked, this, &GraphWindow::plus_clicked);
+    minus = new QPushButton("-", this);
+    connect(minus, &QPushButton::clicked, this, &GraphWindow::minus_clicked);
+
+    hLayout->setSpacing(5);
+    hLayout->setMargin(0);
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->addWidget(plus);
+    hLayout->addWidget(minus);
+
+    QLabel *lblFont = new QLabel("Pseudocode font size");
+    lblFont->setAlignment(Qt::AlignCenter);
+
+    vLayout->setSpacing(0);
+    vLayout->setMargin(0);
+    vLayout->addWidget(lblFont);
+    vLayout->addLayout(hLayout);
+    fontSizing->setLayout(vLayout);
+    ui->toolBar->addWidget(fontSizing);
 }
 
 void GraphWindow::mousePressEvent(QMouseEvent *event)
@@ -428,47 +452,32 @@ void GraphWindow::on_actionExit_triggered()
 
 void GraphWindow::on_actionDiffnes_triggered()
 {
-    if(isChild("algoGraph"))
-    {
-        QFile file(":/stylesheets/Diffnes.qss");
-        setTheme(&file);
-    }
+    QFile file(":/stylesheets/Diffnes.qss");
+    setTheme(&file);
 }
 
 void GraphWindow::on_actionCombinear_triggered()
 {
-    if(isChild("algoGraph"))
-    {
-        QFile file(":/stylesheets/Combinear.qss");
-        setTheme(&file);
-    }
+    QFile file(":/stylesheets/Combinear.qss");
+    setTheme(&file);
 }
 
 void GraphWindow::on_actionDarkeum_triggered()
 {
-    if(isChild("algoGraph"))
-    {
-        QFile file(":/stylesheets/Darkeum.qss");
-        setTheme(&file);
-    }
+    QFile file(":/stylesheets/Darkeum.qss");
+    setTheme(&file);
 }
 
 void GraphWindow::on_actionIntegrid_triggered()
 {
-    if(isChild("algoGraph"))
-    {
-        QFile file(":/stylesheets/Integrid.qss");
-        setTheme(&file);
-    }
+    QFile file(":/stylesheets/Integrid.qss");
+    setTheme(&file);
 }
 
 void GraphWindow::on_actionMedize_triggered()
 {
-    if(isChild("algoGraph"))
-    {
-        QFile file(":/stylesheets/Medize.qss");
-        setTheme(&file);
-    }
+    QFile file(":/stylesheets/Medize.qss");
+    setTheme(&file);
 }
 
 void GraphWindow::plus_clicked()

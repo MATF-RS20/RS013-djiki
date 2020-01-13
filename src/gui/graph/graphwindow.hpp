@@ -65,6 +65,7 @@ private:
     bool isChild(const QString &str);
     void deleteChildren();
     void animationSetup();
+    void toolBarSetup();
     void executeAlgorithm(GraphAlgorithm* algorithmInstance);
     void clearStylesheets();
     void setTheme(QFile *file);

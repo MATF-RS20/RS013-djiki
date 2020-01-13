@@ -56,6 +56,7 @@ private:
     bool isChild(const QString &str);
     void deleteChildren();
     void animationSetup();
+    void toolBarSetup();
     void clearStylesheets();
     void setTheme(QFile *file);
 
