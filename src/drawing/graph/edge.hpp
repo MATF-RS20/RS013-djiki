@@ -3,6 +3,8 @@
 
 #include "node.hpp"
 
+#include <QLineF>
+
 class Edge : public QObject, public QGraphicsItem {
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)
@@ -41,6 +43,7 @@ private:
     Node* end;
 
     int edgeWeight;
+    QPointF getIntersecWithEndNode(QLineF line) const;
     bool curve;
 
     bool animate;

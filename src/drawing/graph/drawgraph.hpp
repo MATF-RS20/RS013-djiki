@@ -61,7 +61,6 @@ private:
     QVector<Node*> selectedNodes;
 
     QVector<Edge*> edges;
-    std::pair<bool, int> getWeightFromUser(const Node* start, const Node* end);
 
     QTimer* animationTimer;
 };

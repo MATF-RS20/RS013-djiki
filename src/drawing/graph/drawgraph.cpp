@@ -1,6 +1,6 @@
 #include "drawgraph.hpp"
 #include "ui_drawgraph.h"
-#include "../drawing.hpp"
+#include "../drawingFunctions.hpp"
 
 #include <limits>
 #include <iostream>
@@ -128,7 +128,7 @@ void DrawGraph::drawEdge(Node* node)
     if (start->isNeighbour(end))
         return;
 
-    auto [status, value] = getWeightFromUser(start, end);
+    auto [status, value] = Drawing::getWeightFromUser(start, end, this);
     if (!status)
         return;
 
@@ -161,19 +161,6 @@ void DrawGraph::drawEdge(Node* node)
 
     edges.push_back(newEdge);
     ui->graphicsView->scene()->addItem(newEdge);
-}
-
-std::pair<bool, int> DrawGraph::getWeightFromUser(const Node* start, const Node* end)
-{
-    QString inputLabel = "Enter weight for {" + QString::number(start->getNodeNumber())
-                    + ", " + QString::number(end->getNodeNumber()) + "} edge: ";
-
-    bool status;
-    QString enteredValue = QInputDialog::getText(this, "Enter", inputLabel,
-                                                 QLineEdit::Normal, "0", &status);
-
-    return std::make_pair(status, enteredValue == "Inf" ? std::numeric_limits<int>::max()
-                                                        : enteredValue.toInt());
 }
 
 void DrawGraph::onClearGraph()

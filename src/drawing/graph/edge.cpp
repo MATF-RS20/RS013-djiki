@@ -1,4 +1,5 @@
 #include "edge.hpp"
+#include "../drawingFunctions.hpp"
 
 #include <limits>
 
@@ -157,24 +158,23 @@ void Edge::drawEdgeWeight(QPainter* painter) const
     qreal lineAngle = QLineF(currentCoords.first, currentCoords.second).angle();
 
     painter->save();
-    painter->translate((currentCoords.first + currentCoords.second)/2);
-    painter->rotate(-lineAngle);
+        painter->translate((currentCoords.first + currentCoords.second)/2);
+        painter->rotate(-lineAngle);
 
-    if (lineAngle > 100 && lineAngle < 270)
-        painter->rotate(180);
+        if (lineAngle > 100 && lineAngle < 270)
+            painter->rotate(180);
 
-    QString value = edgeWeight == std::numeric_limits<int>::max() ? "Inf" : QString::number(edgeWeight);
+        QString value = edgeWeight == std::numeric_limits<int>::max() ? "Inf" : QString::number(edgeWeight);
 
-    if (curve)
-    {
-        painter->rotate(180);
-        painter->drawText(0, -20, value);
-    }
-    else
-    {
-        painter->drawText(0, -10, value);
-    }
-
+        if (curve)
+        {
+            painter->rotate(180);
+            painter->drawText(0, -20, value);
+        }
+        else
+        {
+            painter->drawText(0, -10, value);
+        }
     painter->restore();
 }
 
@@ -184,7 +184,29 @@ void Edge::drawArrow(QPainter *painter) const
     QLineF line = QLineF(currentCoords.first, currentCoords.second);
 
     painter->save();
+        QPointF intersectPoint = getIntersecWithEndNode(line);
+        painter->translate(intersectPoint);
 
+        QRectF rect(0, 0, 20, 10);
+        rect.moveCenter(QPointF(0, 0));
+
+        painter->rotate(-line.angle());
+
+        if (curve)
+        {
+            if (line.angle() > 120 && line.angle() < 330)
+                painter->rotate(-20);
+            else
+                painter->rotate(20);
+        }
+
+        painter->drawLine(rect.topLeft(), QPointF(0, 0));
+        painter->drawLine(rect.bottomLeft(), QPointF(0, 0));
+    painter->restore();
+}
+
+QPointF Edge::getIntersecWithEndNode(QLineF line) const
+{
     QPolygonF endPolygon = end->mapToScene(end->shape().toFillPolygon());
 
     QPointF intersectPoint;
@@ -202,25 +224,7 @@ void Edge::drawArrow(QPainter *painter) const
        p1 = p2;
     }
 
-    painter->translate(intersectPoint);
-
-    QRectF rect(0, 0, 20, 10);
-    rect.moveCenter(QPointF(0, 0));
-
-    painter->rotate(-line.angle());
-
-    if (curve)
-    {
-        if (line.angle() > 120 && line.angle() < 330)
-            painter->rotate(-20);
-        else
-            painter->rotate(20);
-    }
-
-    painter->drawLine(rect.topLeft(), QPointF(0, 0));
-    painter->drawLine(rect.bottomLeft(), QPointF(0, 0));
-
-    painter->restore();
+    return intersectPoint;
 }
 
 void Edge::mousePressEvent(QGraphicsSceneMouseEvent* event)
@@ -229,6 +233,7 @@ void Edge::mousePressEvent(QGraphicsSceneMouseEvent* event)
     {
         scene()->removeItem(this);
 
+        /* Because edge is directed */
         start->removeNeighbour(end);
 
         emit edgeDeleted(this);
@@ -237,19 +242,11 @@ void Edge::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 void Edge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent*)
 {
-    QString label = "Change weight for {" + QString::number(start->getNodeNumber())
-                    + ", " + QString::number(end->getNodeNumber()) + "} edge:";
+    auto [status, value] = Drawing::getWeightFromUser(start, end, parent);
+    if (!status)
+        return;
 
-    bool status;
-    QString enteredValue = QInputDialog::getText(parent, "Edit", label, QLineEdit::Normal,
-                                                 "0", &status);
-
-    if (status && !enteredValue.isEmpty())
-    {
-        edgeWeight = enteredValue == "Inf" ?
-                     std::numeric_limits<int>::max() :
-                     enteredValue.toInt();
-    }
+    edgeWeight = value;
 
     update();
 }
@@ -292,7 +289,7 @@ void Edge::advance(int phase)
 
 void Edge::nodeMoved()
 {
-    /* When start or end is moved draw line again */
+    /* When start or end node is moved draw line again */
     update();
 }
 

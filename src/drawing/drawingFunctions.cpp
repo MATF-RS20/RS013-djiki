@@ -1,9 +1,10 @@
-#include "drawing.hpp"
+#include "drawingFunctions.hpp"
 
 #include <iostream>
 
 #include <QApplication>
 #include <QScreen>
+#include <QInputDialog>
 
 QFont Drawing::font = QFont("Times", 12);
 
@@ -38,4 +39,17 @@ QGraphicsTextItem* Drawing::drawDirections(QGraphicsView* view, QString instruct
     directions->setDefaultTextColor("#5599ff");
 
     return directions;
+}
+
+std::pair<bool, int> Drawing::getWeightFromUser(const Node *start, const Node *end, QWidget* parent)
+{
+    QString inputLabel = "Enter weight for {" + QString::number(start->getNodeNumber())
+                    + ", " + QString::number(end->getNodeNumber()) + "} edge: ";
+
+    bool status;
+    QString enteredValue = QInputDialog::getText(parent, "Enter", inputLabel,
+                                                 QLineEdit::Normal, "0", &status);
+
+    return std::make_pair(status, enteredValue == "Inf" ? std::numeric_limits<int>::max()
+                                                        : enteredValue.toInt());
 }

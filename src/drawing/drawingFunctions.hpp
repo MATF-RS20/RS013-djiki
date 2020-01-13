@@ -1,6 +1,8 @@
 #ifndef DRAWING_HPP
 #define DRAWING_HPP
 
+#include "graph/node.hpp"
+
 #include <QWidget>
 #include <QGraphicsView>
 #include <QGraphicsProxyWidget>
@@ -46,6 +48,8 @@ public:
         qreal textHeight = widget->directions->boundingRect().height();
         widget->directions->setPos(QPointF(width/2 - textWidth/2, height/2 - textHeight/2 + 50));
     }
+
+    static std::pair<bool, int> getWeightFromUser(const Node* start, const Node* end, QWidget* parent);
 
     static QFont font;
 

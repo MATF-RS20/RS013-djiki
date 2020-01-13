@@ -2,7 +2,7 @@
 #include "ui_drawcollection.h"
 
 #include "connection.hpp"
-#include "../drawing.hpp"
+#include "../drawingFunctions.hpp"
 
 #include <QScreen>
 #include <QMouseEvent>
