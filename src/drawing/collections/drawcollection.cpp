@@ -4,11 +4,14 @@
 #include "connection.hpp"
 #include "../drawingFunctions.hpp"
 
+#include <limits>
+
 #include <QScreen>
 #include <QMouseEvent>
 #include <QPushButton>
 #include <QLabel>
 #include <QCheckBox>
+#include <QInputDialog>
 
 DrawCollection::DrawCollection(QWidget* parent) :
     QWidget(parent),
@@ -39,7 +42,9 @@ void DrawCollection::initializeScene()
                      this, &DrawCollection::onDoneDrawing);
 
     QString instructions = "Click anywhere to create items.\n\n"
+                           "Enter item value (Integer).\n\n"
                            "Click on and drag item to move it.\n\n"
+                           "Double click on item to change its value.\n\n"
                            "Right click on item to delete it (you can delete only last item).\n\n"
                            "When you finish click 'Done drawing collection'.\n\n"
                            "You can start over from scratch by clicking Clear button.\n\n";
@@ -55,8 +60,17 @@ void DrawCollection::mousePressEvent(QMouseEvent* event)
 
     if (event->buttons() == Qt::LeftButton && !finished)
     {
+        QString inputLabel = "Enter value for item with index: " + QString::number(Item::index);
+
+        bool status;
+        int value = QInputDialog::getInt(this, "Enter", inputLabel, 0,
+                                         std::numeric_limits<int>::min(), std::numeric_limits<int>::max(),
+                                         1, &status);
+        if (!status)
+            return;
+
         QPointF mapped = ui->graphicsView->mapToScene(event->pos());
-        Item* newItem = new Item(mapped.x(), mapped.y());
+        Item* newItem = new Item(mapped.x(), mapped.y(), value, this);
 
         QObject::connect(newItem, &Item::itemDeleted,
                          this, &DrawCollection::deleteItemFromCollection);

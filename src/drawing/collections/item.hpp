@@ -8,7 +8,7 @@ class Item : public QObject, public QGraphicsItem {
     Q_INTERFACES(QGraphicsItem)
 
 public:
-    Item(qreal x, qreal y);
+    Item(qreal x, qreal y, int value, QWidget* parent);
 
     QRectF boundingRect() const override;
 
@@ -16,6 +16,7 @@ public:
 
     void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
     void advance(int phase) override;
     void animateItem();
@@ -23,6 +24,8 @@ public:
 
     qreal getItemPosX() const;
     qreal getItemPosY() const;
+    int getItemValue() const;
+    void setItemValue(int newValue);
 
     static unsigned index;
     static int itemHeight;
@@ -37,9 +40,12 @@ private:
     qreal itemPosY;
 
     unsigned itemIndex;
+    int itemValue;
 
     bool animation;
     double currentStep;
+
+    QWidget* parent;
 };
 
 #endif // ITEM_HPP

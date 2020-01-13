@@ -5,14 +5,17 @@
 #include <QBrush>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsScene>
+#include <QInputDialog>
 
 int Item::itemWidth = 40;
 int Item::itemHeight = 35;
 unsigned Item::index = 0;
 
-Item::Item(qreal x, qreal y)
+Item::Item(qreal x, qreal y, int value, QWidget* parent)
     : itemPosX(x)
     , itemPosY(y)
+    , itemValue(value)
+    , parent(parent)
 {
     itemIndex = index++;
 
@@ -54,7 +57,7 @@ void Item::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWid
     painter->drawRect(rect);
 
     painter->setFont(QFont("Times", 16, QFont::Bold));
-    painter->drawText(rect, Qt::AlignCenter, QString::number(itemIndex));
+    painter->drawText(rect, Qt::AlignCenter, QString::number(itemValue));
 }
 
 void Item::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
@@ -67,7 +70,7 @@ void Item::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     if (event->button() == Qt::RightButton)
     {
-        if (this->itemIndex == index-1)
+        if (itemIndex == index-1)
         {
             scene()->removeItem(this);
             emit itemDeleted(this);
@@ -75,6 +78,20 @@ void Item::mousePressEvent(QGraphicsSceneMouseEvent* event)
             index--;
         }
     }
+}
+
+void Item::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    QString inputLabel = "Enter value for item with index: " + QString::number(itemIndex);
+
+    bool status;
+    int value = QInputDialog::getInt(parent, "Enter", inputLabel, 0,
+                                     std::numeric_limits<int>::min(), std::numeric_limits<int>::max(),
+                                     1, &status);
+    if (!status)
+        return;
+
+    itemValue = value;
 }
 
 void Item::advance(int phase)
@@ -112,4 +129,14 @@ qreal Item::getItemPosX() const
 qreal Item::getItemPosY() const
 {
     return itemPosY;
+}
+
+int Item::getItemValue() const
+{
+    return itemValue;
+}
+
+void Item::setItemValue(int newValue)
+{
+    itemValue = newValue;
 }
