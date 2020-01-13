@@ -348,6 +348,9 @@ void GraphWindow::startAlgorithmPlayback(Algorithm* algo)
                      thread, &QObject::deleteLater,
                      Qt::QueuedConnection);
 
+    QObject::connect(thread, &GraphAlgorithmDrawingThread::updateLineInBox,
+                     drawGraph, &DrawGraph::updateBox);
+
     thread->start();
     //TODO delete algorithm on return to main menu
 }

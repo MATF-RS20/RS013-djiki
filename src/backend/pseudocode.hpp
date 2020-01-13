@@ -44,6 +44,10 @@ public:
         code.append(nextLine);
     }
 
+    const QVector<QString>& getCode() const
+    {
+        return code;
+    }
 private:
     QString input;
     QString output;

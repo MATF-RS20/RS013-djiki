@@ -12,6 +12,7 @@
 #include <QLabel>
 #include <QCheckBox>
 #include <QInputDialog>
+#include <QDebug>
 
 DrawCollection::DrawCollection(QWidget* parent) :
     QWidget(parent),
@@ -30,6 +31,7 @@ void DrawCollection::initializeScene()
     clearItem = Drawing::createBoxBtnOrLabel<QPushButton>(ui->graphicsView, "Clear", QPointF(width()-130, 20), this);
     helpItem = Drawing::createBoxBtnOrLabel<QLabel>(ui->graphicsView, "Help", QPointF(width()-100, 70), this);
     doneItem = Drawing::createBoxBtnOrLabel<QCheckBox>(ui->graphicsView, "Done drawing collection", QPointF(20, 20), this);
+    doneItem->setEnabled(false);
 
     QPushButton* clearBtn = static_cast<QPushButton*>(clearItem->widget());
     QLabel* helpLabel = static_cast<QLabel*>(helpItem->widget());
@@ -80,7 +82,12 @@ void DrawCollection::mousePressEvent(QMouseEvent* event)
 
         int n = collectionItems.size();
         if (n < 2)  // Not enough items created to make connection
+        {
+            if (!finished && collectionItems.size() > 0)
+                doneItem->setEnabled(true);
+
             return;
+        }
 
         Connection* newConnection = new Connection(collectionItems[n-2], newItem);
         connections.push_back(newConnection);

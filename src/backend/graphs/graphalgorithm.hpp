@@ -16,6 +16,9 @@ public:
 
     QVector<GraphState> getStates() const;
 
+    QString getPseudoCodeHTML(unsigned activeLine = 0) const;
+    const Pseudocode& getCode() const;
+
 protected:
     void addState(Node* currentNode, unsigned currentLine);
     void addState(Node* currentNode, Edge* currentEdge, unsigned currentLine);

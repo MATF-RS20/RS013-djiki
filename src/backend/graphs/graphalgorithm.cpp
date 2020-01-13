@@ -32,3 +32,14 @@ void GraphAlgorithm::addState(Node* currentNode, Edge* currentEdge, unsigned cur
 {
     this->states.append(GraphState(currentNode, currentEdge, currentLine));
 }
+
+QString GraphAlgorithm::getPseudoCodeHTML(unsigned activeLine) const
+{
+    return code.generateHTML(activeLine);
+}
+
+const Pseudocode &GraphAlgorithm::getCode() const
+{
+    return code;
+}
+

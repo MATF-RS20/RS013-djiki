@@ -55,4 +55,7 @@ void GraphAlgorithmDrawingThread::animateCurrentState(GraphState currentState)
 void GraphAlgorithmDrawingThread::highlightCurrentPseudocodeLine(unsigned line)
 {
     emit updateHTML(algorithm->getPseudoCodeHTML(line));
+
+    QString activeLine = algorithm->getCode().getCode()[static_cast<int>(line)-1];
+    emit updateLineInBox(activeLine);
 }
