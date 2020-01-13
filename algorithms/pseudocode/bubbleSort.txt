@@ -1,0 +1,13 @@
+Input: An array of n elements
+Output: Sorted array
+
+1. For i = 0 to i = n - 1 do
+2. Set variable swapped to false
+3. For j = 0 to j = n - 1 do
+4. If list[j] > list[j+1]
+5. Then swap list[j] and list[j+1] and set swapped to true
+6. End second for loop
+7. If swapped equals to false
+8. Break first for loop
+9. End first for loop
+10. Return sorted array
