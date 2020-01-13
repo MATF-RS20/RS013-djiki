@@ -18,6 +18,9 @@ Item::Item(qreal x, qreal y)
 
     setZValue(10);
     setFlag(ItemIsMovable);
+
+    animation = false;
+    currentStep = 0;
 }
 
 QRectF Item::boundingRect() const
@@ -30,7 +33,17 @@ void Item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     Q_UNUSED(option)
     Q_UNUSED(widget)
 
-    QPen pen("#0e5a77");
+    QPen pen;
+
+    if (!animation)
+        pen.setColor("#0e5a77");
+    else
+    {
+        QColor color;
+        color.setRedF(currentStep);
+        pen.setColor(color);
+    }
+
     pen.setWidth(3);
     painter->setPen(pen);
 
@@ -62,6 +75,33 @@ void Item::mousePressEvent(QGraphicsSceneMouseEvent *event)
             index--;
         }
     }
+}
+
+void Item::advance(int phase)
+{
+    if (!phase || !animation)
+        return;
+
+    currentStep += 0.2;
+
+    if (currentStep > 1)
+    {
+        currentStep = 1;
+        return;
+    }
+
+    update();
+}
+
+void Item::animateItem()
+{
+    animation = true;
+}
+
+void Item::stopAnimation()
+{
+    animation = false;
+    currentStep = 0;
 }
 
 qreal Item::getItemPosX() const

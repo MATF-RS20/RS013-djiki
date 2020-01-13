@@ -86,7 +86,7 @@ void DrawCollection::resizeEvent(QResizeEvent*)
     Drawing::resizeDrawingWidget(this);
 }
 
-Ui::DrawCollection *DrawCollection::getUi() const
+Ui::DrawCollection* DrawCollection::getUi() const
 {
     return ui;
 }
@@ -98,7 +98,7 @@ DrawCollection::~DrawCollection()
     delete ui;
 }
 
-void DrawCollection::deleteItemFromCollection(Item *item)
+void DrawCollection::deleteItemFromCollection(Item* item)
 {
     if (connections.size() > 0)
     {
@@ -124,6 +124,10 @@ void DrawCollection::onDoneDrawing()
 
     for (auto& i: collectionItems)
         i->setEnabled(false);
+
+    animationTimer = new QTimer(this);
+    QObject::connect(animationTimer, &QTimer::timeout, ui->graphicsView->scene(), &QGraphicsScene::advance);
+    animationTimer->start(200);
 }
 
 void DrawCollection::onClearCollection()

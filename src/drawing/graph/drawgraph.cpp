@@ -33,6 +33,7 @@ void DrawGraph::initializeScene()
     clearItem = Drawing::createBoxBtnOrLabel<QPushButton>(ui->graphicsView, "Clear", QPointF(width()-130, 20), this);
     helpItem = Drawing::createBoxBtnOrLabel<QLabel>(ui->graphicsView, "Help", QPointF(width()-100, 70), this);
     doneItem = Drawing::createBoxBtnOrLabel<QCheckBox>(ui->graphicsView, "Done drawing graph", QPointF(20, 20), this);
+    doneItem->setEnabled(false);
 
     QPushButton* clearBtn = static_cast<QPushButton*>(clearItem->widget());
     QLabel* helpLabel = static_cast<QLabel*>(helpItem->widget());
@@ -77,6 +78,9 @@ void DrawGraph::mousePressEvent(QMouseEvent* event)
 
         ui->graphicsView->scene()->addItem(newNode);
     }
+
+    if (!finished && nodes.size() > 0)
+        doneItem->setEnabled(true);
 }
 
 void DrawGraph::resizeEvent(QResizeEvent *)

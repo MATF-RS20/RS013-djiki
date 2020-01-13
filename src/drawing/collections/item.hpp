@@ -17,6 +17,10 @@ public:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
+    void advance(int phase) override;
+    void animateItem();
+    void stopAnimation();
+
     qreal getItemPosX() const;
     qreal getItemPosY() const;
 
@@ -33,6 +37,9 @@ private:
     qreal itemPosY;
 
     unsigned itemIndex;
+
+    bool animation;
+    double currentStep;
 };
 
 #endif // ITEM_HPP

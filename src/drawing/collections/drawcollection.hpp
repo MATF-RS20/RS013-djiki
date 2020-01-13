@@ -5,6 +5,7 @@
 #include "connection.hpp"
 
 #include <QWidget>
+#include <QTimer>
 
 namespace Ui {
 class DrawCollection;
@@ -15,10 +16,10 @@ class DrawCollection : public QWidget
     Q_OBJECT
 
 public:
-    explicit DrawCollection(QWidget *parent = nullptr);
+    explicit DrawCollection(QWidget* parent = nullptr);
 
-    void mousePressEvent(QMouseEvent *event) override;
-    void resizeEvent(QResizeEvent *event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
     Ui::DrawCollection* getUi() const;
 
@@ -38,13 +39,15 @@ public Q_SLOTS:
     void onClearCollection();
 
 private:
-    Ui::DrawCollection *ui;
+    Ui::DrawCollection* ui;
     void initializeScene();
 
     bool finished;  // used to disable creating new item on click after drawing is finished
 
     QVector<Item*> collectionItems;
     QVector<Connection*> connections;
+
+    QTimer* animationTimer;
 };
 
 #endif // DRAWCOLLECTION_HPP
