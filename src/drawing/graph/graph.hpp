@@ -1,8 +1,11 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
+
 #include <vector>
+
 #include "node.hpp"
 #include "edge.hpp"
+
 #include <QVector>
 #include <QMap>
 

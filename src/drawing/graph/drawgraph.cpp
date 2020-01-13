@@ -13,7 +13,6 @@
 #include <QPushButton>
 #include <QCheckBox>
 #include <QLabel>
-#include <QDebug>
 
 
 DrawGraph::DrawGraph(QWidget* parent)
@@ -34,9 +33,10 @@ void DrawGraph::initializeScene()
     helpItem = Drawing::createBoxBtnOrLabel<QLabel>(ui->graphicsView, "Help", QPointF(width()-100, 70), this);
     doneItem = Drawing::createBoxBtnOrLabel<QCheckBox>(ui->graphicsView, "Done drawing graph", QPointF(20, 20), this);
     doneItem->setEnabled(false);
+
     codeItem = Drawing::createBoxBtnOrLabel<QLabel>(ui->graphicsView, "", QPointF(0, 0), this);
     codeItem->setVisible(false);
-    codeItem->setZValue(100);
+    codeItem->setZValue(100);   // active pseudocode will be above graph
 
     QPushButton* clearBtn = static_cast<QPushButton*>(clearItem->widget());
     QLabel* helpLabel = static_cast<QLabel*>(helpItem->widget());
@@ -51,14 +51,16 @@ void DrawGraph::initializeScene()
     QString instructions = "Click anywhere to create nodes and click and drag to move them.\n\n"
                            "Right click on node to delete it.\n\n"
                            "Create directed edges by clicking on two nodes, holding control key.\n\n"
+                           "Create node loop by clicking twice on the same node.\n\n"
                            "After that enter node weight (Integer value or 'Inf').\n\n"
                            "Double click on edge to change it's weight.\n\n"
                            "Right click on edge to delete it.\n\n"
                            "When you finish click 'Done drawing graph'.\n\n"
-                           "You can start over from scratch by clicking Clear button.\n\n";
+                           "You can start over from scratch by clicking Clear button.\n";
 
     directions = Drawing::drawDirections(ui->graphicsView, instructions);
     helpLabel->setToolTip(instructions);
+    helpLabel->setToolTipDuration(3000);
 }
 
 void DrawGraph::mousePressEvent(QMouseEvent* event)
@@ -82,6 +84,8 @@ void DrawGraph::mousePressEvent(QMouseEvent* event)
         ui->graphicsView->scene()->addItem(newNode);
     }
 
+    /* If there are no nodes, then algorithms don't work at all, so done button is disabled
+       until first node is drawn */
     if (!finished && nodes.size() > 0)
         doneItem->setEnabled(true);
 }
@@ -235,6 +239,7 @@ QString& DrawGraph::cleanPseudocodeLine(QString &line)
 
 QString DrawGraph::splitLine(QString line)
 {
+    /* Line is split on space which is aproximately in the middle of the line */
     QVector<int> indexes;
     for (int i = 0; i < line.size(); i++)
     {

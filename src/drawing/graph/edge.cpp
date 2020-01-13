@@ -7,7 +7,7 @@
 #include <QPainter>
 #include <QGraphicsScene>
 #include <QInputDialog>
-#include <QDebug>
+
 
 Edge::Edge(Node* s, Node* e, int w, bool curve, QWidget* p)
     : start(s)
@@ -180,6 +180,9 @@ void Edge::drawEdgeWeight(QPainter* painter) const
 
 void Edge::drawArrow(QPainter *painter) const
 {
+    /* Draw rectangle, rotate it and then from its diagonal and sides
+       draw arrow head */
+
     std::pair<QPointF, QPointF> currentCoords = getCurrentNodeCoords();
     QLineF line = QLineF(currentCoords.first, currentCoords.second);
 

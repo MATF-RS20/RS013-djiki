@@ -6,6 +6,7 @@
 #include <QScreen>
 #include <QInputDialog>
 
+
 QFont Drawing::font = QFont("Times", 12);
 
 std::pair<qreal, qreal> Drawing::getWindowSize()
