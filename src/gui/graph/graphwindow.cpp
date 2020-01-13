@@ -145,9 +145,10 @@ void GraphWindow::setAlgoGraphAtRightDockWindow()
     algoGraph->setObjectName("algoGraph");
     algoGraph->getAlgoName();
     dockRight->setWidget(algoGraph);
+    addDockWidget(Qt::RightDockWidgetArea, dockRight);
+
     minus->setDisabled(true);
     plus->setDisabled(true);
-    addDockWidget(Qt::RightDockWidgetArea, dockRight);
 }
 
 void GraphWindow::setCodeGraphAtRightDockWindow()
@@ -157,8 +158,14 @@ void GraphWindow::setCodeGraphAtRightDockWindow()
     codeGraph->setObjectName("codeGraph");
     dockRight->setWidget(codeGraph);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
+
     minus->setEnabled(true);
     plus->setEnabled(true);
+    QMenu* menuEdit = ui->menubar->findChild<QMenu*>("menuEdit");
+    QMenu* menuThemes = menuEdit->findChild<QMenu*>("menuChangeTheme");
+    for(auto action : menuThemes->actions())
+        action->setDisabled(true);
+
     codeGraph->setText(name, algorithmInstance->getPseudoCodeHTML());
 }
 

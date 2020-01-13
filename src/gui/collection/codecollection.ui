@@ -57,12 +57,19 @@
       </layout>
      </item>
      <item>
-      <widget class="QPlainTextEdit" name="algoPseudocode"/>
+      <widget class="CollectionCodeEdit" name="algoPseudocode"/>
      </item>
     </layout>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CollectionCodeEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>src/gui/collection/collectioncodeedit.hpp</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

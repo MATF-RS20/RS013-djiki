@@ -3,6 +3,7 @@
 #include "ui_collectionwindow.h"
 #include "ui_drawcollection.h"
 #include "ui_algocollection.h"
+#include "ui_codecollection.h"
 
 CollectionWindow::CollectionWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -18,7 +19,6 @@ CollectionWindow::CollectionWindow(QWidget *parent) :
 
 //    connect(drawCollection, SIGNAL(doneDrawingCollection(Collection*)), this, SLOT(setCollection(Collection*)));
 //    connect(drawCollection, SIGNAL(doneDrawingCollection(Collection*)), this, SLOT(enableRightDockWindow()));
-    createDockWindows();
 
     setWindowTitle(tr("Collection Window"));
 
@@ -28,13 +28,22 @@ CollectionWindow::CollectionWindow(QWidget *parent) :
     slider->setTickInterval(1);
     slider->setValue(4);
 //    connect(slider, SIGNAL(valueChanged(int)), this, SLOT(changePlaybackSpeed(int)));
+
+    plus = new QPushButton("+", this);
+    connect(plus, &QPushButton::clicked, this, &CollectionWindow::plus_clicked);
+    minus = new QPushButton("-", this);
+    connect(minus, &QPushButton::clicked, this, &CollectionWindow::minus_clicked);
+
     ui->toolBar->addWidget(slider);
     ui->toolBar->setMovable(false);
     ui->toolBar->setStyleSheet("QSlider::handle:horizontal {"
                                "background-color: #5599ff; "
                                "border-radius: 9px;"
                                "} ");
+    ui->toolBar->addWidget(plus);
+    ui->toolBar->addWidget(minus);
 
+    createDockWindows();
     animationSetup();
 }
 
@@ -132,6 +141,9 @@ void CollectionWindow::setAlgoCollectionAtRightDockWindow()
     algoCollection->getAlgoName();
     dockRight->setWidget(algoCollection);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
+
+    minus->setDisabled(true);
+    plus->setDisabled(true);
 }
 
 void CollectionWindow::setCodeCollectionAtRightDockWindow()
@@ -141,6 +153,14 @@ void CollectionWindow::setCodeCollectionAtRightDockWindow()
     codeCollection->setObjectName("codeCollection");
     dockRight->setWidget(codeCollection);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
+
+    minus->setEnabled(true);
+    plus->setEnabled(true);
+    QMenu* menuEdit = ui->menubar->findChild<QMenu*>("menuEdit");
+    QMenu* menuThemes = menuEdit->findChild<QMenu*>("menuChangeTheme");
+    for(auto action : menuThemes->actions())
+        action->setDisabled(true);
+
     //    codeCollection->setText(name, algorithmInstance->getPseudoCodeHTML());
 }
 
@@ -378,4 +398,20 @@ void CollectionWindow::on_actionPause_triggered()
 void CollectionWindow::on_actionStop_triggered()
 {
 
+}
+
+void CollectionWindow::plus_clicked()
+{
+    Ui::CodeCollection *ui = codeCollection->getUi();
+    qreal z = ui->algoPseudocode->zoomFactor();
+    if(z <= 1.7)
+        ui->algoPseudocode->setZoomFactor(z + 0.1);
+}
+
+void CollectionWindow::minus_clicked()
+{
+    Ui::CodeCollection *ui = codeCollection->getUi();
+    qreal z = ui->algoPseudocode->zoomFactor();
+    if(z >= 1.1)
+        ui->algoPseudocode->setZoomFactor(z - 0.1);
 }

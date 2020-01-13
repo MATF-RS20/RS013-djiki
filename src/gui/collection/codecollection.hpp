@@ -2,6 +2,7 @@
 #define CODECOLLECTION_HPP
 
 #include <QWidget>
+#include <QMouseEvent>
 
 namespace Ui {
 class CodeCollection;
@@ -15,6 +16,7 @@ public:
     explicit CodeCollection(QWidget *parent = 0);
     ~CodeCollection();
     QString getText();
+    Ui::CodeCollection *getUi();
     void setText(QString &str, QString html);
 
 private slots:

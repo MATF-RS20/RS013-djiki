@@ -43,7 +43,7 @@
      <addaction name="actionPause"/>
      <addaction name="actionStop"/>
     </widget>
-    <widget class="QMenu" name="menuChange_Theme">
+    <widget class="QMenu" name="menuChangeTheme">
      <property name="title">
       <string>Change Theme</string>
      </property>
@@ -56,7 +56,7 @@
     <addaction name="separator"/>
     <addaction name="menuAnimation"/>
     <addaction name="separator"/>
-    <addaction name="menuChange_Theme"/>
+    <addaction name="menuChangeTheme"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>

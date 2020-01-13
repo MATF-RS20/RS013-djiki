@@ -28,6 +28,5 @@ GraphCodeEdit::~GraphCodeEdit()
 void GraphCodeEdit::resizeEvent(QResizeEvent *e)
 {
     QWebEngineView::resizeEvent(e);
-
 }
 

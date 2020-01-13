@@ -18,10 +18,15 @@ QString CodeCollection::getText()
     return ui->labelAlgoName->text();
 }
 
+Ui::CodeCollection *CodeCollection::getUi()
+{
+    return ui;
+}
+
 void CodeCollection::setText(QString &str, QString html)
 {
     ui->labelAlgoName->setText(str);
-    //ui->algoPseudocode->setHtml(html);
+    ui->algoPseudocode->setHtml(html);
 }
 
 void CodeCollection::on_pushButtonReturn_clicked()
@@ -33,5 +38,5 @@ void CodeCollection::on_pushButtonReturn_clicked()
 
 void CodeCollection::updateHTML(QString html)
 {
-//    ui->algoPseudocode->setHtml(html);
+    ui->algoPseudocode->setHtml(html);
 }

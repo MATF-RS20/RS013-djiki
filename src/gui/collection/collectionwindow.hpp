@@ -44,6 +44,8 @@ private slots:
     void on_actionPlay_triggered();
     void on_actionPause_triggered();
     void on_actionStop_triggered();
+    void plus_clicked();
+    void minus_clicked();
 
 private:
     void createDockWindows();
@@ -72,6 +74,8 @@ private:
     QPropertyAnimation *hideCode;
     QPropertyAnimation *showAlgo;
     QSlider *slider;
+    QPushButton *plus;
+    QPushButton *minus;
     QString name;
 };
 
