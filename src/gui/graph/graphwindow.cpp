@@ -5,6 +5,7 @@
 #include "../../backend/graphs/graphalgorithmdrawingthread.hpp"
 #include "ui_drawgraph.h"
 #include "ui_algograph.h"
+#include "ui_codegraph.h"
 
 QMutex GraphWindow::playbackMutex;
 QPair<int, unsigned> GraphWindow::playback(1, 1000);
@@ -23,7 +24,6 @@ GraphWindow::GraphWindow(QWidget *parent) :
 
     connect(drawGraph, SIGNAL(doneDrawingGraph(Graph*)), this, SLOT(setGraph(Graph*)));
     connect(drawGraph, SIGNAL(doneDrawingGraph(Graph*)), this, SLOT(enableRightDockWindow()));
-    createDockWindows();
 
     setWindowTitle(tr("Graph Window"));
 
@@ -33,13 +33,22 @@ GraphWindow::GraphWindow(QWidget *parent) :
     slider->setTickInterval(1);
     slider->setValue(4);
     connect(slider, SIGNAL(valueChanged(int)), this, SLOT(changePlaybackSpeed(int)));
+
+    plus = new QPushButton("+", this);
+    connect(plus, &QPushButton::clicked, this, &GraphWindow::plus_clicked);
+    minus = new QPushButton("-", this);
+    connect(minus, &QPushButton::clicked, this, &GraphWindow::minus_clicked);
+
     ui->toolBar->addWidget(slider);
     ui->toolBar->setMovable(false);
     ui->toolBar->setStyleSheet("QSlider::handle:horizontal {"
                                "background-color: #5599ff; "
                                "border-radius: 9px;"
                                "} ");
+    ui->toolBar->addWidget(plus);
+    ui->toolBar->addWidget(minus);
 
+    createDockWindows();
     animationSetup();
 }
 
@@ -136,6 +145,8 @@ void GraphWindow::setAlgoGraphAtRightDockWindow()
     algoGraph->setObjectName("algoGraph");
     algoGraph->getAlgoName();
     dockRight->setWidget(algoGraph);
+    minus->setDisabled(true);
+    plus->setDisabled(true);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
 }
 
@@ -146,6 +157,8 @@ void GraphWindow::setCodeGraphAtRightDockWindow()
     codeGraph->setObjectName("codeGraph");
     dockRight->setWidget(codeGraph);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
+    minus->setEnabled(true);
+    plus->setEnabled(true);
     codeGraph->setText(name, algorithmInstance->getPseudoCodeHTML());
 }
 
@@ -449,4 +462,20 @@ void GraphWindow::on_actionMedize_triggered()
         QFile file(":/stylesheets/Medize.qss");
         setTheme(&file);
     }
+}
+
+void GraphWindow::plus_clicked()
+{
+    Ui::CodeGraph *ui = codeGraph->getUi();
+    qreal z = ui->algoPseudocode->zoomFactor();
+    if(z <= 1.7)
+        ui->algoPseudocode->setZoomFactor(z + 0.1);
+}
+
+void GraphWindow::minus_clicked()
+{
+    Ui::CodeGraph *ui = codeGraph->getUi();
+    qreal z = ui->algoPseudocode->zoomFactor();
+    if(z >= 1.1)
+        ui->algoPseudocode->setZoomFactor(z - 0.1);
 }

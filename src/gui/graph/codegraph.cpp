@@ -13,7 +13,12 @@ CodeGraph::~CodeGraph()
     delete ui;
 }
 
-QString CodeGraph::getText()
+Ui::CodeGraph *CodeGraph::getUi() const
+{
+    return ui;
+}
+
+QString CodeGraph::getText() const
 {
     return ui->labelAlgoName->text();
 }

@@ -15,7 +15,8 @@ class CodeGraph : public QWidget
 public:
     explicit CodeGraph(QWidget *parent = 0);
     ~CodeGraph();
-    QString getText();
+    QString getText() const;
+    Ui::CodeGraph *getUi() const;
     void setText(QString &str, QString html);
 
 private slots:

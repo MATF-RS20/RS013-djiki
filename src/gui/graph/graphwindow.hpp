@@ -53,6 +53,8 @@ private slots:
     void on_actionDarkeum_triggered();
     void on_actionIntegrid_triggered();
     void on_actionMedize_triggered();
+    void plus_clicked();
+    void minus_clicked();
 
 private:
     void createDockWindows();
@@ -84,6 +86,8 @@ private:
     QPropertyAnimation *hideCode;
     QPropertyAnimation *showAlgo;
     QSlider *slider;
+    QPushButton *plus;
+    QPushButton *minus;
     QString name;
 };
 
