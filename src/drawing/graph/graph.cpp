@@ -20,6 +20,22 @@ Node* Graph::getNodeByNodeNumber(unsigned n) const
     return nullptr;
 }
 
+Edge* Graph::getEdgeFromTo(const Node* start, const Node* end) const
+{
+    for(auto edge : *this->edges)
+    {
+        if(edge->getStart() == start && edge->getEnd() == end)
+            return edge;
+    }
+
+    return nullptr;
+}
+
+const QVector<Node*> Graph::getNodes() const
+{
+    return *nodes;
+}
+
 const QVector<Node*> Graph::getNeighbours(Node* node) const
 {
     return node->getNeighbours();

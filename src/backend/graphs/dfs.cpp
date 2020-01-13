@@ -1,51 +1,72 @@
-#include <iostream>
-#include <iterator>
-#include <set>
-#include <vector>
-#include <map>
+#include "dfs.hpp"
+#include <QSet>
 
-class Graph {
-public:
-    Graph(std::map<int, std::vector<int>> lst)
-        : adjacencyList(lst)
-    {}
-
-    std::vector<int> getNeighbours(int n)
-    {
-        return adjacencyList[n];
-    }
-
-private:
-    std::map<int, std::vector<int>> adjacencyList;
-};
-
-std::vector<int> DFS(int start, int end, Graph* G)
+DFS::DFS()
+    : GraphAlgorithm()
 {
-    std::set<int> visitedNodes;
-    std::vector<int> path;
-    
+    definePseudocode();
+}
+
+DFS::DFS(Graph *g)
+    : GraphAlgorithm(g)
+{
+    definePseudocode();
+}
+
+void DFS::definePseudocode()
+{
+    code.setInput("Graph G, starting node and target node");
+    code.setOutput("Path from the starting node to the target node in graph G (if such path exists)");
+
+
+    code += "Put starting node on stack PATH";
+    code += "Insert starting node in the SET OF VISITED NODES";
+    code += "While stack PATH is not empty do";
+    code += "\tTake the top of the stack as N";
+    code += "\tIf N is the target node ";
+    code += "\t\tThen inform that the path has been found and reconstruct it from the stack PATH";
+    code += "\tElse if N has no unvisited descendants";
+    code += "\t\tThen remove N from stack PATH";
+    code += "\tElse choose first unvisited descendant and add it on top of the stack PATH and in the SET OF VISITED NODES";
+    code += "Inform that requested path doesn't exist";
+}
+
+void DFS::solve()
+{
+    QSet<Node*> visitedNodes;
+    QVector<Node*> path;
+
+    addState(start, 1);
     visitedNodes.insert(start);
+
+    addState(start, 2);
     path.push_back(start);
-    
+
+    addState(start, 3);
+
     while (!path.empty())
     {
-        int n = path.back();
 
+        Node* n = path.back();
+        addState(n, 4);
+
+        addState(n, 5);
         if (n == end)
         {
-            std::cout << "Path has been found: ";
-            std::copy(std::cbegin(path), std::cend(path),
-                      std::ostream_iterator<int>(std::cout, " "));
+            addState(n, 6);
+            outcome = QString("Path has been found!");
 
-            std::cout << std::endl;
-            return path;
+            std::reverse(std::begin(path), std::end(path));
+
+            return;
         }
 
         bool hasUnvisited = false;
-        for (auto& m : G->getNeighbours(n))
+        for (auto& m : graph.getNeighbours(n))
         {
             if (visitedNodes.find(m) == visitedNodes.end())
             {
+                addState(n, 9);
                 path.push_back(m);
                 visitedNodes.insert(m);
                 hasUnvisited = true;
@@ -53,22 +74,13 @@ std::vector<int> DFS(int start, int end, Graph* G)
         }
 
         if (!hasUnvisited)
+            addState(n, 7);
+            addState(n, 8);
             path.pop_back();
     }
 
-    std::cout << "Requested path doesn't exist!" << std::endl;
-    return std::vector<int>();
+    addState(start, 10);
+    outcome = QString("Requested path doesn't exist!");
+
 }
 
-//int main()
-//{
-//    std::map<int, std::vector<int>> aList;
-//    aList[1] = {2};
-//    aList[2] = {1, 3};
-//    aList[3] = {1};
-
-//    Graph* G = new Graph(aList);
-//    DFS(1, 3, G);
-
-//    return 0;
-//}

@@ -3,6 +3,7 @@
 
 #include "../../backend/graphs/bfs.hpp"
 #include "../../backend/graphs/dfs.hpp"
+#include "../../backend/graphs/dijkstra.hpp"
 
 AlgoGraph::AlgoGraph(QWidget *parent) :
     QWidget(parent),
@@ -49,14 +50,14 @@ void AlgoGraph::on_pushButtonAStar_clicked()
 void AlgoGraph::on_pushButtonDijkstra_clicked()
 {
     algoName = "Dijkstra";
-
+    algorithmInstance = new Dijkstra();
     notifyParent();
 }
 
 void AlgoGraph::on_pushButtonDFS_clicked()
 {
     algoName = "DFS";
-//    algorithmInstance = new DFS();
+    algorithmInstance = new DFS();
 
     notifyParent();
 }

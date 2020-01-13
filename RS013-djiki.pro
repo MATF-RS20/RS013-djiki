@@ -19,6 +19,7 @@ SOURCES += \
     src/backend/graphalgorithmexecutorthread.cpp \
     src/backend/graphs/bfs.cpp \
     src/backend/graphs/dfs.cpp \
+    src/backend/graphs/dijkstra.cpp \
     src/backend/graphs/graphalgorithm.cpp \
     src/backend/graphs/graphalgorithmdrawingthread.cpp \
     src/backend/pseudocodeformatter.cpp \
@@ -46,6 +47,7 @@ HEADERS += \
     src/backend/graphalgorithmexecutorthread.hpp \
     src/backend/graphs/bfs.hpp \
     src/backend/graphs/dfs.hpp \
+    src/backend/graphs/dijkstra.hpp \
     src/backend/graphs/graphalgorithm.hpp \
     src/backend/graphs/graphalgorithmdrawingthread.hpp \
     src/backend/graphs/graphstate.hpp \
