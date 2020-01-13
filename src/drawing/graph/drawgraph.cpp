@@ -212,7 +212,7 @@ void DrawGraph::updateBox(QString line)
 
     if (textWidth > width()-350)
     {
-        activeLine = splitLine(activeLine);
+        activeLine = Drawing::splitLine(activeLine);
         codeLbl->setText(activeLine);
 
         codeLbl->setGeometry(0, 0, textWidth+10, 40);
@@ -233,28 +233,6 @@ QString& DrawGraph::cleanPseudocodeLine(QString &line)
     {
         line = QString::fromStdString(line.toStdString().substr(1));
     }
-
-    return line;
-}
-
-QString DrawGraph::splitLine(QString line)
-{
-    /* Line is split on space which is aproximately in the middle of the line */
-    QVector<int> indexes;
-    for (int i = 0; i < line.size(); i++)
-    {
-        if (line[i] == ' ')
-            indexes.push_back(i);
-    }
-
-    int n = indexes.size();
-    if (n == 0)
-        return line;
-
-    int half = n % 2 == 0 ? n/2 : (n-1)/2;
-    int splitOn = indexes[half];
-
-    line = line.left(splitOn+1) + "\n" + line.right(line.size()-splitOn-1);
 
     return line;
 }

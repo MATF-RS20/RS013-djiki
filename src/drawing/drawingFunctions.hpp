@@ -51,6 +51,8 @@ public:
 
     static std::pair<bool, int> getWeightFromUser(const Node* start, const Node* end, QWidget* parent);
 
+    static QString splitLine(QString line);
+
     static QFont font;
 
 private:

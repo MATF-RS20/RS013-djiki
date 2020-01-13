@@ -55,6 +55,16 @@ void DrawCollection::initializeScene()
     helpLabel->setToolTip(instructions);
 }
 
+QString &DrawCollection::cleanPseudocodeLine(QString &line)
+{
+    while (line.indexOf("\t") != -1 || line.indexOf("\n") != -1)
+    {
+        line = QString::fromStdString(line.toStdString().substr(1));
+    }
+
+    return line;
+}
+
 void DrawCollection::mousePressEvent(QMouseEvent* event)
 {
     if (directions->isVisible())
@@ -178,4 +188,29 @@ void DrawCollection::onClearCollection()
     collectionItems.clear();
 
     Item::index = 0;
+}
+
+void DrawCollection::updateBox(QString line)
+{
+    activeLine = cleanPseudocodeLine(line);
+
+    QLabel* codeLbl = static_cast<QLabel*>(codeItem->widget());
+    codeLbl->setText(activeLine);
+    int textWidth = codeLbl->fontMetrics().boundingRect(codeLbl->text()).width();
+
+    if (textWidth > width()-350)
+    {
+        activeLine = Drawing::splitLine(activeLine);
+        codeLbl->setText(activeLine);
+
+        codeLbl->setGeometry(0, 0, textWidth+10, 40);
+        codeItem->setPos(QPointF((width() - textWidth/2)/2, 90));
+    }
+    else
+    {
+        codeLbl->setGeometry(0, 0, textWidth+10, 40);
+        codeItem->setPos(QPointF((width() - textWidth)/2, 90));
+    }
+
+    codeLbl->setStyleSheet("background-color: rgba(0,0,0,0%)");
 }
