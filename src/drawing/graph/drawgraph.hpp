@@ -67,7 +67,9 @@ private:
 
     QTimer* animationTimer;
 
+    QString activeLine;
     QString& cleanPseudocodeLine(QString& line);
+    QString splitLine(QString line);
 };
 
 #endif // DRAWGRAPH_HPP

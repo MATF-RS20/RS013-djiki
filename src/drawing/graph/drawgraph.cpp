@@ -101,6 +101,7 @@ void DrawGraph::resizeEvent(QResizeEvent *)
 
     QLabel* codeLbl = static_cast<QLabel*>(codeItem->widget());
     int textW = codeLbl->fontMetrics().boundingRect(codeLbl->text()).width();
+
     codeLbl->setGeometry(0, 0, textW+10, 40);
     codeItem->setPos(QPointF((width() - textW)/2, 90));
 }
@@ -199,23 +200,56 @@ void DrawGraph::onClearGraph()
 
 void DrawGraph::updateBox(QString line)
 {
-    line = cleanPseudocodeLine(line);
+    activeLine = cleanPseudocodeLine(line);
 
     QLabel* codeLbl = static_cast<QLabel*>(codeItem->widget());
-    codeLbl->setText(line);
+    codeLbl->setText(activeLine);
     int textWidth = codeLbl->fontMetrics().boundingRect(codeLbl->text()).width();
 
-    codeLbl->setGeometry(0, 0, textWidth+10, 40);
-    codeItem->setPos(QPointF((width() - textWidth)/2, 90));
+    if (textWidth > width()-350)
+    {
+        activeLine = splitLine(activeLine);
+        codeLbl->setText(activeLine);
+
+        codeLbl->setGeometry(0, 0, textWidth+10, 40);
+        codeItem->setPos(QPointF((width() - textWidth/2)/2, 90));
+    }
+    else
+    {
+        codeLbl->setGeometry(0, 0, textWidth+10, 40);
+        codeItem->setPos(QPointF((width() - textWidth)/2, 90));
+    }
+
     codeLbl->setStyleSheet("background-color: rgba(0,0,0,0%)");
 }
 
-QString &DrawGraph::cleanPseudocodeLine(QString &line)
+QString& DrawGraph::cleanPseudocodeLine(QString &line)
 {
     while (line.indexOf("\t") != -1 || line.indexOf("\n") != -1)
     {
         line = QString::fromStdString(line.toStdString().substr(1));
     }
+
+    return line;
+}
+
+QString DrawGraph::splitLine(QString line)
+{
+    QVector<int> indexes;
+    for (int i = 0; i < line.size(); i++)
+    {
+        if (line[i] == ' ')
+            indexes.push_back(i);
+    }
+
+    int n = indexes.size();
+    if (n == 0)
+        return line;
+
+    int half = n % 2 == 0 ? n/2 : (n-1)/2;
+    int splitOn = indexes[half];
+
+    line = line.left(splitOn+1) + "\n" + line.right(line.size()-splitOn-1);
 
     return line;
 }
