@@ -8,7 +8,6 @@ GraphAlgorithmDrawingThread::GraphAlgorithmDrawingThread(GraphAlgorithm* algorit
 
 void GraphAlgorithmDrawingThread::run()
 {
-    //TODO check mutex for play/pause/speed change in every iteration
     QVector<GraphState> states = algorithm->getStates();
     for(auto currentState : states){ 
 
@@ -32,10 +31,6 @@ void GraphAlgorithmDrawingThread::animateCurrentState(GraphState currentState)
 {
     static Node* activeNode = nullptr;
     static Edge* activeEdge = nullptr;
-
-    qDebug() << "Currently node:";
-    qDebug() << currentState.currentNode->getNodeNumber();
-    qDebug() << "Active node:";
 
     if(activeNode)
     {

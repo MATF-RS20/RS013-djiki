@@ -1,6 +1,6 @@
 #include "graphwindow.hpp"
 #include "ui_graphwindow.h"
-#include "../../backend/graphalgorithmexecutorthread.hpp"
+#include "../../backend/algorithmexecutorthread.hpp"
 #include "../../backend/graphs/graphalgorithm.hpp"
 #include "../../backend/graphs/graphalgorithmdrawingthread.hpp"
 #include "ui_drawgraph.h"
@@ -296,11 +296,11 @@ Graph* GraphWindow::getGraph()
 
 void GraphWindow::executeAlgorithm(GraphAlgorithm* algorithmInstance)
 {
-    auto thread = new GraphAlgorithmExecutorThread(algorithmInstance);
-    QObject::connect(thread, SIGNAL(graphAlgorithmFinished(GraphAlgorithm*)),
-                     this, SLOT(startAlgorithmPlayback(GraphAlgorithm*)));
+    auto thread = new AlgorithmExecutorThread(algorithmInstance);
+    QObject::connect(thread, SIGNAL(algorithmExecutionFinished(Algorithm*)),
+                     this, SLOT(startAlgorithmPlayback(Algorithm*)));
 
-    QObject::connect(thread, &GraphAlgorithmExecutorThread::graphAlgorithmFinished,
+    QObject::connect(thread, &AlgorithmExecutorThread::algorithmExecutionFinished,
                      thread, &QObject::deleteLater,
                      Qt::QueuedConnection);
 
@@ -333,9 +333,10 @@ void GraphWindow::setTheme(QFile *file)
     file->close();
 }
 
-void GraphWindow::startAlgorithmPlayback(GraphAlgorithm* algo)
+void GraphWindow::startAlgorithmPlayback(Algorithm* algo)
 {
-    auto thread = new GraphAlgorithmDrawingThread(algo);
+    GraphAlgorithm* algorithm = dynamic_cast<GraphAlgorithm*>(algo);
+    auto thread = new GraphAlgorithmDrawingThread(algorithm);
     QObject::connect(thread, SIGNAL(updateHTML(QString)),
                      this->codeGraph, SLOT(updateHTML(QString)));
 

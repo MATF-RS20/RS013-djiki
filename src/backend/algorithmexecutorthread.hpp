@@ -3,21 +3,21 @@
 #include <QThread>
 #include "graphs/graphalgorithm.hpp"
 
-class GraphAlgorithmExecutorThread : public QThread
+class AlgorithmExecutorThread : public QThread
 {
     Q_OBJECT
 
 public:
-    GraphAlgorithmExecutorThread(GraphAlgorithm* algorithmInstance);
+    AlgorithmExecutorThread(Algorithm* algorithmInstance);
 
 signals:
-    void graphAlgorithmFinished(GraphAlgorithm* algorithmInstance);
+    void algorithmExecutionFinished(Algorithm* algorithmInstance);
 
 protected:
     void run() override;
 
 private:
-    GraphAlgorithm* algorithmInstance;
+    Algorithm* algorithmInstance;
 };
 
 #endif // GRAPHALGORITHMEXECUTORTHREAD_HPP

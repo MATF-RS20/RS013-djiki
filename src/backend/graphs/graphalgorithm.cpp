@@ -18,12 +18,6 @@ void GraphAlgorithm::setGraph(Graph g)
 }
 
 
-QString GraphAlgorithm::getOutcome() const
-{
-    return outcome;
-}
-
-
 QVector<GraphState> GraphAlgorithm::getStates() const
 {
     return states;
@@ -37,9 +31,4 @@ void GraphAlgorithm::addState(Node* currentNode, unsigned currentLine)
 void GraphAlgorithm::addState(Node* currentNode, Edge* currentEdge, unsigned currentLine)
 {
     this->states.append(GraphState(currentNode, currentEdge, currentLine));
-}
-
-QString GraphAlgorithm::getPseudoCodeHTML(unsigned activeLine) const
-{
-    return code.generateHTML(activeLine);
 }

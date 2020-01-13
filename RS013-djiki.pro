@@ -16,7 +16,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    src/backend/graphalgorithmexecutorthread.cpp \
+    src/backend/algorithm.cpp \
+    src/backend/algorithmexecutorthread.cpp \
+    src/backend/collections/collectionalgorithm.cpp \
     src/backend/graphs/bfs.cpp \
     src/backend/graphs/dfs.cpp \
     src/backend/graphs/dijkstra.cpp \
@@ -44,7 +46,9 @@ SOURCES += \
     src/gui/collection/collectioncodeedit.cpp
 
 HEADERS += \
-    src/backend/graphalgorithmexecutorthread.hpp \
+    src/backend/algorithm.hpp \
+    src/backend/algorithmexecutorthread.hpp \
+    src/backend/collections/collectionalgorithm.hpp \
     src/backend/graphs/bfs.hpp \
     src/backend/graphs/dfs.hpp \
     src/backend/graphs/dijkstra.hpp \
