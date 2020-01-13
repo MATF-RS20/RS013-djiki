@@ -25,6 +25,7 @@ public:
     qreal getItemPosX() const;
     qreal getItemPosY() const;
     int getItemValue() const;
+    unsigned getItemIndex() const;
     void setItemValue(int newValue);
 
     static unsigned index;

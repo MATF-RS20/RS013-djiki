@@ -19,12 +19,14 @@ SOURCES += \
     src/backend/algorithm.cpp \
     src/backend/algorithmexecutorthread.cpp \
     src/backend/collections/collectionalgorithm.cpp \
+    src/backend/collections/collectionalgorithmdrawingthread.cpp \
     src/backend/graphs/bfs.cpp \
     src/backend/graphs/dfs.cpp \
     src/backend/graphs/dijkstra.cpp \
     src/backend/graphs/graphalgorithm.cpp \
     src/backend/graphs/graphalgorithmdrawingthread.cpp \
     src/backend/pseudocodeformatter.cpp \
+    src/drawing/collections/collection.cpp \
     src/drawing/collections/connection.cpp \
     src/drawing/collections/drawcollection.cpp \
     src/drawing/collections/item.cpp \
@@ -49,6 +51,8 @@ HEADERS += \
     src/backend/algorithm.hpp \
     src/backend/algorithmexecutorthread.hpp \
     src/backend/collections/collectionalgorithm.hpp \
+    src/backend/collections/collectionalgorithmdrawingthread.hpp \
+    src/backend/collections/collectionstate.hpp \
     src/backend/graphs/bfs.hpp \
     src/backend/graphs/dfs.hpp \
     src/backend/graphs/dijkstra.hpp \
@@ -57,6 +61,7 @@ HEADERS += \
     src/backend/graphs/graphstate.hpp \
     src/backend/pseudocode.hpp \
     src/backend/pseudocodeformatter.hpp \
+    src/drawing/collections/collection.hpp \
     src/drawing/collections/connection.hpp \
     src/drawing/collections/drawcollection.hpp \
     src/drawing/collections/item.hpp \
