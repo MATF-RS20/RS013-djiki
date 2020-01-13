@@ -21,7 +21,7 @@ Node::Node(double x, double y)
         nodeNumber = deletedNumbers.pop();
     }
 
-    animation = 0;
+    animation = false;
     currentStep = 0;
 
     setZValue(10);
@@ -42,7 +42,7 @@ void Node::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
     else
     {
         QColor color;
-        color.setRedF(1);
+        color.setRedF(currentStep);
         pen.setColor(color);
     }
 
@@ -117,12 +117,12 @@ void Node::clearNeighbours()
 
 void Node::animateNode()
 {
-    animation = 1;
+    animation = true;
 }
 
 void Node::stopAnimation()
 {
-    animation = 0;
+    animation = false;
 }
 
 void Node::advance(int phase)
@@ -134,18 +134,12 @@ void Node::advance(int phase)
     if (!phase || !animation)
         return;
 
-    currentStep += animation*0.1;
+    currentStep += 0.2;
 
     if (currentStep > 1)
     {
-        animation = -1;
-        currentStep += animation*0.1;
-    }
-
-    if (currentStep < 0)
-    {
-        animation = 1;
-        currentStep += animation*0.1;
+        currentStep = 1;
+        return;
     }
 
     update();

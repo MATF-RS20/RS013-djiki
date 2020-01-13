@@ -53,7 +53,7 @@ private:
 
     QVector<Node*> neighbours;
 
-    int animation;
+    bool animation;
     double currentStep;
 };
 
