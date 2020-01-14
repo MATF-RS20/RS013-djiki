@@ -7,6 +7,10 @@ CollectionCodeEdit::CollectionCodeEdit(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->setAttribute(Qt::WA_TranslucentBackground);
+    this->setStyleSheet("background: transparent");
+    this->page()->setBackgroundColor(Qt::transparent);
+
     QFont font;
     font.setFamily("Times");
     font.setPointSize(12);

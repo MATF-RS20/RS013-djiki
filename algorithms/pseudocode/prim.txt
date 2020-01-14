@@ -1,7 +1,0 @@
-Input: Graph G and (random)starting node
-Output: MST (Minimum cost Spanning Tree)
-
-1. Mark starting node as reached and all other nodes as unreached
-2. While there are unreached nodes do
-3. 	Find an edge E with minimum cost in the graph that connects a reached node X to an unreached node Y
-4. 	Add E to the MST and mark Y as reached

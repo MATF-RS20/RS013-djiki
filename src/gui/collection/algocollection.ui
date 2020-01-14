@@ -18,7 +18,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QPushButton" name="pushButtonBubbleSort">
        <property name="sizePolicy">
@@ -31,7 +31,8 @@
         <string notr="true">background-color: rgb(85, 153, 255);</string>
        </property>
        <property name="text">
-        <string>Bubble Sort</string>
+        <string>Bubble
+Sort</string>
        </property>
       </widget>
      </item>
@@ -47,16 +48,17 @@
         <string notr="true">background-color: rgb(85, 153, 255);</string>
        </property>
        <property name="text">
-        <string>Insertion Sort</string>
+        <string>Insertion
+Sort</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="pushButtonMergeSort">
+      <widget class="QPushButton" name="pushButtonQuickSort">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -67,7 +69,8 @@
         <string notr="true">background-color: rgb(85, 153, 255);</string>
        </property>
        <property name="text">
-        <string>Merge Sort</string>
+        <string>Quick
+Sort</string>
        </property>
       </widget>
      </item>
@@ -83,43 +86,8 @@
         <string notr="true">background-color: rgb(85, 153, 255);</string>
        </property>
        <property name="text">
-        <string>Selection Sort</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QPushButton" name="pushButtonBinarySearch">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(85, 153, 255);</string>
-       </property>
-       <property name="text">
-        <string>Binary Search</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButtonQuickSort">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(85, 153, 255);</string>
-       </property>
-       <property name="text">
-        <string>Quick Sort</string>
+        <string>Selection
+Sort</string>
        </property>
       </widget>
      </item>

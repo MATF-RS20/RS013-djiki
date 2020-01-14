@@ -7,7 +7,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->resize(this->width() * 1.3, this->height() * 1.3);
+
+    setWindowTitle(tr("Djiki"));
 }
 
 MainWindow::~MainWindow()
