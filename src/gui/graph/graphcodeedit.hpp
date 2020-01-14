@@ -8,14 +8,9 @@
 #include <QTextBlock>
 #include <QGridLayout>
 
-QT_USE_NAMESPACE
-QT_BEGIN_NAMESPACE
 namespace Ui {
 class GraphCodeEdit;
 }
-QT_END_NAMESPACE
-
-class GraphCodeLineNumber;
 
 class GraphCodeEdit : public QWebEngineView
 {
@@ -27,12 +22,7 @@ public:
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
-/*
-private slots:
-    void updateLineNumberAreaWidth(int newBlockCount);
-    void highlightCurrentLine();
-    void updateLineNumberArea(const QRect &rect, int dy);
-*/
+
 private:
     Ui::GraphCodeEdit *ui;
 };

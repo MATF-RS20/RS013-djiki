@@ -122,9 +122,9 @@ void GraphWindow::setAlgoGraphAtRightDockWindow()
 {
     disableThings();
     algoGraph = new AlgoGraph(dockRight);
-//    algoGraph->setMinimumWidth(this->width() * 0.2);
+    algoGraph->setMinimumWidth(this->width() * 0.2);
     algoGraph->setObjectName("algoGraph");
-    algoGraph->getAlgoName();
+    algoGraph->getAlgoName();    
     dockRight->setWidget(algoGraph);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
 }
@@ -133,7 +133,6 @@ void GraphWindow::setCodeGraphAtRightDockWindow()
 {
     enableThings();
     codeGraph = new CodeGraph(dockRight);
-//    codeGraph->setMinimumWidth(this->width() * 0.35);
     codeGraph->setObjectName("codeGraph");
     dockRight->setWidget(codeGraph);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
@@ -300,17 +299,11 @@ void GraphWindow::paintEvent(QPaintEvent *event)
 
 void GraphWindow::resizeEvent(QResizeEvent *event)
 {
-    QMainWindow::resizeEvent(event);
     if(isChild("codeGraph"))
-    {
         dockRight->resize(this->width() * 0.35, dockRight->height());
-        codeGraph->setMinimumWidth(this->width() * 0.35);
-    }
     else
-    {
         dockRight->resize(this->width() * 0.2, dockRight->height());
-        algoGraph->setMinimumWidth(this->width() * 0.2);
-    }
+    QMainWindow::resizeEvent(event);
 }
 
 void GraphWindow::setGraph(Graph* g)

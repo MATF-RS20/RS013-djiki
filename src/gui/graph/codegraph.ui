@@ -57,7 +57,14 @@
       </layout>
      </item>
      <item>
-      <widget class="GraphCodeEdit" name="algoPseudocode"/>
+      <widget class="GraphCodeEdit" name="algoPseudocode">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

@@ -114,7 +114,7 @@ void CollectionWindow::createRightDockWindow()
     dockRight = new QDockWidget(this);
     dockRight->setAttribute(Qt::WA_DeleteOnClose);
     dockRight->setTitleBarWidget(new QWidget()); // remove title bar
-//    dockRight->setDisabled(true);
+    dockRight->setDisabled(true);
     setAlgoCollectionAtRightDockWindow();
 }
 
@@ -122,7 +122,7 @@ void CollectionWindow::setAlgoCollectionAtRightDockWindow()
 {
     disableThings();
     algoCollection = new AlgoCollection(dockRight);
-//    algoCollection->setMinimumWidth(this->width() * 0.27);
+    algoCollection->setMinimumWidth(this->width() * 0.27);
     algoCollection->setObjectName("algoCollection");
     algoCollection->getAlgoName();
     dockRight->setWidget(algoCollection);
@@ -350,11 +350,11 @@ void CollectionWindow::paintEvent(QPaintEvent *event)
 
 void CollectionWindow::resizeEvent(QResizeEvent *event)
 {
-    QMainWindow::resizeEvent(event);
     if(isChild("codeCollection"))
         dockRight->resize(this->width() * 0.35, dockRight->height());
     else
         dockRight->resize(this->width() * 0.2, dockRight->height());
+    QMainWindow::resizeEvent(event);
 }
 
 void CollectionWindow::on_actionSave_As_Image_triggered()
