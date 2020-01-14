@@ -57,6 +57,8 @@ private slots:
     void minus_clicked();
     void changePlaybackSpeed(int);
     void playbackFinished();
+    void on_actionInstructions_triggered();
+    void on_actionAbout_Djiki_triggered();
 
 private:
     void createDockWindows();

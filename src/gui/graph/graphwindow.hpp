@@ -57,6 +57,8 @@ private slots:
     void on_actionMedize_triggered();
     void plus_clicked();
     void minus_clicked();
+    void on_actionInstructions_triggered();
+    void on_actionAbout_Djiki_triggered();
 
 private:
     void createDockWindows();

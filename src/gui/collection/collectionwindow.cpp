@@ -525,3 +525,33 @@ void CollectionWindow::minus_clicked()
     if(z >= 1.1)
         ui->algoPseudocode->setZoomFactor(z - 0.1);
 }
+
+void CollectionWindow::on_actionInstructions_triggered()
+{
+    QString instructions = "Drawing:\n"
+                           "Click anywhere to create items.\n"
+                           "Enter item value (Integer).\n"
+                           "Click on and drag item to move it.\n"
+                           "Double click on item to change its value.\n"
+                           "Right click on item to delete it (you can delete only last item).\n"
+                           "When you finish click 'Done drawing collection'.\n"
+                           "You can start over from scratch by clicking Clear button.\n"
+                           "Tool Bar:\n"
+                           "Play/pause/stop animation on first three icons.\n"
+                           "Change speed of animation using slider.\n"
+                           "Change pseudocode font sizing by clicking on plus/minus.\n";
+
+    QMessageBox::about(this, tr("Instructions"), instructions);
+}
+
+void CollectionWindow::on_actionAbout_Djiki_triggered()
+{
+    QString about = "Simple application for visualizing graph and collection algorithms.\n"
+                    "Who sad that learning algorithms can't be fun?!\n"
+                    "Authors: \n"
+                    "\tOlivera Popovic\n"
+                    "\tAleksandra Stojanovic\n"
+                    "\tKonstantin Klima\n";
+
+    QMessageBox::about(this, tr("About Djiki"), about);
+}
