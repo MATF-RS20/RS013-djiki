@@ -19,12 +19,12 @@ QVector<CollectionState> CollectionAlgorithm::getStates() const
     return states;
 }
 
-void CollectionAlgorithm::addState(Item* currentItem, unsigned currentLine, QVector<int> currentCollcetionSnapshot = QVector<int>())
+void CollectionAlgorithm::addState(Item* currentItem, unsigned currentLine, QVector<int> currentCollcetionSnapshot)
 {
     this->states.append(CollectionState(currentItem, nullptr, currentCollcetionSnapshot, currentLine));
 }
 
-void CollectionAlgorithm::addState(Item* currentItem, Item* currentItemSecond, unsigned currentLine, QVector<int> currentCollcetionSnapshot = QVector<int>())
+void CollectionAlgorithm::addState(Item* currentItem, Item* currentItemSecond, unsigned currentLine, QVector<int> currentCollcetionSnapshot)
 {
     this->states.append(CollectionState(currentItem, currentItemSecond, currentCollcetionSnapshot, currentLine));
 }

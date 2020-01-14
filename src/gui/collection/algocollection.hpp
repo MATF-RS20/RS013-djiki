@@ -2,6 +2,7 @@
 #define ALGOCOLLECTION_HPP
 
 #include <QWidget>
+#include "../../backend/collections/collectionalgorithm.hpp"
 
 namespace Ui {
 class AlgoCollection;
@@ -15,7 +16,7 @@ public:
     explicit AlgoCollection(QWidget *parent = 0);
     ~AlgoCollection();
     QString getAlgoName();
-//    GraphAlgorithm* getAlgorithmInstance();
+    CollectionAlgorithm* getAlgorithmInstance();
     Ui::AlgoCollection* getUi() const;
 
 private slots:
@@ -29,7 +30,7 @@ private slots:
 private:
     Ui::AlgoCollection *ui;
     QString algoName;
-//    GraphAlgorithm* algorithmInstance;
+    CollectionAlgorithm* algorithmInstance;
 
     void notifyParent();
 };

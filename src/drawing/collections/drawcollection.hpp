@@ -3,6 +3,7 @@
 
 #include "item.hpp"
 #include "connection.hpp"
+#include "collection.hpp"
 
 #include <QWidget>
 #include <QTimer>
@@ -43,6 +44,9 @@ public Q_SLOTS:
 
     /* This slot receives active line to be drawn */
     void updateBox(QString line);
+
+Q_SIGNALS:
+    void doneDrawingCollection(Collection *c);
 
 private:
     Ui::DrawCollection* ui;

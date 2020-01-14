@@ -17,8 +17,8 @@ public:
     QVector<CollectionState> getStates() const;
 
 protected:
-    void addState(Item* currentItem, unsigned currentLine, QVector<int> currentCollcetionSnapshot);
-    void addState(Item* currentItem, Item* currentItemSecond, unsigned currentLine, QVector<int> currentCollcetionSnapshot );
+    void addState(Item* currentItem, unsigned currentLine, QVector<int> currentCollcetionSnapshot = QVector<int>());
+    void addState(Item* currentItem, Item* currentItemSecond, unsigned currentLine, QVector<int> currentCollcetionSnapshot = QVector<int>());
 
     Collection collection;
     QVector<CollectionState> states;

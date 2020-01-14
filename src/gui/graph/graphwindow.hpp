@@ -11,6 +11,7 @@
 #include "codegraph.hpp"
 #include "../../drawing/graph/graph.hpp"
 #include "../../backend/graphs/graphalgorithm.hpp"
+#include "../playbacksettings.hpp"
 
 namespace Ui {
 class GraphWindow;
@@ -90,13 +91,6 @@ private:
     QPushButton *plus;
     QPushButton *minus;
     QString name;
-};
-
-enum playbackSettings
-{
-    play,
-    pause,
-    stop
 };
 
 #endif // GRAPHWINDOW_HPP

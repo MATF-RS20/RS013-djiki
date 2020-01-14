@@ -3,6 +3,7 @@
 
 #include "connection.hpp"
 #include "../drawingFunctions.hpp"
+#include "collection.hpp"
 
 #include <limits>
 
@@ -164,6 +165,9 @@ void DrawCollection::onDoneDrawing()
     animationTimer = new QTimer(this);
     QObject::connect(animationTimer, &QTimer::timeout, ui->graphicsView->scene(), &QGraphicsScene::advance);
     animationTimer->start(200);
+
+    Collection* c = new Collection(&items);
+    emit doneDrawingCollection(c);
 }
 
 void DrawCollection::onClearCollection()

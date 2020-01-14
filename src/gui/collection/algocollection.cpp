@@ -19,6 +19,11 @@ QString AlgoCollection::getAlgoName()
     return AlgoCollection::algoName;
 }
 
+CollectionAlgorithm* AlgoCollection::getAlgorithmInstance()
+{
+    return AlgoCollection::algorithmInstance;
+}
+
 Ui::AlgoCollection *AlgoCollection::getUi() const
 {
     return ui;
