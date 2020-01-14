@@ -1,6 +1,6 @@
 # Djiki
 
-![Trenutni izgled aplikacije](https://github.com/MATF-RS20/RS013-djiki/blob/master/screenshots/final.png)
+![Trenutni izgled aplikacije](https://github.com/MATF-RS20/RS013-djiki/blob/master/screenshots/final-3.gif)
 
 ## O projektu
 Điki je [Klipijev](https://en.wikipedia.org/wiki/Office_Assistant) rođak i radi kao algoritamski asistent.
