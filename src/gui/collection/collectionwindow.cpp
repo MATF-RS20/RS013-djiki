@@ -122,7 +122,7 @@ void CollectionWindow::setAlgoCollectionAtRightDockWindow()
 {
     disableThings();
     algoCollection = new AlgoCollection(dockRight);
-    algoCollection->setMinimumWidth(this->width() * 0.27);
+    algoCollection->setMinimumWidth(this->width() * 0.2);
     algoCollection->setObjectName("algoCollection");
     algoCollection->getAlgoName();
     dockRight->setWidget(algoCollection);
@@ -272,10 +272,8 @@ void CollectionWindow::clearStylesheets()
     ui->toolBar->setStyleSheet(QString());
     Ui::AlgoCollection *uiAlgo = algoCollection->getUi();
     algoCollection->setStyleSheet(QString());
-    uiAlgo->pushButtonBinarySearch->setStyleSheet(QString());
     uiAlgo->pushButtonBubbleSort->setStyleSheet(QString());
     uiAlgo->pushButtonInsertionSort->setStyleSheet(QString());
-    uiAlgo->pushButtonMergeSort->setStyleSheet(QString());
     uiAlgo->pushButtonQuickSort->setStyleSheet(QString());
     uiAlgo->pushButtonSelectionSort->setStyleSheet(QString());
     pushButtonReturn->setStyleSheet(QString());

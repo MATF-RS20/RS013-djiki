@@ -58,13 +58,6 @@ void AlgoCollection::on_pushButtonInsertionSort_clicked()
     notifyParent();
 }
 
-void AlgoCollection::on_pushButtonMergeSort_clicked()
-{
-    algoName = "Merge Sort";
-
-    notifyParent();
-}
-
 void AlgoCollection::on_pushButtonQuickSort_clicked()
 {
     algoName = "Quick Sort";
@@ -77,13 +70,6 @@ void AlgoCollection::on_pushButtonSelectionSort_clicked()
 {
     algoName = "Selection Sort";
     algorithmInstance = new SelectionSort();
-
-    notifyParent();
-}
-
-void AlgoCollection::on_pushButtonBinarySearch_clicked()
-{
-    algoName = "Binary Search";
 
     notifyParent();
 }

@@ -21,11 +21,9 @@ public:
     Ui::AlgoGraph* getUi() const;
 
 private slots:
-    void on_pushButtonAStar_clicked();
     void on_pushButtonDijkstra_clicked();
     void on_pushButtonDFS_clicked();
     void on_pushButtonBFS_clicked();
-    void on_pushButtonFW_clicked();
     void on_pushButtonPrim_clicked();
 
 private:

@@ -11,16 +11,10 @@ GraphCodeEdit::GraphCodeEdit(QWidget *parent) :
     this->setStyleSheet("background: transparent");
     this->page()->setBackgroundColor(Qt::transparent);
 
-/*
-    connect(this, &GraphCodeEdit::blockCountChanged, this, &GraphCodeEdit::updateLineNumberAreaWidth);
-    connect(this, &GraphCodeEdit::updateRequest, this, &GraphCodeEdit::updateLineNumberArea);
-    connect(this, &GraphCodeEdit::cursorPositionChanged, this, &GraphCodeEdit::highlightCurrentLine);
-*/
     QFont font;
     font.setFamily("Times");
     font.setPointSize(12);
     QFontMetrics metrics(font);
-
 }
 
 GraphCodeEdit::~GraphCodeEdit()

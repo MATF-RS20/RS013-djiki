@@ -40,13 +40,6 @@ void AlgoGraph::notifyParent()
     QCoreApplication::postEvent(this->parent(), event);
 }
 
-void AlgoGraph::on_pushButtonAStar_clicked()
-{
-    algoName = "A*";
-
-    notifyParent();
-}
-
 void AlgoGraph::on_pushButtonDijkstra_clicked()
 {
     algoName = "Dijkstra";
@@ -66,13 +59,6 @@ void AlgoGraph::on_pushButtonBFS_clicked()
 {
     algoName = "BFS";
     algorithmInstance = new BFS();
-
-    notifyParent();
-}
-
-void AlgoGraph::on_pushButtonFW_clicked()
-{
-    algoName = "FW";
 
     notifyParent();
 }

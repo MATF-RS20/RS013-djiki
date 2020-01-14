@@ -22,10 +22,8 @@ public:
 private slots:
     void on_pushButtonBubbleSort_clicked();
     void on_pushButtonInsertionSort_clicked();
-    void on_pushButtonMergeSort_clicked();
     void on_pushButtonQuickSort_clicked();
     void on_pushButtonSelectionSort_clicked();
-    void on_pushButtonBinarySearch_clicked();
 
 private:
     Ui::AlgoCollection *ui;
