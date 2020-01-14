@@ -50,8 +50,10 @@ void GraphWindow::pushButtonReturn_clicked()
 
     if(this->currentGraph)
         delete this->getGraph();
+/*
     if(this->algorithmInstance)
         delete this->algorithmInstance;
+        */
 
     deleteChildren();
     delete drawGraph;

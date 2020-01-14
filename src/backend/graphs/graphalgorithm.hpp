@@ -13,6 +13,7 @@ public:
 
     void setGraph(Graph g);
     virtual void solve() = 0;
+    virtual ~GraphAlgorithm() = default;
 
     QVector<GraphState> getStates() const;
 

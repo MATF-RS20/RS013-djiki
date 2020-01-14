@@ -21,7 +21,6 @@ void CollectionAlgorithmDrawingThread::run()
     bool killed = false;
 
     QVector<CollectionState> states = algorithm->getStates();
-
     for(auto currentState : states){
         threadAlive.tryLock();
 
@@ -29,6 +28,7 @@ void CollectionAlgorithmDrawingThread::run()
         if(CollectionWindow::playback.first == stop)
         {
             killed = true;
+            CollectionWindow::playbackMutex.unlock();
             break;
         }
         CollectionWindow::playbackMutex.unlock();

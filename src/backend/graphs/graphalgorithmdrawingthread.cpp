@@ -21,6 +21,7 @@ void GraphAlgorithmDrawingThread::run()
         if(GraphWindow::playback.first == stop)
         {
             killed = true;
+            GraphWindow::playbackMutex.unlock();
             break;
         }
         GraphWindow::playbackMutex.unlock();

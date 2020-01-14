@@ -9,6 +9,7 @@ public:
     Algorithm();
 
     virtual void solve() = 0;
+    virtual ~Algorithm() = default;
 
     QString getOutcome() const;
     QString getPseudoCodeHTML(unsigned activeLine = 0) const;

@@ -13,6 +13,7 @@ public:
 
     void setCollection(Collection c);
     virtual void solve() = 0;
+    virtual ~CollectionAlgorithm() = default;
 
     QVector<CollectionState> getStates() const;
 

@@ -24,6 +24,9 @@ CollectionWindow::CollectionWindow(QWidget *parent) :
     connect(drawCollection, SIGNAL(doneDrawingCollection(Collection*)), this, SLOT(setCollection(Collection*)));
     connect(drawCollection, SIGNAL(doneDrawingCollection(Collection*)), this, SLOT(enableRightDockWindow()));
 
+    this->currentCollection = nullptr;
+    this->algorithmInstance = nullptr;
+
     setWindowTitle(tr("Djiki - Collection Window"));
 
     toolBarSetup();
@@ -46,9 +49,11 @@ void CollectionWindow::pushButtonReturn_clicked()
     playbackMutex.unlock();
 
     if(this->currentCollection)
-        delete this->getCollection();
+        delete this->currentCollection;
+    /*
     if(this->algorithmInstance)
         delete this->algorithmInstance;
+        */
 
     deleteChildren();
     delete drawCollection;
@@ -100,6 +105,7 @@ void CollectionWindow::changeRightDockWindow()
         CollectionAlgorithmDrawingThread::threadAlive.unlock();
 
         delete algorithmInstance;
+
         deleteChildren();
         setAlgoCollectionAtRightDockWindow();
     }
