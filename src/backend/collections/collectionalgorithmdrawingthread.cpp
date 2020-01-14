@@ -9,7 +9,7 @@ CollectionAlgorithmDrawingThread::CollectionAlgorithmDrawingThread(CollectionAlg
 
 void CollectionAlgorithmDrawingThread::run()
 {
-    /*
+
     QVector<CollectionState> states = algorithm->getStates();
     for(auto currentState : states){ 
 
@@ -25,7 +25,7 @@ void CollectionAlgorithmDrawingThread::run()
         unsigned delay = CollectionWindow::playback.second;
         QThread::msleep(delay);
     }
-    */
+
     emit collectionAlgorithmDrawingFinished();
 }
 

@@ -167,7 +167,7 @@ void DrawCollection::onDoneDrawing()
     QObject::connect(animationTimer, &QTimer::timeout, ui->graphicsView->scene(), &QGraphicsScene::advance);
     animationTimer->start(200);
 
-    Collection* c = new Collection(&items);
+    Collection* c = new Collection(&collectionItems);
     emit doneDrawingCollection(c);
 }
 

@@ -1,5 +1,5 @@
 #include "bubblesort.hpp"
-
+#include <QtDebug>
 BubbleSort::BubbleSort()
 {
     definePseudocode();
@@ -39,25 +39,32 @@ void BubbleSort::solve()
     }
 
     unsigned n = collection.getCollectionSize();
+    if(n < 2)
+    {
+        addState(nullptr, 10);
+        outcome = QString("Array sorted!");
+        return;
+    }
+
     for(unsigned i = 0; i < n; i++){
         addState(nullptr, 1, currentCollection);
 
         addState(nullptr, 2);
         bool swapped = false;
 
-        for(unsigned j = 0; j < n; j++)
+        for(unsigned j = 1; j < n; j++)
         {
             addState(nullptr, 3);
-            addState(collection.getItemByItemNumber(j), collection.getItemByItemNumber(j+1), 4);
-            auto a = currentCollection[static_cast<int>(j)];
-            auto b = currentCollection[static_cast<int>(j+1)];
+            addState(collection.getItemByItemNumber(j-1), collection.getItemByItemNumber(j), 4);
+            auto a = currentCollection[static_cast<int>(j-1)];
+            auto b = currentCollection[static_cast<int>(j)];
 
             if(a > b)
             {
-                currentCollection[static_cast<int>(j)] = b;
-                currentCollection[static_cast<int>(j+1)] = a;
+                currentCollection[static_cast<int>(j-1)] = b;
+                currentCollection[static_cast<int>(j)] = a;
                 swapped = true;
-                addState(collection.getItemByItemNumber(j), collection.getItemByItemNumber(j+1), 5, currentCollection);
+                addState(collection.getItemByItemNumber(j-1), collection.getItemByItemNumber(j), 5, currentCollection);
             }
         }
         addState(nullptr, 6);
@@ -71,5 +78,4 @@ void BubbleSort::solve()
     addState(nullptr, 9);
     addState(nullptr, 10);
     outcome = QString("Array sorted!");
-
 }

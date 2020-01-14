@@ -5,7 +5,7 @@
 
 class BubbleSort  : public CollectionAlgorithm
 {
-
+public:
     BubbleSort();
     BubbleSort(Collection *c);
 

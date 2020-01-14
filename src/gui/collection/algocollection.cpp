@@ -1,6 +1,9 @@
 #include "algocollection.hpp"
 #include "ui_algocollection.h"
 #include <QMouseEvent>
+#include <QtDebug>
+
+#include "../../backend/collections/algorithms/bubblesort.hpp"
 
 AlgoCollection::AlgoCollection(QWidget *parent) :
     QWidget(parent),
@@ -39,6 +42,7 @@ void AlgoCollection::notifyParent()
 void AlgoCollection::on_pushButtonBubbleSort_clicked()
 {
     algoName = "Bubble Sort";
+    algorithmInstance = new BubbleSort();
 
     notifyParent();
 }

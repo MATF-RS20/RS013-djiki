@@ -22,8 +22,8 @@ CollectionWindow::CollectionWindow(QWidget *parent) :
     drawCollection = new DrawCollection(this);
     setCentralWidget(drawCollection);
 
-//    connect(drawCollection, SIGNAL(doneDrawingCollection(Collection*)), this, SLOT(setCollection(Collection*)));
-//    connect(drawCollection, SIGNAL(doneDrawingCollection(Collection*)), this, SLOT(enableRightDockWindow()));
+    connect(drawCollection, SIGNAL(doneDrawingCollection(Collection*)), this, SLOT(setCollection(Collection*)));
+    connect(drawCollection, SIGNAL(doneDrawingCollection(Collection*)), this, SLOT(enableRightDockWindow()));
 
     setWindowTitle(tr("Collection Window"));
 
@@ -275,7 +275,6 @@ void CollectionWindow::setCollection(Collection* c)
 
 Collection* CollectionWindow::getCollection()
 {
-    qDebug() << currentCollection->getCollectionSize();
     return currentCollection;
 }
 
