@@ -8,7 +8,7 @@
 #include "ui_codegraph.h"
 
 QMutex GraphWindow::playbackMutex;
-QPair<int, unsigned> GraphWindow::playback(1, 1000);
+QPair<int, unsigned> GraphWindow::playback(play, 1000);
 
 GraphWindow::GraphWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -24,7 +24,10 @@ GraphWindow::GraphWindow(QWidget *parent) :
     connect(drawGraph, SIGNAL(doneDrawingGraph(Graph*)), this, SLOT(setGraph(Graph*)));
     connect(drawGraph, SIGNAL(doneDrawingGraph(Graph*)), this, SLOT(enableRightDockWindow()));
 
-    setWindowTitle(tr("Djiki - Graph Window"));
+    this->currentGraph = nullptr;
+    this->algorithmInstance = nullptr;
+
+    setWindowTitle(tr("Graph Window"));
 
     toolBarSetup();
     createDockWindows();
@@ -38,6 +41,18 @@ GraphWindow::~GraphWindow()
 
 void GraphWindow::pushButtonReturn_clicked()
 {
+    playback.first = stop;
+    GraphAlgorithmDrawingThread::threadAlive.lock();
+    GraphAlgorithmDrawingThread::threadAlive.unlock();
+    playbackMutex.tryLock();
+    playback.first = play;
+    playbackMutex.unlock();
+
+    if(this->currentGraph)
+        delete this->getGraph();
+    if(this->algorithmInstance)
+        delete this->algorithmInstance;
+
     deleteChildren();
     delete drawGraph;
     delete dockTop;
@@ -112,6 +127,12 @@ void GraphWindow::changeRightDockWindow()
     }
     else if(isChild("codeGraph"))
     {
+        playback.first = stop;
+        GraphAlgorithmDrawingThread::threadAlive.lock();
+        playback.first = play;
+        GraphAlgorithmDrawingThread::threadAlive.unlock();
+
+        delete algorithmInstance;
         deleteChildren();
         setAlgoGraphAtRightDockWindow();
     }
@@ -312,7 +333,6 @@ void GraphWindow::setGraph(Graph* g)
 
 Graph* GraphWindow::getGraph()
 {
-    qDebug() << currentGraph->getGraphSize();
     return currentGraph;
 }
 
@@ -375,14 +395,17 @@ void GraphWindow::startAlgorithmPlayback(Algorithm* algo)
     //TODO delete algorithm on return to main menu
 }
 
-void GraphWindow::playbackFinished()
+void GraphWindow::playbackFinished(bool killed)
 {
-    playback.first = stop;
+    if(!killed)
+        playback.first = pausE;
+    else
+        playback.first = play;
 }
 
 void GraphWindow::on_actionPlay_triggered()
 {
-    if(playback.first == stop && isChild("codeGraph")){
+    if(playback.first == pausE && isChild("codeGraph")){
         playback.first = play;
         startAlgorithmPlayback(algorithmInstance);
     }
@@ -394,7 +417,6 @@ void GraphWindow::on_actionPlay_triggered()
 void GraphWindow::on_actionPause_triggered()
 {
     playbackMutex.try_lock();
-    playback.first = pausE;
 }
 
 void GraphWindow::on_actionStop_triggered()
@@ -402,6 +424,10 @@ void GraphWindow::on_actionStop_triggered()
     playbackMutex.try_lock();
     playback.first = stop;
     playbackMutex.unlock();
+
+    GraphAlgorithmDrawingThread::threadAlive.lock();
+    GraphAlgorithmDrawingThread::threadAlive.unlock();
+    playback.first = play;
 
     if(isChild("codeGraph"))
         codeGraph->setText(name, algorithmInstance->getPseudoCodeHTML());

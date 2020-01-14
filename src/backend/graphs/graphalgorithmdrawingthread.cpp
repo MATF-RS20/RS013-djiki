@@ -2,18 +2,27 @@
 #include <QDebug>
 #include "../../gui/graph/graphwindow.hpp"
 
+QMutex GraphAlgorithmDrawingThread::threadAlive;
+
 GraphAlgorithmDrawingThread::GraphAlgorithmDrawingThread(GraphAlgorithm* algorithmInstance)
     : algorithm(algorithmInstance)
 {}
 
 void GraphAlgorithmDrawingThread::run()
 {
+    bool killed = false;
+
     QVector<GraphState> states = algorithm->getStates();
+
     for(auto currentState : states){ 
+        threadAlive.tryLock();
 
         GraphWindow::playbackMutex.lock();
         if(GraphWindow::playback.first == stop)
+        {
+            killed = true;
             break;
+        }
         GraphWindow::playbackMutex.unlock();
 
         animateCurrentState(currentState);
@@ -24,7 +33,8 @@ void GraphAlgorithmDrawingThread::run()
         QThread::msleep(delay);
     }
 
-    emit graphAlgorithmDrawingFinished();
+    cleanUp();
+    emit graphAlgorithmDrawingFinished(killed);
 }
 
 void GraphAlgorithmDrawingThread::animateCurrentState(GraphState currentState)
@@ -58,4 +68,13 @@ void GraphAlgorithmDrawingThread::highlightCurrentPseudocodeLine(unsigned line)
 
     QString activeLine = algorithm->getCode().getCode()[static_cast<int>(line)-1];
     emit updateLineInBox(activeLine);
+}
+
+void GraphAlgorithmDrawingThread::cleanUp()
+{
+    QString cleanString = "";
+    emit updateLineInBox(cleanString);
+
+    animateCurrentState(GraphState(nullptr, nullptr, 0));
+    threadAlive.unlock();
 }

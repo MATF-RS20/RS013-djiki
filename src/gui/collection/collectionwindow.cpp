@@ -8,7 +8,7 @@
 #include "ui_codecollection.h"
 
 QMutex CollectionWindow::playbackMutex;
-QPair<int, unsigned> CollectionWindow::playback(1, 1000);
+QPair<int, unsigned> CollectionWindow::playback(play, 1000);
 
 CollectionWindow::CollectionWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -38,6 +38,18 @@ CollectionWindow::~CollectionWindow()
 
 void CollectionWindow::pushButtonReturn_clicked()
 {
+    playback.first = stop;
+    CollectionAlgorithmDrawingThread::threadAlive.lock();
+    CollectionAlgorithmDrawingThread::threadAlive.unlock();
+    playbackMutex.tryLock();
+    playback.first = play;
+    playbackMutex.unlock();
+
+    if(this->currentCollection)
+        delete this->getCollection();
+    if(this->algorithmInstance)
+        delete this->algorithmInstance;
+
     deleteChildren();
     delete drawCollection;
     delete dockTop;
@@ -82,6 +94,12 @@ void CollectionWindow::changeRightDockWindow()
     }
     else if(isChild("codeCollection"))
     {
+        playback.first = stop;
+        CollectionAlgorithmDrawingThread::threadAlive.lock();
+        playback.first = play;
+        CollectionAlgorithmDrawingThread::threadAlive.unlock();
+
+        delete algorithmInstance;
         deleteChildren();
         setAlgoCollectionAtRightDockWindow();
     }
@@ -465,15 +483,18 @@ void CollectionWindow::startAlgorithmPlayback(Algorithm* algo)
     //TODO delete algorithm on return to main menu
 }
 
-void CollectionWindow::playbackFinished()
+void CollectionWindow::playbackFinished(bool killed)
 {
-    playback.first = stop;
+    if(!killed)
+        playback.first = pausE;
+    else
+        playback.first = play;
 }
+
 
 void CollectionWindow::on_actionPlay_triggered()
 {
-    if(playback.first == stop && isChild("codeCollection"))
-    {
+    if(playback.first == pausE && isChild("codeGraph")){
         playback.first = play;
         startAlgorithmPlayback(algorithmInstance);
     }
@@ -484,8 +505,9 @@ void CollectionWindow::on_actionPlay_triggered()
 
 void CollectionWindow::on_actionPause_triggered()
 {
-    playbackMutex.try_lock();
-    playback.first = pausE;
+
+  playbackMutex.try_lock();
+
 }
 
 void CollectionWindow::on_actionStop_triggered()
@@ -494,8 +516,14 @@ void CollectionWindow::on_actionStop_triggered()
     playback.first = stop;
     playbackMutex.unlock();
 
-    if(isChild("codeCollection"))
-        codeCollection->setText(name, algorithmInstance->getPseudoCodeHTML());
+
+    CollectionAlgorithmDrawingThread::threadAlive.lock();
+    CollectionAlgorithmDrawingThread::threadAlive.unlock();
+    playback.first = play;
+
+  if(isChild("codeCollection"))
+      codeCollection->setText(name, algorithmInstance->getPseudoCodeHTML());
+
 }
 
 void CollectionWindow::changePlaybackSpeed(int sliderValue)

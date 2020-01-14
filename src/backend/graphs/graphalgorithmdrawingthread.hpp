@@ -4,6 +4,7 @@
 #include <QThread>
 #include "graphstate.hpp"
 #include "graphalgorithm.hpp"
+#include <QMutex>
 
 class GraphAlgorithmDrawingThread : public QThread
 {
@@ -11,9 +12,10 @@ class GraphAlgorithmDrawingThread : public QThread
 
 public:
     GraphAlgorithmDrawingThread(GraphAlgorithm* algorithmInstance);
+    static QMutex threadAlive;
 
 signals:
-    void graphAlgorithmDrawingFinished();
+    void graphAlgorithmDrawingFinished(bool killed);
     void updateHTML(QString html);
     void updateLineInBox(QString line);
 
@@ -23,6 +25,8 @@ protected:
 private:
     void animateCurrentState(GraphState currentState);
     void highlightCurrentPseudocodeLine(unsigned line);
+    void cleanUp();
+
     GraphAlgorithm* algorithm;
 };
 
