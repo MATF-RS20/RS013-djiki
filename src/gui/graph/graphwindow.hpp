@@ -33,6 +33,7 @@ public:
 protected:
     void mousePressEvent(QMouseEvent* event) override;
     void paintEvent(QPaintEvent *event);
+    void resizeEvent(QResizeEvent *event) override;
 
 private slots:
     void pushButtonReturn_clicked();
@@ -62,6 +63,8 @@ private:
     void createRightDockWindow();
     void setAlgoGraphAtRightDockWindow();
     void setCodeGraphAtRightDockWindow();
+    void enableThings();
+    void disableThings();
     bool isChild(const QString &str);
     void deleteChildren();
     void animationSetup();

@@ -115,35 +115,50 @@ void CollectionWindow::createRightDockWindow()
 
 void CollectionWindow::setAlgoCollectionAtRightDockWindow()
 {
+    disableThings();
     algoCollection = new AlgoCollection(dockRight);
-    algoCollection->setMinimumWidth(this->width() * 0.27);
+//    algoCollection->setMinimumWidth(this->width() * 0.27);
     algoCollection->setObjectName("algoCollection");
     algoCollection->getAlgoName();
     dockRight->setWidget(algoCollection);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
-
-    minus->setDisabled(true);
-    plus->setDisabled(true);
-    slider->setDisabled(true);
 }
 
 void CollectionWindow::setCodeCollectionAtRightDockWindow()
 {
+    enableThings();
     codeCollection = new CodeCollection(dockRight);
-    codeCollection->setMinimumWidth(this->width() * 0.35);
+//    codeCollection->setMinimumWidth(this->width() * 0.35);
     codeCollection->setObjectName("codeCollection");
     dockRight->setWidget(codeCollection);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
 
+    //    codeCollection->setText(name, algorithmInstance->getPseudoCodeHTML());
+}
+
+void CollectionWindow::enableThings()
+{
     minus->setEnabled(true);
     plus->setEnabled(true);
     slider->setEnabled(true);
+    ui->actionPlay->setEnabled(true);
+    ui->actionPause->setEnabled(true);
+    ui->actionStop->setEnabled(true);
+
     QMenu* menuEdit = ui->menubar->findChild<QMenu*>("menuEdit");
     QMenu* menuThemes = menuEdit->findChild<QMenu*>("menuChangeTheme");
     for(auto action : menuThemes->actions())
         action->setDisabled(true);
+}
 
-    //    codeCollection->setText(name, algorithmInstance->getPseudoCodeHTML());
+void CollectionWindow::disableThings()
+{
+    minus->setDisabled(true);
+    plus->setDisabled(true);
+    slider->setDisabled(true);
+    ui->actionPlay->setDisabled(true);
+    ui->actionPause->setDisabled(true);
+    ui->actionStop->setDisabled(true);
 }
 
 bool CollectionWindow::isChild(const QString &str)
@@ -302,6 +317,15 @@ void CollectionWindow::paintEvent(QPaintEvent *event)
     QRegion region(polygon);
 
     pushButtonReturn->setMask(region);
+}
+
+void CollectionWindow::resizeEvent(QResizeEvent *event)
+{
+    QMainWindow::resizeEvent(event);
+    if(isChild("codeCollection"))
+        dockRight->resize(this->width() * 0.35, dockRight->height());
+    else
+        dockRight->resize(this->width() * 0.2, dockRight->height());
 }
 
 void CollectionWindow::on_actionSave_As_Image_triggered()
