@@ -120,35 +120,50 @@ void GraphWindow::changeRightDockWindow()
 
 void GraphWindow::setAlgoGraphAtRightDockWindow()
 {
+    disableThings();
     algoGraph = new AlgoGraph(dockRight);
-    algoGraph->setMinimumWidth(this->width() * 0.2);
+//    algoGraph->setMinimumWidth(this->width() * 0.2);
     algoGraph->setObjectName("algoGraph");
     algoGraph->getAlgoName();
     dockRight->setWidget(algoGraph);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
-
-    minus->setDisabled(true);
-    plus->setDisabled(true);
-    slider->setDisabled(true);
 }
 
 void GraphWindow::setCodeGraphAtRightDockWindow()
 {
+    enableThings();
     codeGraph = new CodeGraph(dockRight);
-    codeGraph->setMinimumWidth(this->width() * 0.35);
+//    codeGraph->setMinimumWidth(this->width() * 0.35);
     codeGraph->setObjectName("codeGraph");
     dockRight->setWidget(codeGraph);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
 
+    codeGraph->setText(name, algorithmInstance->getPseudoCodeHTML());
+}
+
+void GraphWindow::enableThings()
+{
     minus->setEnabled(true);
     plus->setEnabled(true);
     slider->setEnabled(true);
+    ui->actionPlay->setEnabled(true);
+    ui->actionPause->setEnabled(true);
+    ui->actionStop->setEnabled(true);
+
     QMenu* menuEdit = ui->menubar->findChild<QMenu*>("menuEdit");
     QMenu* menuThemes = menuEdit->findChild<QMenu*>("menuChangeTheme");
     for(auto action : menuThemes->actions())
         action->setDisabled(true);
+}
 
-    codeGraph->setText(name, algorithmInstance->getPseudoCodeHTML());
+void GraphWindow::disableThings()
+{
+    minus->setDisabled(true);
+    plus->setDisabled(true);
+    slider->setDisabled(true);
+    ui->actionPlay->setDisabled(true);
+    ui->actionPause->setDisabled(true);
+    ui->actionStop->setDisabled(true);
 }
 
 bool GraphWindow::isChild(const QString &str)
@@ -281,6 +296,21 @@ void GraphWindow::paintEvent(QPaintEvent *event)
     QRegion region(polygon);
 
     pushButtonReturn->setMask(region);
+}
+
+void GraphWindow::resizeEvent(QResizeEvent *event)
+{
+    QMainWindow::resizeEvent(event);
+    if(isChild("codeGraph"))
+    {
+        dockRight->resize(this->width() * 0.35, dockRight->height());
+        codeGraph->setMinimumWidth(this->width() * 0.35);
+    }
+    else
+    {
+        dockRight->resize(this->width() * 0.2, dockRight->height());
+        algoGraph->setMinimumWidth(this->width() * 0.2);
+    }
 }
 
 void GraphWindow::setGraph(Graph* g)

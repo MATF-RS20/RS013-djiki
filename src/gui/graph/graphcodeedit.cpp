@@ -24,7 +24,6 @@ GraphCodeEdit::~GraphCodeEdit()
     delete ui;
 }
 
-
 void GraphCodeEdit::resizeEvent(QResizeEvent *e)
 {
     QWebEngineView::resizeEvent(e);
