@@ -1,6 +1,5 @@
 #ifndef INSERTIONSORT_HPP
 #define INSERTIONSORT_HPP
-#include "../../../drawing/collections/collection.hpp"
 #include "../collectionalgorithm.hpp"
 
 class InsertionSort  : public CollectionAlgorithm
