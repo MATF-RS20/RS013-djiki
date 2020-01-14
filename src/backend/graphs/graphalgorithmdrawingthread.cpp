@@ -72,7 +72,6 @@ void GraphAlgorithmDrawingThread::highlightCurrentPseudocodeLine(unsigned line)
 
 void GraphAlgorithmDrawingThread::cleanUp()
 {
-    qDebug() << "Starting cleanup";
     QString cleanString = "";
     emit updateLineInBox(cleanString);
 

@@ -56,7 +56,7 @@ private slots:
     void plus_clicked();
     void minus_clicked();
     void changePlaybackSpeed(int);
-    void playbackFinished();
+    void playbackFinished(bool);
     void on_actionInstructions_triggered();
     void on_actionAbout_Djiki_triggered();
 
