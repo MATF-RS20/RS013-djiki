@@ -5,7 +5,6 @@ InsertionSort::InsertionSort()
     definePseudocode();
 }
 
-
 InsertionSort::InsertionSort(Collection *c)
     : CollectionAlgorithm(c)
 {
@@ -18,13 +17,11 @@ void InsertionSort::definePseudocode()
     code.setOutput("Sorted array");
 
 
-    code += "For i = 0 to i = n - 1 do";
-    code += "\tmin = i";
-    code += "\tFor j = i+1 to n do";
-    code += "\t\tIf list[j] < list[min]";
-    code += "\t\t\tmin=j";
-    code += "\tIf min != i then";
-    code += "\t\tswap list[min] and list[i]";
+    code += "For i = 1 to i = n - 1 do";
+    code += "\tj := i";
+    code += "\tWhile j > 0 and A[j-1] > A[j] do";
+    code += "\t\tSwap A[j} and A[j-1]";
+    code += "\t\tj := j-1";
     code += "Return sorted array";
 }
 
@@ -39,46 +36,37 @@ void InsertionSort::solve()
     int n = static_cast<int>(collection.getCollectionSize());
     if(n < 2)
     {
-        addState(nullptr, 8);
+        addState(nullptr, 6);
         outcome = QString("Array sorted!");
         return;
     }
 
-    for(int i = 0; i < n-1; i++)
+    for(int i = 1; i < n; i++)
     {
         addState(nullptr, 1);
-        Item* item1 = collection.getItemByItemNumber(static_cast<unsigned>(i));
-        addState(item1, 2);
-        int min = i;
+        addState(nullptr, 2);
 
-        for(int j = i; j < n; j++)
+        int j = i;
+        while(j > 0)
         {
-            addState(nullptr, 3);
-            Item* item1 = collection.getItemByItemNumber(static_cast<unsigned>(j));
-            Item* item2 = collection.getItemByItemNumber(static_cast<unsigned>(min));
+            if(currentCollection[j-1] <= currentCollection[j])
+                break;
 
-            addState(item1, item2, 4);
-            if(currentCollection[j] < currentCollection[min])
-            {
-                addState(item1, 5);
-                min = j;
-            }
+            Item* first = collection.getItemByItemNumber(static_cast<unsigned>(j-1));
+            Item* second = collection.getItemByItemNumber(static_cast<unsigned>(j));
+
+            addState(first, second, 3);
+            int temp = currentCollection[j-1];
+            currentCollection[j-1] = currentCollection[j];
+            currentCollection[j] = temp;
+
+            addState(first, second, 4, currentCollection);
+
+            j--;
+            addState(nullptr, 5);
         }
-
-
-        Item* item2 = collection.getItemByItemNumber(static_cast<unsigned>(min));
-
-        addState(item1, item2, 6);
-        if(min != i)
-        {
-            auto temp = currentCollection[min];
-            currentCollection[min] = currentCollection[i];
-            currentCollection[i] = temp;
-            addState(item1, item2, 7, currentCollection);
-        }
-
     }
 
-    addState(nullptr, 8);
+    addState(nullptr, 6);
     outcome = QString("Array sorted!");
 }

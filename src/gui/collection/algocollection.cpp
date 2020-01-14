@@ -4,7 +4,9 @@
 #include <QtDebug>
 
 #include "../../backend/collections/algorithms/bubblesort.hpp"
+#include "../../backend/collections/algorithms/selectionsort.hpp"
 #include "../../backend/collections/algorithms/insertionsort.hpp"
+#include "../../backend/collections/algorithms/quicksort.hpp"
 
 AlgoCollection::AlgoCollection(QWidget *parent) :
     QWidget(parent),
@@ -66,6 +68,7 @@ void AlgoCollection::on_pushButtonMergeSort_clicked()
 void AlgoCollection::on_pushButtonQuickSort_clicked()
 {
     algoName = "Quick Sort";
+    algorithmInstance = new QuickSort();
 
     notifyParent();
 }
@@ -73,6 +76,7 @@ void AlgoCollection::on_pushButtonQuickSort_clicked()
 void AlgoCollection::on_pushButtonSelectionSort_clicked()
 {
     algoName = "Selection Sort";
+    algorithmInstance = new SelectionSort();
 
     notifyParent();
 }
