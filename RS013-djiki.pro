@@ -19,6 +19,7 @@ SOURCES += \
     src/backend/algorithm.cpp \
     src/backend/algorithmexecutorthread.cpp \
     src/backend/collections/algorithms/bubblesort.cpp \
+    src/backend/collections/algorithms/insertionsort.cpp \
     src/backend/collections/collectionalgorithm.cpp \
     src/backend/collections/collectionalgorithmdrawingthread.cpp \
     src/backend/graphs/bfs.cpp \
@@ -52,6 +53,7 @@ HEADERS += \
     src/backend/algorithm.hpp \
     src/backend/algorithmexecutorthread.hpp \
     src/backend/collections/algorithms/bubblesort.hpp \
+    src/backend/collections/algorithms/insertionsort.hpp \
     src/backend/collections/collectionalgorithm.hpp \
     src/backend/collections/collectionalgorithmdrawingthread.hpp \
     src/backend/collections/collectionstate.hpp \

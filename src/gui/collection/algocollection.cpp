@@ -4,6 +4,7 @@
 #include <QtDebug>
 
 #include "../../backend/collections/algorithms/bubblesort.hpp"
+#include "../../backend/collections/algorithms/insertionsort.hpp"
 
 AlgoCollection::AlgoCollection(QWidget *parent) :
     QWidget(parent),
@@ -50,6 +51,7 @@ void AlgoCollection::on_pushButtonBubbleSort_clicked()
 void AlgoCollection::on_pushButtonInsertionSort_clicked()
 {
     algoName = "Insertion Sort";
+    algorithmInstance = new InsertionSort();
 
     notifyParent();
 }
