@@ -7,6 +7,10 @@ GraphCodeEdit::GraphCodeEdit(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->setAttribute(Qt::WA_TranslucentBackground);
+    this->setStyleSheet("background: transparent");
+    this->page()->setBackgroundColor(Qt::transparent);
+
 /*
     connect(this, &GraphCodeEdit::blockCountChanged, this, &GraphCodeEdit::updateLineNumberAreaWidth);
     connect(this, &GraphCodeEdit::updateRequest, this, &GraphCodeEdit::updateLineNumberArea);

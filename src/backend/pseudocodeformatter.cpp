@@ -37,7 +37,7 @@ QString PseudoCodeFormatter::makeCodeRow(unsigned lineNumber, QString line)
 QString PseudoCodeFormatter::wrapAndStyle(QString html)
 {
     QString result = "";
-    result += "<style>table{table-layout: fixed;} td{word-break: word-break; white-space: pre-wrap; font-family:monospace; font-size: 0.8em;}</style>";
+    result += "<style>table{table-layout: fixed;} td{word-break: word-break; white-space: pre-wrap; font-family:monospace; font-size: 0.8em; color: white;}</style>";
     result += "<table border='0'>";
     result += html;
     result += "</table>";

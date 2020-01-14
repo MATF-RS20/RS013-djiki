@@ -18,7 +18,7 @@
   <customwidget>
    <class>QWebEngineView</class>
    <extends>QWidget</extends>
-   <header>qwebengineview.h</header>
+   <header location="global">QtWebEngineWidgets/QWebEngineView</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

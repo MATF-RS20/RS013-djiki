@@ -114,7 +114,7 @@ void CollectionWindow::createRightDockWindow()
     dockRight = new QDockWidget(this);
     dockRight->setAttribute(Qt::WA_DeleteOnClose);
     dockRight->setTitleBarWidget(new QWidget()); // remove title bar
-//    dockRight->setDisabled(true);
+    dockRight->setDisabled(true);
     setAlgoCollectionAtRightDockWindow();
 }
 
@@ -122,7 +122,7 @@ void CollectionWindow::setAlgoCollectionAtRightDockWindow()
 {
     disableThings();
     algoCollection = new AlgoCollection(dockRight);
-//    algoCollection->setMinimumWidth(this->width() * 0.27);
+    algoCollection->setMinimumWidth(this->width() * 0.27);
     algoCollection->setObjectName("algoCollection");
     algoCollection->getAlgoName();
     dockRight->setWidget(algoCollection);
@@ -350,11 +350,11 @@ void CollectionWindow::paintEvent(QPaintEvent *event)
 
 void CollectionWindow::resizeEvent(QResizeEvent *event)
 {
-    QMainWindow::resizeEvent(event);
     if(isChild("codeCollection"))
         dockRight->resize(this->width() * 0.35, dockRight->height());
     else
         dockRight->resize(this->width() * 0.2, dockRight->height());
+    QMainWindow::resizeEvent(event);
 }
 
 void CollectionWindow::on_actionSave_As_Image_triggered()
@@ -524,4 +524,34 @@ void CollectionWindow::minus_clicked()
     qreal z = ui->algoPseudocode->zoomFactor();
     if(z >= 1.1)
         ui->algoPseudocode->setZoomFactor(z - 0.1);
+}
+
+void CollectionWindow::on_actionInstructions_triggered()
+{
+    QString instructions = "Drawing:\n"
+                           "Click anywhere to create items.\n"
+                           "Enter item value (Integer).\n"
+                           "Click on and drag item to move it.\n"
+                           "Double click on item to change its value.\n"
+                           "Right click on item to delete it (you can delete only last item).\n"
+                           "When you finish click 'Done drawing collection'.\n"
+                           "You can start over from scratch by clicking Clear button.\n"
+                           "Tool Bar:\n"
+                           "Play/pause/stop animation on first three icons.\n"
+                           "Change speed of animation using slider.\n"
+                           "Change pseudocode font sizing by clicking on plus/minus.\n";
+
+    QMessageBox::about(this, tr("Instructions"), instructions);
+}
+
+void CollectionWindow::on_actionAbout_Djiki_triggered()
+{
+    QString about = "Simple application for visualizing graph and collection algorithms.\n"
+                    "Who sad that learning algorithms can't be fun?!\n"
+                    "Authors: \n"
+                    "\tOlivera Popovic\n"
+                    "\tAleksandra Stojanovic\n"
+                    "\tKonstantin Klima\n";
+
+    QMessageBox::about(this, tr("About Djiki"), about);
 }

@@ -143,9 +143,9 @@ void GraphWindow::setAlgoGraphAtRightDockWindow()
 {
     disableThings();
     algoGraph = new AlgoGraph(dockRight);
-//    algoGraph->setMinimumWidth(this->width() * 0.2);
+    algoGraph->setMinimumWidth(this->width() * 0.2);
     algoGraph->setObjectName("algoGraph");
-    algoGraph->getAlgoName();
+    algoGraph->getAlgoName();    
     dockRight->setWidget(algoGraph);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
 }
@@ -154,7 +154,6 @@ void GraphWindow::setCodeGraphAtRightDockWindow()
 {
     enableThings();
     codeGraph = new CodeGraph(dockRight);
-//    codeGraph->setMinimumWidth(this->width() * 0.35);
     codeGraph->setObjectName("codeGraph");
     dockRight->setWidget(codeGraph);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
@@ -321,17 +320,11 @@ void GraphWindow::paintEvent(QPaintEvent *event)
 
 void GraphWindow::resizeEvent(QResizeEvent *event)
 {
-    QMainWindow::resizeEvent(event);
     if(isChild("codeGraph"))
-    {
         dockRight->resize(this->width() * 0.35, dockRight->height());
-        codeGraph->setMinimumWidth(this->width() * 0.35);
-    }
     else
-    {
         dockRight->resize(this->width() * 0.2, dockRight->height());
-        algoGraph->setMinimumWidth(this->width() * 0.2);
-    }
+    QMainWindow::resizeEvent(event);
 }
 
 void GraphWindow::setGraph(Graph* g)
@@ -554,4 +547,36 @@ void GraphWindow::minus_clicked()
     qreal z = ui->algoPseudocode->zoomFactor();
     if(z >= 1.1)
         ui->algoPseudocode->setZoomFactor(z - 0.1);
+}
+
+void GraphWindow::on_actionInstructions_triggered()
+{
+    QString instructions = "Drawing:\n"
+                           "Click anywhere to create nodes and click and drag to move them.\n"
+                           "Right click on node to delete it.\n"
+                           "Create directed edges by clicking on two nodes, holding control key.\n"
+                           "Create node loop by clicking twice on the same node.\n"
+                           "After that enter node weight (Integer value or 'Inf').\n"
+                           "Double click on edge to change it's weight.\n"
+                           "Right click on edge to delete it.\n"
+                           "When you finish click 'Done drawing graph'.\n"
+                           "You can start over from scratch by clicking Clear button.\n"
+                           "Tool Bar:\n"
+                           "Play/pause/stop animation on first three icons.\n"
+                           "Change speed of animation using slider.\n"
+                           "Change pseudocode font sizing by clicking on plus/minus.\n";
+
+    QMessageBox::about(this, tr("Instructions"), instructions);
+}
+
+void GraphWindow::on_actionAbout_Djiki_triggered()
+{
+    QString about = "Simple application for visualizing graph and collection algorithms.\n"
+                    "Who sad that learning algorithms can't be fun?!\n"
+                    "Authors: \n"
+                    "\tOlivera Popovic\n"
+                    "\tAleksandra Stojanovic\n"
+                    "\tKonstantin Klima\n";
+
+    QMessageBox::about(this, tr("About Djiki"), about);
 }
