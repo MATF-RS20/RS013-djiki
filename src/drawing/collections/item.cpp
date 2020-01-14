@@ -119,6 +119,8 @@ void Item::stopAnimation()
 {
     animation = false;
     currentStep = 0;
+
+    update();
 }
 
 qreal Item::getItemPosX() const
