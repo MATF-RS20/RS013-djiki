@@ -1,5 +1,4 @@
 #include "graph.hpp"
-#include <algorithm>
 
 Graph::Graph()
 {}

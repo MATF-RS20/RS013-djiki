@@ -4,7 +4,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QGraphicsScene>
-#include <QDebug>
+
 
 unsigned Node::numberOfNodes = 0;
 unsigned Node::radius = 20;

@@ -140,3 +140,8 @@ void Item::setItemValue(int newValue)
 {
     itemValue = newValue;
 }
+
+unsigned Item::getItemIndex() const
+{
+    return itemIndex;
+}

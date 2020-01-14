@@ -1,9 +1,14 @@
-#include <QtWidgets>
 #include "collectionwindow.hpp"
 #include "ui_collectionwindow.h"
+#include "../../backend/algorithmexecutorthread.hpp"
+#include "../../backend/collections/collectionalgorithm.hpp"
+#include "../../backend/collections/collectionalgorithmdrawingthread.hpp"
 #include "ui_drawcollection.h"
 #include "ui_algocollection.h"
 #include "ui_codecollection.h"
+
+QMutex CollectionWindow::playbackMutex;
+QPair<int, unsigned> CollectionWindow::playback(1, 1000);
 
 CollectionWindow::CollectionWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -69,9 +74,9 @@ void CollectionWindow::changeRightDockWindow()
     {
         name = algoCollection->getAlgoName();
 
-//        algorithmInstance = algoCollection->getAlgorithmInstance();
-//        algorithmInstance->setCollection(*currentCollection);
-//        executeAlgorithm(algorithmInstance);
+        algorithmInstance = algoCollection->getAlgorithmInstance();
+        algorithmInstance->setCollection(*currentCollection);
+        executeAlgorithm(algorithmInstance);
 
         deleteChildren();
         setCodeCollectionAtRightDockWindow();
@@ -226,7 +231,7 @@ void CollectionWindow::toolBarSetup()
     slider->setMaximum(7);
     slider->setTickInterval(1);
     slider->setValue(4);
-//    connect(slider, SIGNAL(valueChanged(int)), this, SLOT(changePlaybackSpeed(int)));
+    connect(slider, SIGNAL(valueChanged(int)), this, SLOT(changePlaybackSpeed(int)));
 
     ui->toolBar->addWidget(slider);
     ui->toolBar->setMovable(false);
@@ -277,6 +282,31 @@ void CollectionWindow::clearStylesheets()
     Ui::DrawCollection *uiDraw = drawCollection->getUi();
     uiDraw->graphicsView->setStyleSheet(QString());
 }
+
+void CollectionWindow::setCollection(Collection* c)
+{
+    this->currentCollection = c;
+}
+
+Collection* CollectionWindow::getCollection()
+{
+    qDebug() << currentCollection->getCollectionSize();
+    return currentCollection;
+}
+
+void CollectionWindow::executeAlgorithm(CollectionAlgorithm* algorithmInstance)
+{
+    auto thread = new AlgorithmExecutorThread(algorithmInstance);
+    QObject::connect(thread, SIGNAL(algorithmExecutionFinished(Algorithm*)),
+                     this, SLOT(startAlgorithmPlayback(Algorithm*)));
+
+    QObject::connect(thread, &AlgorithmExecutorThread::algorithmExecutionFinished,
+                     thread, &QObject::deleteLater,
+                     Qt::QueuedConnection);
+
+    thread->start();
+}
+
 
 void CollectionWindow::setTheme(QFile *file)
 {
@@ -418,20 +448,68 @@ void CollectionWindow::on_actionMedize_triggered()
     setTheme(&file);
 }
 
+void CollectionWindow::startAlgorithmPlayback(Algorithm* algo)
+{
+    CollectionAlgorithm* algorithm = dynamic_cast<CollectionAlgorithm*>(algo);
+    auto thread = new CollectionAlgorithmDrawingThread(algorithm, *currentCollection);
+    QObject::connect(thread, SIGNAL(updateHTML(QString)),
+                     this->codeCollection, SLOT(updateHTML(QString)));
+
+    QObject::connect(thread, &CollectionAlgorithmDrawingThread::collectionAlgorithmDrawingFinished,
+                     this, &CollectionWindow::playbackFinished,
+                     Qt::QueuedConnection);
+
+    QObject::connect(thread, &CollectionAlgorithmDrawingThread::collectionAlgorithmDrawingFinished,
+                     thread, &QObject::deleteLater,
+                     Qt::QueuedConnection);
+
+    QObject::connect(thread, &CollectionAlgorithmDrawingThread::updateLineInBox,
+                     drawCollection, &DrawCollection::updateBox);
+
+    thread->start();
+    //TODO delete algorithm on return to main menu
+}
+
+void CollectionWindow::playbackFinished()
+{
+    playback.first = stop;
+}
+
 void CollectionWindow::on_actionPlay_triggered()
 {
-
+  if(playback.first == stop && isChild("codeCollection")){
+      playback.first = play;
+      startAlgorithmPlayback(algorithmInstance);
+  }
+  playbackMutex.try_lock();
+  playback.first = play;
+  playbackMutex.unlock();
 }
 
 void CollectionWindow::on_actionPause_triggered()
 {
-
+  playbackMutex.try_lock();
+  playback.first = pause;
 }
 
 void CollectionWindow::on_actionStop_triggered()
 {
 
+  playbackMutex.try_lock();
+  playback.first = stop;
+  playbackMutex.unlock();
+
+  if(isChild("codeCollection"))
+      codeCollection->setText(name, algorithmInstance->getPseudoCodeHTML());
 }
+
+void CollectionWindow::changePlaybackSpeed(int sliderValue)
+{
+    sliderValue -= slider->maximum() / 2 +1;
+    sliderValue = 1000 * pow(2, -sliderValue);
+    playback.second = sliderValue;
+}
+
 
 void CollectionWindow::plus_clicked()
 {

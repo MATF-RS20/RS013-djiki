@@ -9,6 +9,9 @@
 #include "../../drawing/collections/drawcollection.hpp"
 #include "algocollection.hpp"
 #include "codecollection.hpp"
+#include "../../drawing/collections/collection.hpp"
+#include "../../backend/collections/collectionalgorithm.hpp"
+#include "../playbacksettings.hpp"
 
 namespace Ui {
 class CollectionWindow;
@@ -24,6 +27,9 @@ public:
     const static int triangleWidth = 50;
     const static int buttonWidth = 150;
     const static int buttonHeight = 40;
+    Collection* getCollection();
+    static QPair<int, unsigned> playback;
+    static QMutex playbackMutex;
 
 protected:
     void mousePressEvent(QMouseEvent* event) override;
@@ -35,6 +41,8 @@ private slots:
     void enableRightDockWindow();
     void animateRightDockWindow();
     void changeRightDockWindow();
+    void setCollection(Collection *c);
+    void startAlgorithmPlayback(Algorithm* algo);
     void on_actionSave_As_Image_triggered();
     void on_actionQuit_triggered();
     void on_actionCombinear_triggered();
@@ -47,6 +55,8 @@ private slots:
     void on_actionStop_triggered();
     void plus_clicked();
     void minus_clicked();
+    void changePlaybackSpeed(int);
+    void playbackFinished();
 
 private:
     void createDockWindows();
@@ -60,6 +70,7 @@ private:
     void deleteChildren();
     void animationSetup();
     void toolBarSetup();
+    void executeAlgorithm(CollectionAlgorithm* algorithmInstance);
     void clearStylesheets();
     void setTheme(QFile *file);
 
@@ -67,6 +78,9 @@ private:
     DrawCollection *drawCollection;
     AlgoCollection *algoCollection;
     CodeCollection *codeCollection;
+    Collection *currentCollection;
+    CollectionAlgorithm* algorithmInstance;
+
 
     QDockWidget *dockRight;
     QDockWidget *dockTop;

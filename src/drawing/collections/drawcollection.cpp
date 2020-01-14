@@ -3,16 +3,16 @@
 
 #include "connection.hpp"
 #include "../drawingFunctions.hpp"
+#include "collection.hpp"
 
 #include <limits>
 
-#include <QScreen>
 #include <QMouseEvent>
 #include <QPushButton>
 #include <QLabel>
 #include <QCheckBox>
 #include <QInputDialog>
-#include <QDebug>
+
 
 DrawCollection::DrawCollection(QWidget* parent) :
     QWidget(parent),
@@ -33,14 +33,14 @@ void DrawCollection::initializeScene()
     doneItem = Drawing::createBoxBtnOrLabel<QCheckBox>(ui->graphicsView, "Done drawing collection", QPointF(20, 20), this);
     doneItem->setEnabled(false);
 
-    QPushButton* clearBtn = static_cast<QPushButton*>(clearItem->widget());
-    QLabel* helpLabel = static_cast<QLabel*>(helpItem->widget());
-    QCheckBox* doneBox = static_cast<QCheckBox*>(doneItem->widget());
+    codeItem = Drawing::createBoxBtnOrLabel<QLabel>(ui->graphicsView, "", QPointF(0, 0), this);
+    codeItem->setVisible(false);
+    codeItem->setZValue(100);
 
-    QObject::connect(clearBtn, &QPushButton::clicked,
+    QObject::connect(static_cast<QPushButton*>(clearItem->widget()), &QPushButton::clicked,
                      this, &DrawCollection::onClearCollection);
 
-    QObject::connect(doneBox, &QPushButton::clicked,
+    QObject::connect(static_cast<QCheckBox*>(doneItem->widget()), &QPushButton::clicked,
                      this, &DrawCollection::onDoneDrawing);
 
     QString instructions = "Click anywhere to create items.\n\n"
@@ -49,10 +49,13 @@ void DrawCollection::initializeScene()
                            "Double click on item to change its value.\n\n"
                            "Right click on item to delete it (you can delete only last item).\n\n"
                            "When you finish click 'Done drawing collection'.\n\n"
-                           "You can start over from scratch by clicking Clear button.\n\n";
+                           "You can start over from scratch by clicking Clear button.\n";
 
     directions = Drawing::drawDirections(ui->graphicsView, instructions);
+
+    QLabel* helpLabel = static_cast<QLabel*>(helpItem->widget());
     helpLabel->setToolTip(instructions);
+    helpLabel->setToolTipDuration(3000);
 }
 
 void DrawCollection::mousePressEvent(QMouseEvent* event)
@@ -68,6 +71,7 @@ void DrawCollection::mousePressEvent(QMouseEvent* event)
         int value = QInputDialog::getInt(this, "Enter", inputLabel, 0,
                                          std::numeric_limits<int>::min(), std::numeric_limits<int>::max(),
                                          1, &status);
+
         if (!status)
             return;
 
@@ -81,13 +85,12 @@ void DrawCollection::mousePressEvent(QMouseEvent* event)
         collectionItems.push_back(newItem);
 
         int n = collectionItems.size();
-        if (n < 2)  // Not enough items created to make connection
-        {
-            if (!finished && collectionItems.size() > 0)
-                doneItem->setEnabled(true);
 
+        if (!finished && n > 0)
+            doneItem->setEnabled(true);
+
+        if (n < 2)  // Not enough items created to make connection
             return;
-        }
 
         Connection* newConnection = new Connection(collectionItems[n-2], newItem);
         connections.push_back(newConnection);
@@ -105,6 +108,15 @@ void DrawCollection::mousePressEvent(QMouseEvent* event)
 void DrawCollection::resizeEvent(QResizeEvent*)
 {
     Drawing::resizeDrawingWidget(this);
+
+    if (finished)
+    {
+        QLabel* codeLbl = static_cast<QLabel*>(codeItem->widget());
+        int textW = codeLbl->fontMetrics().boundingRect(codeLbl->text()).width();
+
+        codeLbl->setGeometry(0, 0, textW+10, 40);
+        codeItem->setPos(QPointF((width() - textW)/2, 90));
+    }
 }
 
 Ui::DrawCollection* DrawCollection::getUi() const
@@ -143,7 +155,7 @@ void DrawCollection::onDoneDrawing()
     finished = true;
     doneItem->setEnabled(false);
     clearItem->setEnabled(false);
-    helpItem->setEnabled(false);
+    helpItem->setVisible(false);
 
     for (auto& c: connections)
         c->setEnabled(false);
@@ -154,6 +166,9 @@ void DrawCollection::onDoneDrawing()
     animationTimer = new QTimer(this);
     QObject::connect(animationTimer, &QTimer::timeout, ui->graphicsView->scene(), &QGraphicsScene::advance);
     animationTimer->start(200);
+
+    Collection* c = new Collection(&items);
+    emit doneDrawingCollection(c);
 }
 
 void DrawCollection::onClearCollection()
@@ -178,4 +193,29 @@ void DrawCollection::onClearCollection()
     collectionItems.clear();
 
     Item::index = 0;
+}
+
+void DrawCollection::updateBox(QString line)
+{
+    activeLine = Drawing::cleanPseudocodeLine(line);
+
+    QLabel* codeLbl = static_cast<QLabel*>(codeItem->widget());
+    codeLbl->setText(activeLine);
+    int textWidth = codeLbl->fontMetrics().boundingRect(codeLbl->text()).width();
+
+    if (textWidth > width()-350)
+    {
+        activeLine = Drawing::splitLine(activeLine);
+        codeLbl->setText(activeLine);
+
+        codeLbl->setGeometry(0, 0, textWidth+10, 40);
+        codeItem->setPos(QPointF((width() - textWidth/2)/2, 90));
+    }
+    else
+    {
+        codeLbl->setGeometry(0, 0, textWidth+10, 40);
+        codeItem->setPos(QPointF((width() - textWidth)/2, 90));
+    }
+
+    codeLbl->setStyleSheet("background-color: rgba(0,0,0,0%)");
 }

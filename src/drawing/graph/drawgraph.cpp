@@ -13,7 +13,6 @@
 #include <QPushButton>
 #include <QCheckBox>
 #include <QLabel>
-#include <QDebug>
 
 
 DrawGraph::DrawGraph(QWidget* parent)
@@ -34,31 +33,32 @@ void DrawGraph::initializeScene()
     helpItem = Drawing::createBoxBtnOrLabel<QLabel>(ui->graphicsView, "Help", QPointF(width()-100, 70), this);
     doneItem = Drawing::createBoxBtnOrLabel<QCheckBox>(ui->graphicsView, "Done drawing graph", QPointF(20, 20), this);
     doneItem->setEnabled(false);
+
     codeItem = Drawing::createBoxBtnOrLabel<QLabel>(ui->graphicsView, "", QPointF(0, 0), this);
     codeItem->setVisible(false);
-    codeItem->setZValue(100);
+    codeItem->setZValue(100);   // active pseudocode will be above graph
 
-    QPushButton* clearBtn = static_cast<QPushButton*>(clearItem->widget());
-    QLabel* helpLabel = static_cast<QLabel*>(helpItem->widget());
-    QCheckBox* doneBox = static_cast<QCheckBox*>(doneItem->widget());
-
-    QObject::connect(clearBtn, &QPushButton::clicked,
+    QObject::connect(static_cast<QPushButton*>(clearItem->widget()), &QPushButton::clicked,
                      this, &DrawGraph::onClearGraph);
 
-    QObject::connect(doneBox, &QPushButton::clicked,
+    QObject::connect(static_cast<QCheckBox*>(doneItem->widget()), &QPushButton::clicked,
                      this, &DrawGraph::onDoneDrawing);
 
     QString instructions = "Click anywhere to create nodes and click and drag to move them.\n\n"
                            "Right click on node to delete it.\n\n"
                            "Create directed edges by clicking on two nodes, holding control key.\n\n"
+                           "Create node loop by clicking twice on the same node.\n\n"
                            "After that enter node weight (Integer value or 'Inf').\n\n"
                            "Double click on edge to change it's weight.\n\n"
                            "Right click on edge to delete it.\n\n"
                            "When you finish click 'Done drawing graph'.\n\n"
-                           "You can start over from scratch by clicking Clear button.\n\n";
+                           "You can start over from scratch by clicking Clear button.\n";
 
     directions = Drawing::drawDirections(ui->graphicsView, instructions);
+
+    QLabel* helpLabel = static_cast<QLabel*>(helpItem->widget());
     helpLabel->setToolTip(instructions);
+    helpLabel->setToolTipDuration(3000);
 }
 
 void DrawGraph::mousePressEvent(QMouseEvent* event)
@@ -82,28 +82,24 @@ void DrawGraph::mousePressEvent(QMouseEvent* event)
         ui->graphicsView->scene()->addItem(newNode);
     }
 
+    /* If there are no nodes, then algorithms don't work at all, so done button is disabled
+       until first node is drawn */
     if (!finished && nodes.size() > 0)
         doneItem->setEnabled(true);
 }
 
 void DrawGraph::resizeEvent(QResizeEvent *)
 {
-    clearItem->setPos(QPointF(width()-130, 20));
-    helpItem->setPos(QPointF(width()-100, 70));
+    Drawing::resizeDrawingWidget(this);
 
-    int x = (width() - 600) / 200;
-    QFont font("Times", 12+x);
-    directions->setFont(font);
+    if (finished)
+    {
+        QLabel* codeLbl = static_cast<QLabel*>(codeItem->widget());
+        int textW = codeLbl->fontMetrics().boundingRect(codeLbl->text()).width();
 
-    qreal textWidth = directions->boundingRect().width();
-    qreal textHeight = directions->boundingRect().height();
-    directions->setPos(QPointF(width()/2 - textWidth/2, height()/2 - textHeight/2 + 50));
-
-    QLabel* codeLbl = static_cast<QLabel*>(codeItem->widget());
-    int textW = codeLbl->fontMetrics().boundingRect(codeLbl->text()).width();
-
-    codeLbl->setGeometry(0, 0, textW+10, 40);
-    codeItem->setPos(QPointF((width() - textW)/2, 90));
+        codeLbl->setGeometry(0, 0, textW+10, 40);
+        codeItem->setPos(QPointF((width() - textW)/2, 90));
+    }
 }
 
 DrawGraph::~DrawGraph()
@@ -172,110 +168,6 @@ void DrawGraph::drawEdge(Node* node)
     ui->graphicsView->scene()->addItem(newEdge);
 }
 
-void DrawGraph::onClearGraph()
-{
-    if (directions->isVisible())
-        directions->setVisible(false);
-
-    for (auto& e : edges)
-    {
-        e->setVisible(false);
-        ui->graphicsView->scene()->removeItem(e);
-        e->deleteLater();
-    }
-    edges.clear();
-
-    for (auto& n : nodes)
-    {
-        n->setVisible(false);
-        ui->graphicsView->scene()->removeItem(n);
-        n->deleteLater();
-    }
-    nodes.clear();
-    selectedNodes.clear();
-
-    Node::numberOfNodes = 0;
-    Node::deletedNumbers.clear();
-}
-
-void DrawGraph::updateBox(QString line)
-{
-    activeLine = cleanPseudocodeLine(line);
-
-    QLabel* codeLbl = static_cast<QLabel*>(codeItem->widget());
-    codeLbl->setText(activeLine);
-    int textWidth = codeLbl->fontMetrics().boundingRect(codeLbl->text()).width();
-
-    if (textWidth > width()-350)
-    {
-        activeLine = splitLine(activeLine);
-        codeLbl->setText(activeLine);
-
-        codeLbl->setGeometry(0, 0, textWidth+10, 40);
-        codeItem->setPos(QPointF((width() - textWidth/2)/2, 90));
-    }
-    else
-    {
-        codeLbl->setGeometry(0, 0, textWidth+10, 40);
-        codeItem->setPos(QPointF((width() - textWidth)/2, 90));
-    }
-
-    codeLbl->setStyleSheet("background-color: rgba(0,0,0,0%)");
-}
-
-QString& DrawGraph::cleanPseudocodeLine(QString &line)
-{
-    while (line.indexOf("\t") != -1 || line.indexOf("\n") != -1)
-    {
-        line = QString::fromStdString(line.toStdString().substr(1));
-    }
-
-    return line;
-}
-
-QString DrawGraph::splitLine(QString line)
-{
-    QVector<int> indexes;
-    for (int i = 0; i < line.size(); i++)
-    {
-        if (line[i] == ' ')
-            indexes.push_back(i);
-    }
-
-    int n = indexes.size();
-    if (n == 0)
-        return line;
-
-    int half = n % 2 == 0 ? n/2 : (n-1)/2;
-    int splitOn = indexes[half];
-
-    line = line.left(splitOn+1) + "\n" + line.right(line.size()-splitOn-1);
-
-    return line;
-}
-
-void DrawGraph::onDoneDrawing()
-{
-    /* Disable scene, but leave scrollbars enabled ( before this->setEnabled(false) ) */
-    finished = true;
-    doneItem->setEnabled(false);
-    clearItem->setEnabled(false);
-    helpItem->setVisible(false);
-
-    for (auto& n: nodes)
-        n->setEnabled(false);
-
-    for (auto& e: edges)
-        e->setEnabled(false);
-
-    animationTimer = new QTimer(this);
-    QObject::connect(animationTimer, &QTimer::timeout, ui->graphicsView->scene(), &QGraphicsScene::advance);
-    animationTimer->start(200);
-
-    Graph* g = new Graph(&nodes, &edges);
-    emit doneDrawingGraph(g);
-}
-
 void DrawGraph::deleteFromNeighbours(Node* n)
 {
     for (auto& node: nodes)
@@ -305,6 +197,79 @@ void DrawGraph::removeEdge(Edge* e)
         edges.erase(it);
 
     e->deleteLater();
+}
+
+void DrawGraph::onDoneDrawing()
+{
+    /* Disable scene, but leave scrollbars enabled ( before this->setEnabled(false) ) */
+    finished = true;
+    doneItem->setEnabled(false);
+    clearItem->setEnabled(false);
+    helpItem->setVisible(false);
+
+    for (auto& n: nodes)
+        n->setEnabled(false);
+
+    for (auto& e: edges)
+        e->setEnabled(false);
+
+    animationTimer = new QTimer(this);
+    QObject::connect(animationTimer, &QTimer::timeout, ui->graphicsView->scene(), &QGraphicsScene::advance);
+    animationTimer->start(200);
+
+    Graph* g = new Graph(&nodes, &edges);
+    emit doneDrawingGraph(g);
+}
+
+void DrawGraph::onClearGraph()
+{
+    if (directions->isVisible())
+        directions->setVisible(false);
+
+    for (auto& e : edges)
+    {
+        e->setVisible(false);
+        ui->graphicsView->scene()->removeItem(e);
+        e->deleteLater();
+    }
+    edges.clear();
+
+    for (auto& n : nodes)
+    {
+        n->setVisible(false);
+        ui->graphicsView->scene()->removeItem(n);
+        n->deleteLater();
+    }
+    nodes.clear();
+    selectedNodes.clear();
+
+    Node::numberOfNodes = 0;
+    Node::deletedNumbers.clear();
+}
+
+void DrawGraph::updateBox(QString line)
+{
+    activeLine = Drawing::cleanPseudocodeLine(line);
+
+    QLabel* codeLbl = static_cast<QLabel*>(codeItem->widget());
+    codeLbl->setText(activeLine);
+    int textWidth = codeLbl->fontMetrics().boundingRect(codeLbl->text()).width();
+
+    if (textWidth > width()-350)
+    {
+        activeLine = Drawing::splitLine(activeLine);
+        codeLbl->setText(activeLine);
+
+        codeLbl->setGeometry(0, 0, textWidth+10, 40);
+        codeItem->setPos(QPointF((width() - textWidth/2)/2, 90));
+    }
+    else
+    {
+        codeLbl->setGeometry(0, 0, textWidth+10, 40);
+        codeItem->setPos(QPointF((width() - textWidth)/2, 90));
+    }
+
+    codeLbl->setStyleSheet("background-color: rgba(0,0,0,0%)");
 }
 
 QVector<Node*> DrawGraph::getNodes() const

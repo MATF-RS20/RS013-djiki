@@ -26,4 +26,5 @@ private:
     GraphWindow *graphWindow;
     CollectionWindow *collectionWindow;
 };
+
 #endif // MAINWINDOW_HPP

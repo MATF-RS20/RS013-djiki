@@ -3,6 +3,7 @@
 
 #include "item.hpp"
 #include "connection.hpp"
+#include "collection.hpp"
 
 #include <QWidget>
 #include <QTimer>
@@ -27,6 +28,7 @@ public:
     QGraphicsProxyWidget* clearItem;
     QGraphicsProxyWidget* helpItem;
     QGraphicsProxyWidget* doneItem;
+    QGraphicsProxyWidget* codeItem;
     QGraphicsTextItem* directions;
 
     ~DrawCollection() override;
@@ -40,6 +42,12 @@ public Q_SLOTS:
     /* After uses clicks 'Clear' button this slot receives signal */
     void onClearCollection();
 
+    /* This slot receives active line to be drawn */
+    void updateBox(QString line);
+
+Q_SIGNALS:
+    void doneDrawingCollection(Collection *c);
+
 private:
     Ui::DrawCollection* ui;
     void initializeScene();
@@ -50,6 +58,9 @@ private:
     QVector<Connection*> connections;
 
     QTimer* animationTimer;
+
+    QString activeLine;
+    QString& cleanPseudocodeLine(QString& line);
 };
 
 #endif // DRAWCOLLECTION_HPP

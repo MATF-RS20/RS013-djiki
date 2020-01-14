@@ -49,6 +49,7 @@ public Q_SLOTS:
     /* When user clicks 'Clear' button this slot receives signal */
     void onClearGraph();
 
+    /* This slot receives active line to be drawn */
     void updateBox(QString line);
 
 Q_SIGNALS:
@@ -68,8 +69,6 @@ private:
     QTimer* animationTimer;
 
     QString activeLine;
-    QString& cleanPseudocodeLine(QString& line);
-    QString splitLine(QString line);
 };
 
 #endif // DRAWGRAPH_HPP
