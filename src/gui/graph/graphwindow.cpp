@@ -15,8 +15,7 @@ GraphWindow::GraphWindow(QWidget *parent) :
     ui(new Ui::GraphWindow)
 {
     ui->setupUi(this);
-    this->resize(this->width() * 1.3, this->height() * 1.3);
-    this->setStyleSheet("background-color: rgb(13, 13, 23); "
+    this->setStyleSheet("background-color: rgb(13, 13, 23);"
                         "color: rgb(239, 235, 231);");
 
     drawGraph = new DrawGraph(this);
@@ -25,7 +24,7 @@ GraphWindow::GraphWindow(QWidget *parent) :
     connect(drawGraph, SIGNAL(doneDrawingGraph(Graph*)), this, SLOT(setGraph(Graph*)));
     connect(drawGraph, SIGNAL(doneDrawingGraph(Graph*)), this, SLOT(enableRightDockWindow()));
 
-    setWindowTitle(tr("Graph Window"));
+    setWindowTitle(tr("Djiki - Graph Window"));
 
     toolBarSetup();
     createDockWindows();
@@ -533,10 +532,15 @@ void GraphWindow::on_actionInstructions_triggered()
                            "Right click on edge to delete it.\n"
                            "When you finish click 'Done drawing graph'.\n"
                            "You can start over from scratch by clicking Clear button.\n"
+                           "NOTE: Can clear canvas only before clicking 'Done drawing graph'"
                            "Tool Bar:\n"
+                           "It can be used after choosing algorithm."
                            "Play/pause/stop animation on first three icons.\n"
                            "Change speed of animation using slider.\n"
-                           "Change pseudocode font sizing by clicking on plus/minus.\n";
+                           "Change pseudocode font sizing by clicking on plus/minus.\n"
+                           "Other:\n"
+                           "Choosing algorithm possible only after clicking 'Done drawing graph'\n"
+                           "Option 'Save As Image' is saving visible part of the canvas.\n";
 
     QMessageBox::about(this, tr("Instructions"), instructions);
 }

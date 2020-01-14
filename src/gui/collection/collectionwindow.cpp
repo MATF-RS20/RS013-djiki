@@ -15,7 +15,6 @@ CollectionWindow::CollectionWindow(QWidget *parent) :
     ui(new Ui::CollectionWindow)
 {
     ui->setupUi(this);
-    this->resize(this->width() * 1.3, this->height() * 1.3);
     this->setStyleSheet("background-color: rgb(13, 13, 23); "
                         "color: rgb(239, 235, 231);");
 
@@ -25,7 +24,7 @@ CollectionWindow::CollectionWindow(QWidget *parent) :
     connect(drawCollection, SIGNAL(doneDrawingCollection(Collection*)), this, SLOT(setCollection(Collection*)));
     connect(drawCollection, SIGNAL(doneDrawingCollection(Collection*)), this, SLOT(enableRightDockWindow()));
 
-    setWindowTitle(tr("Collection Window"));
+    setWindowTitle(tr("Djiki - Collection Window"));
 
     toolBarSetup();
     createDockWindows();
@@ -133,12 +132,11 @@ void CollectionWindow::setCodeCollectionAtRightDockWindow()
 {
     enableThings();
     codeCollection = new CodeCollection(dockRight);
-//    codeCollection->setMinimumWidth(this->width() * 0.35);
     codeCollection->setObjectName("codeCollection");
     dockRight->setWidget(codeCollection);
     addDockWidget(Qt::RightDockWidgetArea, dockRight);
 
-    //    codeCollection->setText(name, algorithmInstance->getPseudoCodeHTML());
+    codeCollection->setText(name, algorithmInstance->getPseudoCodeHTML());
 }
 
 void CollectionWindow::enableThings()
@@ -474,30 +472,30 @@ void CollectionWindow::playbackFinished()
 
 void CollectionWindow::on_actionPlay_triggered()
 {
-  if(playback.first == stop && isChild("codeCollection")){
-      playback.first = play;
-      startAlgorithmPlayback(algorithmInstance);
-  }
-  playbackMutex.try_lock();
-  playback.first = play;
-  playbackMutex.unlock();
+    if(playback.first == stop && isChild("codeCollection"))
+    {
+        playback.first = play;
+        startAlgorithmPlayback(algorithmInstance);
+    }
+    playbackMutex.try_lock();
+    playback.first = play;
+    playbackMutex.unlock();
 }
 
 void CollectionWindow::on_actionPause_triggered()
 {
-  playbackMutex.try_lock();
-  playback.first = pausE;
+    playbackMutex.try_lock();
+    playback.first = pausE;
 }
 
 void CollectionWindow::on_actionStop_triggered()
 {
+    playbackMutex.try_lock();
+    playback.first = stop;
+    playbackMutex.unlock();
 
-  playbackMutex.try_lock();
-  playback.first = stop;
-  playbackMutex.unlock();
-
-  if(isChild("codeCollection"))
-      codeCollection->setText(name, algorithmInstance->getPseudoCodeHTML());
+    if(isChild("codeCollection"))
+        codeCollection->setText(name, algorithmInstance->getPseudoCodeHTML());
 }
 
 void CollectionWindow::changePlaybackSpeed(int sliderValue)
@@ -534,10 +532,15 @@ void CollectionWindow::on_actionInstructions_triggered()
                            "Right click on item to delete it (you can delete only last item).\n"
                            "When you finish click 'Done drawing collection'.\n"
                            "You can start over from scratch by clicking Clear button.\n"
+                           "NOTE: Can clear canvas only before clicking 'Done drawing collection'"
                            "Tool Bar:\n"
+                           "It can be used after choosing algorithm."
                            "Play/pause/stop animation on first three icons.\n"
                            "Change speed of animation using slider.\n"
-                           "Change pseudocode font sizing by clicking on plus/minus.\n";
+                           "Change pseudocode font sizing by clicking on plus/minus.\n"
+                           "Other:\n"
+                           "Choosing algorithm possible only after clicking 'Done drawing collection'\n"
+                           "Option 'Save As Image' is saving visible part of the canvas.\n";
 
     QMessageBox::about(this, tr("Instructions"), instructions);
 }
