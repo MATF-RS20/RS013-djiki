@@ -488,7 +488,7 @@ void CollectionWindow::on_actionPlay_triggered()
 void CollectionWindow::on_actionPause_triggered()
 {
   playbackMutex.try_lock();
-  playback.first = pause;
+  playback.first = pausE;
 }
 
 void CollectionWindow::on_actionStop_triggered()

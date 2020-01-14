@@ -24,6 +24,8 @@ public:
 
     Ui::DrawCollection* getUi() const;
     QTimer* getAnimationTimer() const;
+    QVector<Item*> getItems() const;
+    QVector<Connection*> getConnections() const;
 
     QGraphicsProxyWidget* clearItem;
     QGraphicsProxyWidget* helpItem;

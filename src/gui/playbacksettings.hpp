@@ -3,7 +3,7 @@
 enum playbackSettings
 {
     play,
-    pause,
+    pausE,
     stop
 };
 #endif // PLAYBACKSETTINGS_HPP

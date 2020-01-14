@@ -36,6 +36,7 @@ SOURCES += \
     src/drawing/graph/edge.cpp \
     src/drawing/graph/graph.cpp \
     src/drawing/graph/node.cpp \
+    tests/collection_tests.cpp \
     tests/graph_tests.cpp \
     src/gui/collection/collectionwindow.cpp \
     src/gui/graph/algograph.cpp \

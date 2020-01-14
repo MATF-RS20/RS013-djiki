@@ -129,6 +129,16 @@ QTimer* DrawCollection::getAnimationTimer() const
     return animationTimer;
 }
 
+QVector<Item *> DrawCollection::getItems() const
+{
+    return collectionItems;
+}
+
+QVector<Connection *> DrawCollection::getConnections() const
+{
+    return connections;
+}
+
 DrawCollection::~DrawCollection()
 {
     ui->graphicsView->scene()->clear();

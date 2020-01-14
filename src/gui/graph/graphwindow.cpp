@@ -404,7 +404,7 @@ void GraphWindow::on_actionPlay_triggered()
 void GraphWindow::on_actionPause_triggered()
 {
     playbackMutex.try_lock();
-    playback.first = pause;
+    playback.first = pausE;
 }
 
 void GraphWindow::on_actionStop_triggered()
