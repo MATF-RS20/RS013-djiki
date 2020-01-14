@@ -55,6 +55,16 @@ std::pair<bool, int> Drawing::getWeightFromUser(const Node *start, const Node *e
                                                         : enteredValue.toInt());
 }
 
+QString &Drawing::cleanPseudocodeLine(QString &line)
+{
+    while (line.indexOf("\t") != -1 || line.indexOf("\n") != -1)
+    {
+        line = QString::fromStdString(line.toStdString().substr(1));
+    }
+
+    return line;
+}
+
 QString Drawing::splitLine(QString line)
 {
     /* Line is split on space which is aproximately in the middle of the line */
