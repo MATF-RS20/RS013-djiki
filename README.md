@@ -27,3 +27,13 @@ u akademskoj 2019/2020. godini.
 + Olivera Popović [mi16064@alas.matf.bg.ac.rs](mailto:mi16064@alas.matf.bg.ac.rs)
 + Aleksandra Stojanović [mi16048@alas.matf.bg.ac.rs](mailto:mi16048@alas.matf.bg.ac.rs)
 + Konstantin Klima [ai16254@alas.matf.bg.ac.rs](mailto:ai16254@alas.matf.bg.ac.rs)
+
+## Korišćene licence
++ MIT Licence
++ Pixabay Licence
+
+## Korišćene slike
++ Photo by [krzysztof-m](https://pixabay.com/vectors/graph-data-line-graph-statistics-3186081/)
++ Photo by [kmicican](https://pixabay.com/vectors/arrows-diagram-process-2027262/)
++ Photo by [kmicican](https://pixabay.com/vectors/cycle-phase-change-process-diagram-2019530/)
++ Icons by [Bryan Cairns](https://github.com/voidrealms)
